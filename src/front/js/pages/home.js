@@ -23,6 +23,15 @@ export const Home = () => {
 					"You need a digital wallet (like Metamask or Coinomi) which allows you to store, manage, and trade cryptocurrencies. Your public keys/wallet addresses are like your email address, and private keys are similar to the password you use to login to your email. You give out your wallet address so that people can send you coins much like how you provide your email address to your contacts to send you messages."
 				}
 			/>
+
+			<ControlledAccordions
+			firstQuestion = {}
+			firstAnswer = {}
+			secondQuestion = {}
+			secondAnswer = {}
+			thirdQuestion = {}
+			thirdAnswer = {}
+			/>
 		</div>
 	);
 };
