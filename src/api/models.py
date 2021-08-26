@@ -65,6 +65,7 @@ class Order(db.Model):
    shipping_fee=db.Column(db.Numeric, nullable=False)
    bill_address=db.Column(db.String, nullable=False)
    is_paid=db.Column(db.Boolean, nullable=False)
+
    account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
    line_order_id = relationship("Line_Order", lazy=True, backref = "order")
 
@@ -90,8 +91,9 @@ class Product(db.Model):
    media=db.Column(db.String, nullable=False, default=PHOTO_URL)
    price=db.Column(db.Numeric, nullable=False)
    category=db.Column(db.Enum("Clothing", "Computers", "Home & Garden", "Sports", "NFTs", "Cellphones", "Gaming", "Movies, Books & Music", "Appliances", "TV, Audio & Cameras", "Motorbikes", "Other", name = "categories"), nullable=False)
+
    account_id = db.Column(db.Integer, db.ForeignKey('account.id'), nullable = False)
-   line_order_relation = relationship("Line_Order", lazy = True, backref = "product")
+   have_line_order = relationship("Line_Order", lazy = True, backref = "product")
 
    def to_dict(self):
       return{
