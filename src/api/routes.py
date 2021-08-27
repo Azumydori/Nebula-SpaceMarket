@@ -12,7 +12,7 @@ from sqlalchemy import exc
 from decimal import Decimal
 from datetime import timedelta
 
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 api = Blueprint('api', __name__)
 
@@ -43,8 +43,8 @@ def create_account():
         email=email,
         first_name=first_name,
         last_name=last_name,
-        _password=password,
-        username=username,
+        _password = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16),
+        username=username
     )
 
     try:
@@ -64,9 +64,8 @@ def login():
 
     account = Account.get_by_email(email)
 
-    if account and password and account._is_active:
+    if account and check_password_hash(user.password, password) and account._is_active:
         token = create_access_token(identity=account.id, expires_delta=timedelta(minutes=100))
-        print(token, "AAAAAAAAAAAAAAAAAAAAAAARRIBA ESPANA")
         return({'token' : token}), 200
     else:
         return({'error':'Some parameter is wrong'}), 400

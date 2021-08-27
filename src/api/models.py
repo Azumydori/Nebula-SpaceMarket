@@ -72,6 +72,16 @@ class Account(db.Model):
    def get_by_email(cls, email):
       account = cls.query.filter_by(email=email).one_or_none()
       return account
+   
+   '''
+   @password.setter
+    def password(self, password):
+        self._password = generate_password_hash(
+                password, 
+                method='pbkdf2:sha256', 
+                salt_length=16
+            )
+   '''
 
 
 class Order(db.Model):
