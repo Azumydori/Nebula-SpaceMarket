@@ -9,6 +9,7 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import "../../styles/footer.scss";
+
 const CssTextField = withStyles({
 	root: {
 		"& label.Mui-focused": {
@@ -43,8 +44,7 @@ const useStyles = makeStyles(theme => ({
 	margin: {
 		width: "30vh",
 		[theme.breakpoints.up("sm")]: {
-			width: "30vh",
-			zIndex: 1
+			width: "30vh"
 		}
 	},
 	MuiFormLabel: {
@@ -103,17 +103,17 @@ const Footer = () => {
 					<Box textAlign="center" pt={{ xs: 5, sm: 10 }} pb={{ xs: 5, sm: 0 }}>
 						<Box display="flex" justifyContent="center">
 							<Box pl={1}>
-								<Link href="/" color="inherit">
+								<Link href="https://twitter.com/YifanYes" color="inherit">
 									<TwitterIcon />
 								</Link>
 							</Box>
 							<Box pl={1}>
-								<Link href="/" color="inherit">
+								<Link href="https://www.instagram.com/cats_of_instagram/?hl=en" color="inherit">
 									<InstagramIcon />
 								</Link>
 							</Box>
 							<Box pl={1}>
-								<Link href="https://github.com/safak/youtube/tree/material-ui" color="inherit">
+								<Link href="https://github.com/Azumydori/Nebula-SpaceMarket" color="inherit">
 									<GitHubIcon />
 								</Link>
 							</Box>

@@ -15,7 +15,8 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 		position: "fixed",
 		bottom: 0,
-		backgroundColor: "#5A189A"
+		backgroundColor: "#5A189A",
+		zIndex: 3
 	},
 	icon: {
 		color: "#FFFFFF"
