@@ -63,15 +63,6 @@ class Account(db.Model):
    def update_account_status(self):
         self._is_active = not _is_active
         db.session.commit()
-
-   def validate_password(self,password):
-      is_valid = check_password_hash(self._password,password)
-      return is_valid
-    
-   def validate_username(self, username):
-      if self.username == username:
-        return True
-      return False
     
    @classmethod
    def get_by_id(cls, id):
@@ -81,11 +72,6 @@ class Account(db.Model):
    @classmethod
    def get_by_email(cls, email):
       account = cls.query.filter_by(email=email).one_or_none()
-      return account
-    
-   @classmethod
-   def get_by_username(cls, username):
-      account = cls.query.filter_by(username=username).one_or_none()
       return account
 
 
@@ -117,9 +103,6 @@ class Order(db.Model):
         "product_id": self.product_id,
       }
 
-   def create(self):
-      db.session.add(self)
-      db.session.commit()
 
 class Product(db.Model):
    __tablename__ = 'product'
@@ -144,13 +127,18 @@ class Product(db.Model):
         "product_name": self.product_name,
         "text": self.text,
         "media": self.media,
-        "price": self.price,
+        "price": str(self.price),
         "category": self.category,
       }
 
    def create(self):
       db.session.add(self)
       db.session.commit()
+
+   @classmethod
+   def get_by_id(cls, id):
+      one_product = cls.query.get(id)
+      return one_product
 
 class Wishlist(db.Model):
    __tablename__ = 'wishlist'
@@ -164,9 +152,12 @@ class Wishlist(db.Model):
    def __repr__(self):
       return f'Wishlist name: {self.name}'
 
-   def create(self):
-      db.session.add(self)
-      db.session.commit()
+   def to_dict(self):
+      return{
+        "wishlist_name": self.name,
+        "account_id": self.from_account,
+        "product_id": self.have_product,
+      }
    
 
 class Line_Order(db.Model):
@@ -181,6 +172,11 @@ class Line_Order(db.Model):
    def __repr__(self):
       return f'Product id: {self.product_id}, quantity: {self.quantity}, order id: {self.order_id}'
 
-   def create(self):
-      db.session.add(self)
-      db.session.commit()
+   def to_dict(self):
+      return{
+        "id": self.id,
+        "product_quantity": self.quantity,
+        "product_id": self.product_id,
+        "order_id": self.order_id,
+      }
+

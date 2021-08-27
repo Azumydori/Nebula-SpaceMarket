@@ -91,9 +91,11 @@ def add_new_product():
     category = request.json.get("category", None)
 
 
-    if type(price) == "<class 'int'>":
+    if isinstance(price, int):
         price = Decimal(f'{price}')
-
+    
+    if isinstance(price, str):
+        price = Decimal(f'{price}')
 
     if not (product_name and text and price and category):
         return {"error":"Missing info"}, 400
@@ -112,30 +114,11 @@ def add_new_product():
         return {"error":"something went wrong"}, 409
 
 
-# Create a route to authenticate your users and return JWT Token. The
-# create_access_token() function is used to actually generate the JWT.
-@api.route("/token", methods=["POST"])
-def create_token():
-    username = request.json.get("username", None)
-    password = request.json.get("password", None)
-    # Query your database for username and password
-    account = Account.filter.query(username=username, password=password).first()
-    if account is None:
-        # the user was not found on the database
-        return jsonify({"msg": "Bad username or password"}), 401
-    
-    # create a new token with the user id inside
-    access_token = create_access_token(identity=account.id)
-    return jsonify({ "token": access_token, "account": account.id })
+@api.route('/product/<int:id>', methods={"GET"})
+def get_one_product(id):
+    one_product = Product.get_by_id(id)
 
-
-# Protect a route with jwt_required, which will kick out requests
-# without a valid JWT present.
-@api.route("/protected", methods=["GET"])
-@jwt_required()
-def protected():
-    # Access the identity of the current user with get_jwt_identity
-    current_account_id = get_jwt_identity()
-    account = Account.filter.get(current_account_id)
+    if one_product:
+        return jsonify(one_product.to_dict()), 200
     
-    return jsonify({"id": account.id, "accountname": account.username }), 200
+    return({"error": "Product not found"}), 404
