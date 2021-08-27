@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.scss";
-
 import Login from "../component/login.js";
 
-const Home = () => {
+const LoginPage = () => {
 	const { store, actions } = useContext(Context);
 
 	return (
@@ -14,4 +13,4 @@ const Home = () => {
 	);
 };
 
-export default Home;
+export default LoginPage;
