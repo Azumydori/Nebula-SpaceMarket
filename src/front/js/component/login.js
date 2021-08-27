@@ -109,7 +109,7 @@ const Login = () => {
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
 	const { control, handleSubmit } = useForm();
-	const onSubmit = data => console.log(data);
+	const onSubmit = data => actions.login(data);
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -124,6 +124,7 @@ const Login = () => {
 						<label htmlFor="email">Email</label>
 						<Grid item xs={12}>
 							<Controller
+								name="email"
 								control={control}
 								defaultValue=""
 								render={({ field }) => (
@@ -144,6 +145,7 @@ const Login = () => {
 						<label htmlFor="password">Password</label>
 						<Grid item xs={12}>
 							<Controller
+								name="password"
 								control={control}
 								defaultValue=""
 								render={({ field }) => (
@@ -183,7 +185,6 @@ const Login = () => {
 							fullWidth
 							variant="contained"
 							color="secondary"
-							borderRadius="50%"
 							className={classes.submit}>
 							Login
 						</Button>

@@ -66,6 +66,7 @@ def login():
 
     if account and password and account._is_active:
         token = create_access_token(identity=account.id, expires_delta=timedelta(minutes=100))
+        print(token, "AAAAAAAAAAAAAAAAAAAAAAARRIBA ESPANA")
         return({'token' : token}), 200
     else:
         return({'error':'Some parameter is wrong'}), 400

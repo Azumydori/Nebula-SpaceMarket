@@ -40,7 +40,7 @@ class Account(db.Model):
 
 
    def __repr__(self):
-      return f'Account name: {self.username}, account id: {self.id}, mail: {self.email}'
+      return f'Account name: {self.username}, account id: {self.id}, mail: {self.email}, is active: {self._is_active}'
       
    def to_dict(self):
       return{
@@ -53,7 +53,6 @@ class Account(db.Model):
         "city": self.city,
         "address": self.address,
         "payment_type": self.payment_type,
-        "password": self._password
       }
 
    def create(self):

@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "/api",
+			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu16.gitpod.io/api",
 			currentUser: {}
 		},
 
@@ -32,12 +32,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 
-			login: (email, password) => {
+			login: credentials => {
+				console.log(credentials);
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
 					mode: "cors",
 					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ email: email, password: password })
+					body: JSON.stringify(credentials)
 				})
 					.then(resp => {
 						if (resp.ok) {
