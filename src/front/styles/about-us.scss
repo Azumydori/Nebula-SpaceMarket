@@ -1,0 +1,106 @@
+.teamimage {
+    color: #9D4EDD;
+    width: 7rem;
+    height: 7rem;
+    text-align: center;
+
+  }
+
+.queryimage {
+    margin: 0 auto;
+
+}
+
+h2 {
+    font-size: 1rem;
+}
+
+h3 {
+    font-size: 1.3rem;
+}
+
+.maxwidth{
+    max-width: 1400px;
+}
+
+body{
+    background:white;
+    margin-top:20px;
+
+}
+
+.hori-timeline .events {
+    border-top: 3px solid #9D4EDD;
+}
+.hori-timeline .events .event-list {
+    display: block;
+    position: relative;
+    text-align: center;
+    padding-top: 70px;
+    margin-right: 0;
+}
+.hori-timeline .events .event-list:before {
+    content: "";
+    position: absolute;
+    height: 36px;
+    border-right: 2px dashed #9D4EDD;
+    top: 0;
+}
+.hori-timeline .events .event-list .event-date {
+    position: absolute;
+    top: 38px;
+    left: 0;
+    right: 0;
+    width: 75px;
+    margin: 0 auto;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+@media (max-width: 1200px){
+    .teamimage{
+        width: 5rem;
+        height: 5rem;
+    }
+}
+
+
+@media (min-width: 1140px) {
+    .hori-timeline .events .event-list {
+        display: inline-block;
+        width: 19%;
+        padding-top: 45px;
+    }
+    .hori-timeline .events .event-list .event-date {
+        top: -12px;
+    }
+}
+.bg-soft-primary {
+    background-color: #9D4EDD!important;
+}
+.bg-soft-success {
+    background-color: #9D4EDD!important;
+}
+.bg-soft-danger {
+    background-color: #9D4EDD!important;
+}
+.bg-soft-warning {
+    background-color: #9D4EDD!important;
+}
+.card {
+    border: none;
+    margin-bottom: 24px;
+    -webkit-box-shadow: 0 0 13px 0 rgba(236,236,241,.44);
+    box-shadow: 0 0 13px 0 rgba(236,236,241,.44);
+}
+
+.event-list {
+    vertical-align:top;
+}
+
+
+
+
+
+
+
