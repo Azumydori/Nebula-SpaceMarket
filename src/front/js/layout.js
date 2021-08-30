@@ -3,7 +3,10 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { Home } from "./pages/home";
 import injectContext from "./store/appContext";
-import { Footer } from "./component/footer";
+
+import Navbar from "./component/navbar.js";
+import Bottombar from "./component/bottombar.js";
+import Footer from "./component/footer";
 
 //create your first component
 const Layout = () => {
@@ -12,12 +15,14 @@ const Layout = () => {
 	return (
 		<div className="d-flex flex-column h-100">
 			<BrowserRouter basename={basename}>
+				<Navbar />
+				<Bottombar />
 				<Switch>
 					<Route exact path="/">
 						<Home />
 					</Route>
 					<Route>
-						<h1>Nebula is sad, this is not the way</h1>
+						<h1>Not found!</h1>
 					</Route>
 				</Switch>
 				<Footer />

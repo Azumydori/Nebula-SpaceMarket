@@ -1,4 +1,3 @@
-  
 import os
 from flask_admin import Admin
 from .models import db, Account
@@ -10,7 +9,11 @@ def setup_admin(app):
     admin = Admin(app, name='4Geeks Admin', template_mode='bootstrap3')
 
     
+<<<<<<< HEAD
     # Add your models here, for example this is how we add a the Account model to the admin
+=======
+    # Add your models here, for example this is how we add a the User model to the admin
+>>>>>>> 102335576cefe1f5deb90c4d5ee089d6fcfbdaa4
     admin.add_view(ModelView(Account, db.session))
 
     # You can duplicate that line to add mew models
