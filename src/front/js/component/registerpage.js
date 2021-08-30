@@ -1,6 +1,4 @@
 import React from "react";
-import { useContext } from "react";
-import { Context } from "../store/appContext";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -17,9 +15,7 @@ import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { borders } from "@material-ui/system";
 import Container from "@material-ui/core/Container";
-import { Palette, TextFieldsTwoTone } from "@material-ui/icons";
-import { useForm, Controller } from "react-hook-form";
-import Input from "@material-ui/core/Input";
+import { Palette } from "@material-ui/icons";
 
 const Copyright = () => {
 	return (
@@ -33,6 +29,35 @@ const Copyright = () => {
 		</Typography>
 	);
 };
+
+const CssTextField = withStyles({
+	root: {
+		"& label.Mui-focused": {
+			color: "white"
+		},
+		"& .MuiFormLabel-root": {
+			color: "white"
+		},
+		"& .MuiInput-underline:after": {
+			borderBottomColor: "white",
+			labelcolor: "white"
+		},
+		"& .MuiOutlinedInput-root": {
+			"& fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			},
+			"&:hover fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			},
+			"&.Mui-focused fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			}
+		}
+	}
+})(TextField);
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -61,33 +86,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	whiteBox: {
 		color: "white"
-	},
-
-	inputField: {
-		"& label.Mui-focused": {
-			color: "white"
-		},
-		"& .MuiFormLabel-root": {
-			color: "white"
-		},
-		"& .MuiInput-underline:after": {
-			borderBottomColor: "white",
-			labelcolor: "white"
-		},
-		"& .MuiOutlinedInput-root": {
-			"& fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			},
-			"&:hover fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			},
-			"&.Mui-focused fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			}
-		}
 	}
 }));
 
@@ -109,115 +107,59 @@ const costumTheme = createTheme({
 
 const SignUp = () => {
 	const classes = useStyles();
-	const { store, actions } = useContext(Context);
-	const { control, handleSubmit } = useForm();
-	const onSubmit = data => {
-		actions.register(data);
-	};
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<div className={classes.paper}>
-				<Avatar color="primary" />
+				<Avatar className={classes.avatar} color="primary">
+					N
+				</Avatar>
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
-				<form action="" method="post" className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
+				<form className={classes.form} noValidate>
 					<Grid container spacing={1}>
 						<Grid item sm={12}>
-							<label htmlFor="first_name">First Name</label>
-							<Controller
-								name="first_name"
-								control={control}
-								defaultValue=""
-								render={({ field }) => (
-									<Input
-										{...field}
-										autoComplete="fname"
-										name="first_name"
-										fullWidth
-										id="first_name"
-										label="First Name"
-										autoFocus
-										required
-									/>
-								)}
+							<CssTextField
+								autoComplete="fname"
+								name="firstName"
+								required
+								fullWidth
+								id="firstName"
+								label="First Name"
+								autoFocus
 							/>
 						</Grid>
 						<Grid item sm={12}>
-							<label htmlFor="last_name">Last Name</label>
-							<Controller
-								name="last_name"
-								control={control}
-								defaultValue=""
-								render={({ field }) => (
-									<Input
-										{...field}
-										fullWidth
-										id="last_name"
-										name="last_name"
-										autoComplete="lname"
-										required
-									/>
-								)}
+							<CssTextField
+								required
+								fullWidth
+								id="lastName"
+								label="Last Name"
+								name="lastName"
+								autoComplete="lname"
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<label htmlFor="email">Email</label>
-							<Controller
+							<CssTextField
+								required
+								fullWidth
+								id="email"
+								label="Email Address"
 								name="email"
-								control={control}
-								defaultValue=""
-								render={({ field }) => (
-									<Input
-										{...field}
-										required
-										fullWidth
-										id="email"
-										label="Email Address"
-										name="email"
-										autoComplete="email"
-									/>
-								)}
+								autoComplete="email"
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<label htmlFor="username">Username</label>
-							<Controller
-								name="username"
-								control={control}
-								defaultValue=""
-								render={({ field }) => (
-									<Input
-										{...field}
-										fullWidth
-										id="username"
-										label="Username"
-										name="username"
-										autoComplete="username"
-										required
-									/>
-								)}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<label htmlFor="password">Password</label>
-							<Controller
+							<CssTextField
+								required
+								fullWidth
 								name="password"
-								control={control}
-								defaultValue=""
-								render={({ field }) => (
-									<Input
-										fullWidth
-										{...field}
-										name="password"
-										label="Password"
-										type="password"
-										id="password"
-										autoComplete="current-password"
-										required
-									/>
-								)}
+								label="Password"
+								type="password"
+								id="password"
+								autoComplete="current-password"
 							/>
 						</Grid>
 						<Grid item xs={12}>
