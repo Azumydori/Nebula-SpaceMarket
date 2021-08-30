@@ -32,12 +32,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			login: credentials => {
-				const tokenDecode = token => {
-					let decoded = jwt_decode(token);
-					return decoded;
-				};
-
-				const redirect = () => {};
 
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
@@ -56,7 +50,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(data => {
 						localStorage.setItem("jwt-token", data.token);
-						const tokenDecoded = tokenDecode(data.token);
 						redirect();
 					})
 					.catch(error => {
