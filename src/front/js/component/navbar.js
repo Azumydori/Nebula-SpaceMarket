@@ -13,6 +13,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonIcon from "@material-ui/icons/Person";
 import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
 	toolbar: {

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext, useEffect, useState, onSubmit, handleSubmit } from "react";
+import { Context } from "../store/appContext";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -16,6 +17,8 @@ import { ThemeProvider } from "@material-ui/styles";
 import { borders } from "@material-ui/system";
 import Container from "@material-ui/core/Container";
 import { Palette } from "@material-ui/icons";
+import { useForm, Controller } from "react-hook-form";
+import Input from "@material-ui/core/Input";
 
 const Copyright = () => {
 	return (
@@ -29,35 +32,6 @@ const Copyright = () => {
 		</Typography>
 	);
 };
-
-const CssTextField = withStyles({
-	root: {
-		"& label.Mui-focused": {
-			color: "white"
-		},
-		"& .MuiFormLabel-root": {
-			color: "white"
-		},
-		"& .MuiInput-underline:after": {
-			borderBottomColor: "white",
-			labelcolor: "white"
-		},
-		"& .MuiOutlinedInput-root": {
-			"& fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			},
-			"&:hover fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			},
-			"&.Mui-focused fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			}
-		}
-	}
-})(TextField);
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -86,6 +60,32 @@ const useStyles = makeStyles(theme => ({
 	},
 	whiteBox: {
 		color: "white"
+	},
+	inputField: {
+		"& label.Mui-focused": {
+			color: "white"
+		},
+		"& .MuiFormLabel-root": {
+			color: "white"
+		},
+		"& .MuiInput-underline:after": {
+			borderBottomColor: "white",
+			labelcolor: "white"
+		},
+		"& .MuiOutlinedInput-root": {
+			"& fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			},
+			"&:hover fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			},
+			"&.Mui-focused fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			}
+		}
 	}
 }));
 
@@ -105,8 +105,11 @@ const costumTheme = createTheme({
 	}
 });
 
-const SignUp = () => {
+const Login = () => {
 	const classes = useStyles();
+	const { store, actions } = useContext(Context);
+	const { control, handleSubmit } = useForm();
+	const onSubmit = data => actions.login(data);
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -114,62 +117,52 @@ const SignUp = () => {
 			<div className={classes.paper}>
 				<Avatar color="primary" />
 				<Typography component="h1" variant="h5">
-					Sign up
+					Sign in
 				</Typography>
-				<form action="" method="post" className={classes.form} noValidate>
+				<form action="" method="post" className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
 					<Grid container spacing={1}>
-						<Grid item sm={12}>
-							<CssTextField
-								autoComplete="fname"
-								name="firstName"
-								fullWidth
-								id="firstName"
-								label="First Name"
-								autoFocus
-								required
-							/>
-						</Grid>
-						<Grid item sm={12}>
-							<CssTextField
-								fullWidth
-								id="lastName"
-								label="Last Name"
-								name="lastName"
-								autoComplete="lname"
-								required
-							/>
-						</Grid>
+						<label htmlFor="email">Email</label>
 						<Grid item xs={12}>
-							<CssTextField
-								required
-								fullWidth
-								id="email"
-								label="Email Address"
+							<Controller
 								name="email"
-								autoComplete="email"
+								control={control}
+								defaultValue=""
+								render={({ field }) => (
+									<Input
+										{...field}
+										className={classes.inputField}
+										placeholder="example@gmail.com"
+										required
+										fullWidth
+										id="email"
+										name="email"
+										autoComplete="email"
+									/>
+								)}
 							/>
 						</Grid>
+
+						<label htmlFor="password">Password</label>
 						<Grid item xs={12}>
-							<CssTextField
-								fullWidth
-								id="username"
-								label="Username"
-								name="username"
-								autoComplete="username"
-								required
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<CssTextField
-								fullWidth
+							<Controller
 								name="password"
-								label="Password"
-								type="password"
-								id="password"
-								autoComplete="current-password"
-								required
+								control={control}
+								defaultValue=""
+								render={({ field }) => (
+									<Input
+										{...field}
+										className={classes.inputField}
+										fullWidth
+										name="password"
+										type="password"
+										id="password"
+										autoComplete="current-password"
+										required
+									/>
+								)}
 							/>
 						</Grid>
+
 						<Grid item xs={12}>
 							<ThemeProvider theme={costumTheme}>
 								<FormControlLabel
@@ -180,41 +173,27 @@ const SignUp = () => {
 											color="secondary"
 										/>
 									}
-									label="I want to receive inspiration, new offers, marketing promotions and updates via email."
-								/>
-							</ThemeProvider>
-						</Grid>
-						<Grid item xs={12}>
-							<ThemeProvider theme={costumTheme}>
-								<FormControlLabel
-									control={
-										<Checkbox
-											className={classes.whiteBox}
-											value="privacyPolicy"
-											color="secondary"
-											required
-										/>
-									}
-									label="I have read and accepted Nebula`s Terms of Use and privacy policy"
+									label="Remember me"
 								/>
 							</ThemeProvider>
 						</Grid>
 					</Grid>
+
 					<ThemeProvider theme={costumTheme}>
 						<Button
 							type="submit"
 							fullWidth
 							variant="contained"
 							color="secondary"
-							borderRadius="50%"
 							className={classes.submit}>
-							Sign Up
+							Login
 						</Button>
 					</ThemeProvider>
+
 					<Grid container justifyContent="flex-end">
 						<Grid item>
 							<Link href="#" variant="body2">
-								Already have an account? Sign in
+								{"Don't have an account? Sign up"}
 							</Link>
 						</Grid>
 					</Grid>
@@ -227,4 +206,4 @@ const SignUp = () => {
 	);
 };
 
-export default SignUp;
+export default Login;

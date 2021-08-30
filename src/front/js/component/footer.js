@@ -62,8 +62,8 @@ const Footer = () => {
 			<Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 5 }} bgcolor="#5A189A" color="white">
 				<Container maxWidth="lg">
 					<Box />
-					<Grid container spacing={5}>
-						<Grid item xs={12} sm={4} alignContent="center">
+					<Grid container spacing={5} alignContent="center">
+						<Grid item xs={12} sm={4}>
 							<Box>
 								<Link href="/" color="inherit" variant="h6">
 									Privacy Policy
@@ -75,7 +75,7 @@ const Footer = () => {
 								</Link>
 							</Box>
 						</Grid>
-						<Grid item xs={12} sm={4} alignContent="center">
+						<Grid item xs={12} sm={4}>
 							<Box>
 								<Link href="/" color="inherit" variant="h6">
 									About us
@@ -87,7 +87,7 @@ const Footer = () => {
 								</Link>
 							</Box>
 						</Grid>
-						<Grid item xs={12} sm={4} alignContent="center">
+						<Grid item xs={12} sm={4}>
 							<Box borderBottom={1}>Suscribe to our newsletter</Box>
 							<Box pt={1}>
 								<CssTextField
