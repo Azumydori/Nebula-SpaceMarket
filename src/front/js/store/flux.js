@@ -11,7 +11,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			register: (first_name, last_name, email, password, username) => {
 				fetch(getStore().baseURL.concat("/signup"), {
 					method: "POST",
-					mode: "cors",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({
 						first_name: first_name,
@@ -33,15 +32,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			login: credentials => {
-				console.log(credentials);
+				const tokenDecode = token => {
+					let decoded = jwt_decode(token);
+					return decoded;
+				};
+
+				const redirect = () => {};
+
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
-					mode: "cors",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(credentials)
 				})
 					.then(resp => {
-						if (resp.ok) {
+						if (resp.status === 200) {
+							console.log(resp);
 							return resp.json();
 						} else if (resp.status === 401) {
 							console.log("Invalid credentials");
@@ -51,8 +56,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(data => {
 						localStorage.setItem("jwt-token", data.token);
+						const tokenDecoded = tokenDecode(data.token);
+						redirect();
 					})
-					.catch(error => console.error("There as been an unknown error", error));
+					.catch(error => {
+						console.error("There as been an unknown error", error);
+						localStorage.removeItem("jwt-token");
+					});
 			}
 		}
 	};

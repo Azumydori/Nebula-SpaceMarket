@@ -64,7 +64,7 @@ def login():
 
     account = Account.get_by_email(email)
 
-    if account and check_password_hash(user.password, password) and account._is_active:
+    if account and check_password_hash(account._password, password) and account._is_active:
         token = create_access_token(identity=account.id, expires_delta=timedelta(minutes=100))
         return({'token' : token}), 200
     else:
