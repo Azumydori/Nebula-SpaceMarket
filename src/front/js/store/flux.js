@@ -32,7 +32,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			login: credentials => {
-
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
