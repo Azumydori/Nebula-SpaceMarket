@@ -13,7 +13,6 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonIcon from "@material-ui/icons/Person";
 import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
 	toolbar: {
@@ -42,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		borderRadius: theme.shape.borderRadius,
 		width: "50%",
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("sm", "md", "lg")]: {
 			display: props => (props.open ? "flex" : "none"),
 			width: "70%"
 		}
@@ -59,7 +58,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	searchButton: {
 		marginRight: theme.spacing(2),
-		[theme.breakpoints.up("sm")]: {
+		[theme.breakpoints.up("md")]: {
 			display: "none"
 		}
 	},
