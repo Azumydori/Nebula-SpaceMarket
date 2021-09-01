@@ -105,7 +105,7 @@ class Product(db.Model):
         "category": self.category,
       }
 
-class Wishlist(db.Model):
+class Wishlist(db.Model): 
     __tablename__ = 'wishlist'
     from_account = Column(db.ForeignKey('account.id'), primary_key=True)
     have_product = Column(db.ForeignKey('product.id'), primary_key=True)
