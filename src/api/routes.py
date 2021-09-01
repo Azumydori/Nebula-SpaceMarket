@@ -82,7 +82,7 @@ def update_account(id):
     return jsonify({'msg' : 'Account not foud'}), 404
 
 
-@api.route('/upload', methods=['POST'])
+@api.route('/product', methods=['POST'])
 def add_new_product():
 
     product_name = request.json.get("product_name", None)

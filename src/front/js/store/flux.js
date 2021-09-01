@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu16.gitpod.io/api",
+			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu15.gitpod.io/api",
 			currentUser: {}
 		},
 
@@ -32,7 +32,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			login: credentials => {
-
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -56,6 +55,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.error("There as been an unknown error", error);
 						localStorage.removeItem("jwt-token");
 					});
+			},
+
+			upload: data => {
+				fetch(getStore().baseURL.concat("/product"), {
+					method: "POST",
+					body: JSON.stringify(data),
+					headers: { "Content-Type": "application/json" }
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid product info");
+						}
+					})
+					.then(responseAsJson => {
+						console.log(data);
+					})
+					.catch(error => console.error("There as been an unknown error", error));
 			}
 		}
 	};
