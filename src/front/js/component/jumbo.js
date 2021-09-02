@@ -1,13 +1,12 @@
 import React from "react";
+import PropTypes from "prop-types";
 import eco from "../../img/ecommerce.jpg";
 
-const Jumbotron = () => {
+const Jumbotron = props => {
 	return (
 		<div className="jumbotron d-flex flex-column justify-content-center">
-			<h2 className="display-4">Enter the next era of ecommerce</h2>
-			<p className="lead text-left">
-				Nebula is a decentralized integrated marketplace for secure online purchases.
-			</p>
+			<h2 className="display-4">{props.title}</h2>
+			<p className="lead text-left">{props.text}</p>
 			<button className="learn-more" href="#" role="button">
 				Learn more
 			</button>
@@ -17,3 +16,8 @@ const Jumbotron = () => {
 };
 
 export default Jumbotron;
+
+Jumbotron.propTypes = {
+	title: PropTypes.string,
+	text: PropTypes.string
+};

@@ -21,7 +21,10 @@ const Home = () => {
 		<div className="mt-5">
 			<div className="row d-flex">
 				<div className="col-7">
-					<Jumbotron />
+					<Jumbotron
+						title={"Enter the next era of ecommerce"}
+						text={"Nebula is a decentralized integrated marketplace for secure online purchases."}
+					/>
 				</div>
 				<div className="col-5 login">
 					<Signup />
