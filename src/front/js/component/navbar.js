@@ -15,6 +15,10 @@ import PersonIcon from "@material-ui/icons/Person";
 import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
 
 const useStyles = makeStyles(theme => ({
+	navbar: {
+		position: "fixed",
+		marginBottom: "auto"
+	},
 	toolbar: {
 		display: "flex",
 		justifyContent: "space-between",
@@ -22,13 +26,13 @@ const useStyles = makeStyles(theme => ({
 	},
 	logoLg: {
 		display: "none",
-		[theme.breakpoints.up("sm")]: {
+		[theme.breakpoints.up("md")]: {
 			display: "block"
 		}
 	},
 	logoSm: {
 		display: "block",
-		[theme.breakpoints.up("sm")]: {
+		[theme.breakpoints.up("md")]: {
 			display: "none"
 		}
 	},
@@ -95,7 +99,7 @@ const Navbar = () => {
 		setAnchorEl(null);
 	};
 	return (
-		<AppBar position="fixed">
+		<AppBar className={classes.navbar} elevation={0}>
 			<Toolbar className={classes.toolbar}>
 				<Typography variant="h6" className={classes.logoLg}>
 					Nebula

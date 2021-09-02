@@ -4,7 +4,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu15.gitpod.io/api",
-			currentUser: {}
+			currentUser: {},
+			whishList: [],
+			cart: []
 		},
 
 		actions: {
@@ -113,7 +115,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
-			
+
 			ShopCart: product_id => {
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
