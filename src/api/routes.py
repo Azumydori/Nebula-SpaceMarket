@@ -29,7 +29,6 @@ def get_account_profile(id):
 
 @api.route('/account', methods=['POST'])
 def create_account(): 
-    print("estas aqui")
 
     first_name = request.json.get("first_name", None)
     last_name = request.json.get("last_name", None)
@@ -72,56 +71,3 @@ def login():
         return({'token' : token}), 200
     else:
         return({'error':'Some parameter is wrong'}), 400
-
-
-@api.route('/account/<int:id>', methods = ['PATCH'])
-def update_account(id):
-    account = Account.get_by_id(id)
-
-    if account:
-        account.update_account_status()
-        return jsonify(account.to_dict()), 200
-
-    return jsonify({'msg' : 'Account not foud'}), 404
-
-
-@api.route('/upload', methods=['POST'])
-def add_new_product():
-
-    product_name = request.json.get("product_name", None)
-    text = request.json.get("text", None)
-    price = request.json.get("price", None)
-    category = request.json.get("category", None)
-
-
-    if isinstance(price, int):
-        price = Decimal(f'{price}')
-    
-    if isinstance(price, str):
-        price = Decimal(f'{price}')
-
-    if not (product_name and text and price and category):
-        return {"error":"Missing info"}, 400
-
-    new_product = Product(
-        product_name = product_name,
-        text = text,
-        price = price,
-        category = category,
-    )
-
-    try:
-        new_product.create()
-        return jsonify(new_product.to_dict())
-    except exc.IntegrityError: 
-        return {"error":"something went wrong"}, 409
-
-
-@api.route('/product/<int:id>', methods={"GET"})
-def get_one_product(id):
-    one_product = Product.get_by_id(id)
-
-    if one_product:
-        return jsonify(one_product.to_dict()), 200
-    
-    return({"error": "Product not found"}), 404
