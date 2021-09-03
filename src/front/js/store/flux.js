@@ -55,8 +55,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 
-			addreview: review => {
-				fetch(getStore().baseURL.concat("/addreview"), {
+			addreview: (review, id_account) => {
+				fetch(getStore().baseURL.concat("/addreview/", id_account), {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify(review)

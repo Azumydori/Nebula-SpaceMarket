@@ -17,6 +17,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 api = Blueprint('api', __name__)
 
 
+
 @api.route('/account/<int:id>', methods={"GET"})
 def get_account_profile(id):
     account = Account.get_by_id(id)
@@ -26,6 +27,12 @@ def get_account_profile(id):
     
     return({"error": "Account not found"}), 404
     
+@api.route("/addreview/<int:id>", methods=["POST"])
+def create_review(id):
+    review_text = request.json.get("review_text", None)
+    print(review_text, "asdfsadfsdfasdfdsfasd")
+
+
 
 @api.route('/register', methods=['POST'])
 def create_account():
