@@ -1,15 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import ScrollToTop from "./component/scrollToTop";
 
-import { Home } from "./pages/home";
-import { Demo } from "./pages/demo";
-import { Single } from "./pages/single";
 import Productdetail from "./pages/product-detail.js";
+import Home from "./pages/home.js";
+import LoginPage from "./pages/loginPage.js";
 import injectContext from "./store/appContext";
 import Navbar from "./component/navbar.js";
 import Bottombar from "./component/bottombar.js";
 import Footer from "./component/footer";
+import UploadProduct from "./pages/uploadProduct.js";
 
 //create your first component
 const Layout = () => {
@@ -20,28 +19,26 @@ const Layout = () => {
 	return (
 		<div className="d-flex flex-column h-100">
 			<BrowserRouter basename={basename}>
-				<ScrollToTop>
-					<Navbar />
-					<Bottombar />
-					<Switch>
-						<Route exact path="/">
-							<Home />
-						</Route>
-						<Route exact path="/demo">
-							<Demo />
-						</Route>
-						<Route exact path="/single/:theid">
-							<Single />
-						</Route>
-						<Route exact path="/product-detail">
-							<Productdetail />
-						</Route>
-						<Route>
-							<h1>Not found!</h1>
-						</Route>
-					</Switch>
-					<Footer />
-				</ScrollToTop>
+				<Navbar />
+				<Bottombar />
+				<Switch>
+					<Route exact path="/">
+						<Home />
+					</Route>
+					<Route exact path="/login">
+						<LoginPage />
+					</Route>
+					<Route exact path="/product">
+						<UploadProduct />
+					</Route>
+					<Route exact path="/product-detail/:id">
+						<Productdetail />
+					</Route>
+					<Route>
+						<h1>Not found!</h1>
+					</Route>
+				</Switch>
+				<Footer />
 			</BrowserRouter>
 		</div>
 	);

@@ -11,15 +11,15 @@ const Review = () => {
 		<Fragment>
 			<Row>
 				<div className="linebreak" />
-				<Col md={2}>
+				<Col md={3}>
 					<img
 						src="https://cdn.pixabay.com/photo/2021/08/23/17/53/cat-6568422__480.jpg"
 						className="teamimage rounded-circle"
 						alt="..."
 					/>
 				</Col>
-				<Col md={2}>
-					<p>Username</p>
+				<Col md={3}>
+					<h3>Username</h3>
 					<p>15.02.1877</p>
 				</Col>
 				<Col md={5}>

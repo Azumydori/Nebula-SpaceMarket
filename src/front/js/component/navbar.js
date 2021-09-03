@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 		},
 		borderRadius: theme.shape.borderRadius,
 		width: "50%",
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("sm", "md", "lg")]: {
 			display: props => (props.open ? "flex" : "none"),
 			width: "70%"
 		}
@@ -58,7 +58,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	searchButton: {
 		marginRight: theme.spacing(2),
-		[theme.breakpoints.up("sm")]: {
+		[theme.breakpoints.up("md")]: {
 			display: "none"
 		}
 	},

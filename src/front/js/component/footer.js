@@ -8,7 +8,6 @@ import { makeStyles, withStyles } from "@material-ui/core";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import InstagramIcon from "@material-ui/icons/Instagram";
-import "../../styles/footer.scss";
 
 const CssTextField = withStyles({
 	root: {
@@ -41,25 +40,52 @@ const CssTextField = withStyles({
 })(TextField);
 
 const useStyles = makeStyles(theme => ({
-	margin: {
-		width: "30vh",
-		[theme.breakpoints.up("sm")]: {
-			width: "30vh"
+	resize: {
+		width: "100%",
+		[theme.breakpoints.down("1000")]: {
+			width: "100%"
+		}
+	},
+
+	footerBox: {
+		backgroundColor: "#5A189A",
+		color: "white"
+	},
+	inputContainer: {
+		marginTop: "5px",
+		paddingLeft: "0",
+		[theme.breakpoints.between("600", "1000")]: {
+			width: "20vh"
 		}
 	},
 	MuiFormLabel: {
 		color: "white"
+	},
+	rectangle1: {
+		width: "100%",
+		height: "2%",
+		background: "#FF9100"
+	},
+	rectangle2: {
+		width: "100%",
+		height: "2%",
+		background: "#9D4EDD"
+	},
+	rectangle3: {
+		width: "100%",
+		height: "2%",
+		background: "#5A189A"
 	}
 }));
 
 const Footer = () => {
 	const classes = useStyles({ open });
 	return (
-		<footer>
-			<div className="rectangle1" />
-			<div className="rectangle2" />
-			<div className="rectangle3" />
-			<Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 5 }} bgcolor="#5A189A" color="white">
+		<footer className={classes.resize}>
+			<div className={classes.rectangle1} />
+			<div className={classes.rectangle2} />
+			<div className={classes.rectangle3} />
+			<Box px={{ xs: 3, sm: 10 }} py={{ xs: 5, sm: 5 }} className={classes.footerBox}>
 				<Container maxWidth="lg">
 					<Box />
 					<Grid container spacing={5}>
@@ -89,14 +115,13 @@ const Footer = () => {
 						</Grid>
 						<Grid item xs={12} sm={4} alignContent="center">
 							<Box borderBottom={1}>Suscribe to our newsletter</Box>
-							<Box pt={1}>
+							<Container className={classes.inputContainer}>
 								<CssTextField
-									className={classes.margin}
 									label="example@email.com"
 									variant="outlined"
 									id="custom-css-outlined-input"
 								/>
-							</Box>
+							</Container>
 						</Grid>
 					</Grid>
 
