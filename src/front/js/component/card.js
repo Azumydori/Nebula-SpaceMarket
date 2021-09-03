@@ -23,7 +23,6 @@ const useStyles = makeStyles(theme => ({
 		margin: "5px",
 
 		justifyContent: "flex-end",
-
 		[theme.breakpoints.down("sm")]: {
 			maxWidth: 169.5,
 			maxHeight: 225.594
