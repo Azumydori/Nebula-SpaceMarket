@@ -3,6 +3,9 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import Home from "./pages/home.js";
 import LoginPage from "./pages/loginPage.js";
+import Nft from "./pages/nft.js";
+import { AboutUs } from "./pages/about-us.js";
+import SignUp from "./pages/registerpage.js";
 import injectContext from "./store/appContext";
 import Navbar from "./component/navbar.js";
 import Bottombar from "./component/bottombar.js";
@@ -28,17 +31,26 @@ const Layout = () => {
 					<Route exact path="/login">
 						<LoginPage />
 					</Route>
+					<Route exact path="/register">
+						<SignUp />
+					</Route>
 					<Route exact path="/product">
 						<UploadProduct />
 					</Route>
 					<Route exact path="/faq">
 						<Faq />
 					</Route>
+					<Route exact path="/nft">
+						<Nft />
+					</Route>
+					<Route exact path="/about-us">
+						<AboutUs />
+					</Route>
 					<Route>
 						<h1>Not found!</h1>
 					</Route>
 				</Switch>
-				{/* <Footer /> */}
+				<Footer />
 			</BrowserRouter>
 		</div>
 	);
