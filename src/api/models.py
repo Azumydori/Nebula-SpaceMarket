@@ -171,7 +171,7 @@ class Wishlist(db.Model):
       one_product = cls.query.get(id)
       return one_product
 
-    def create(self):
+   def create(self):
       db.session.add(self)
       db.session.commit()
 
@@ -199,6 +199,7 @@ class Line_Order(db.Model):
         "product_id": self.product_id,
         "order_id": self.order_id,
       }
-    def create(self):
+
+   def create(self):
       db.session.add(self)
       db.session.commit()
