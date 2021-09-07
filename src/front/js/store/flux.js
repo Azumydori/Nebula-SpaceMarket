@@ -1,24 +1,20 @@
 import jwt_decode from "jwt-decode";
+import UserProfile from "../pages/userprofile";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu15.gitpod.io/api",
+			baseURL: "https://3001-sapphire-flamingo-0qxvakih.ws-eu16.gitpod.io/api",
 			currentUser: {}
 		},
 
 		actions: {
-			register: (first_name, last_name, email, password, username) => {
-				fetch(getStore().baseURL.concat("/signup"), {
+			register: credentials => {
+				console.log(credentials);
+				fetch(getStore().baseURL.concat("/account"), {
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						first_name: first_name,
-						last_name: last_name,
-						email: email,
-						password: password,
-						username: username
-					})
+					body: JSON.stringify(credentials),
+					headers: { "Content-Type": "application/json" }
 				})
 					.then(resp => {
 						if (!resp.ok) {
@@ -74,7 +70,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},	
 
-			Favorite: product_id => {
+			favorite: product_id => {
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
 				console.log("Soy favorite");
@@ -114,7 +110,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 			
-			ShopCart: product_id => {
+			shopCart: product_id => {
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
 				console.log("Soy shoppingcard");
@@ -132,6 +128,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 						setStore({ cart: responseAsJson });
 					})
 					.catch(error => console.error("There as been an unknown error", error));
+			},
+      
+			changeAccountInfo: data => {
+				const token = localStorage.getItem("token");
+				const tokenID = localStorage.getItem("tokenID");
+				fetch(getStore().baseURL.concat("/account", id), {
+					method: "PATCH",
+					body: JSON.stringify(data),
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid changes");
+						}
+						return resp.json();
+					})
+					.then(responseAsJson => {
+						console.log(responseAsJson);
+					})
+					.catch(error => console.error("there has been an error", error));
 			}
 		}
 	};

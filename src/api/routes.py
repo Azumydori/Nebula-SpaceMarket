@@ -175,3 +175,29 @@ def add_item_cart(id):
         return jsonify(cart.to_dict())
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
+
+@api.route('/account/<int:id>', methods=["PATCH"])
+@jwt_required()
+def change_credentials(id):
+    print(get_jwt_identity())
+    if not id == get_jwt_identity().get("id"):
+        return ({"error":"Changes denied"}), 301
+
+    account = Account.get_by_id(id)
+    if account:    
+        updated_info = { 
+            "city": request.json.get("city", None),
+            "state": request.json.get("state", None),
+            "country": request.json.get("country", None),
+            "address": request.json.get("address", None),
+            "username": request.json.get("username", None),
+            "email": request.json.get("email", None),
+            "first_name": request.json.get("first_name", None),
+            "last_name": request.json.get("last_name", None),
+        }
+        
+        
+        account_updated = account.update_account_info(** {key: value for key, value in updated_info.items() if value is not None})
+        return jsonify(account_updated.to_dict()), 200
+
+    return {"error":"user not found"}, 400
