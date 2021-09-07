@@ -18,15 +18,11 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 const useStyles = makeStyles(theme => ({
 	root: {
 		width: 300,
-		height: 310,
+		height: 300,
 		backgroundColor: "white",
 		margin: "5px",
 
 		justifyContent: "flex-end",
-		[theme.breakpoints.down("md")]: {
-			maxWidth: 194.5,
-			maxHeight: 245.453
-		},
 		[theme.breakpoints.down("sm")]: {
 			maxWidth: 169.5,
 			maxHeight: 225.594
@@ -64,10 +60,6 @@ const useStyles = makeStyles(theme => ({
 		},
 		"&:hover $genericButton": {
 			display: "flex"
-		},
-		[theme.breakpoints.down("md")]: {
-			maxWidth: 194.5,
-			maxHeight: 154.453
 		},
 
 		[theme.breakpoints.down("sm")]: {
@@ -119,6 +111,28 @@ const MediaCard = props => {
 	const { store, actions } = useContext(Context);
 	const [favorite, setFavorite] = useState(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
 
+	useEffect(
+		() => {
+			if (store.whishList.find(element => element === props.id_product)) {
+				setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
+			} else {
+				setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+			}
+
+			console.log("is this shit even working");
+		},
+		[store.whishList]
+	);
+
+	const descriptionObserver = description => {
+		if (description.length < 35) {
+			return description;
+		} else {
+			let descriptionFormat = description.slice(0, 35);
+			return descriptionFormat.concat("...");
+		}
+	};
+
 	return (
 		<Card className={classes.root}>
 			<CardMedia className={classes.media} image={props.image_card}>
@@ -126,7 +140,11 @@ const MediaCard = props => {
 					className={classes.genericButton}
 					onClick={event => {
 						event.preventDefault();
-						actions.Favorite(props.id_product);
+						if (store.whishList.find(element => element === props.id_product)) {
+							actions.unFavorite(props.id_product);
+						} else {
+							actions.Favorite(props.id_product);
+						}
 					}}>
 					{favorite}
 				</Button>
@@ -134,7 +152,9 @@ const MediaCard = props => {
 
 			<CardContent className={classes.bodyCard}>
 				<Typography className={classes.title}>{props.title_card}</Typography>
-				<Typography className={classes.descriptionCard}>{props.description_card}</Typography>
+				<Typography className={classes.descriptionCard}>
+					{descriptionObserver(props.description_card)}
+				</Typography>
 				<Typography variant="body2" color="textSecondary" component="p" align="left">
 					Vendor:
 					{props.vendor_name}
@@ -149,11 +169,10 @@ const MediaCard = props => {
 						{props.ammount}$
 					</Typography>
 					<Button
-						sizeSmall
 						color="primary"
 						onClick={event => {
 							event.preventDefault();
-							actions.Favorite(props.id_product);
+							actions.ShopCart(props.id_product);
 						}}>
 						<ShoppingCartIcon />
 					</Button>
@@ -164,7 +183,7 @@ const MediaCard = props => {
 };
 
 MediaCard.propTypes = {
-	id_product: PropTypes.int,
+	id_product: PropTypes.number,
 	title_card: PropTypes.string,
 	description_card: PropTypes.string,
 	ammount: PropTypes.string,
