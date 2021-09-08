@@ -66,7 +66,8 @@ const useStyles = makeStyles(theme => ({
 			color: "white"
 		},
 		"& .MuiFormLabel-root": {
-			color: "white"
+			color: "white",
+			marginTop: "0"
 		},
 		"& .MuiInput-underline:after": {
 			borderBottomColor: "white",

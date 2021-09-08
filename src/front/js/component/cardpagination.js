@@ -39,7 +39,7 @@ const PaginationCards = () => {
 					return (
 						<ListItem key={projectItem.projectID} button onClick={() => console.log("")}>
 							<MediaCard
-								id_product={3}
+								id_product={projectItem.projectID}
 								title_card={projectItem.projectName}
 								description_card={projectItem.projectDescription}
 								ammount={projectItem.projectID}
@@ -72,7 +72,7 @@ export default PaginationCards;
 
 const projectsList = [
 	{
-		projectID: 134,
+		projectID: 1,
 		projectName: "Puerta",
 		projectVName: "Isidoro Ferreira",
 		projectURL:
@@ -80,7 +80,7 @@ const projectsList = [
 		projectDescription: " Tienes defectos si, pero son los más perfectos del mundo"
 	},
 	{
-		projectID: 234,
+		projectID: 2,
 		projectName: "Ego Erectus",
 		projectVName: "Santiago",
 		projectURL:
@@ -88,7 +88,7 @@ const projectsList = [
 		projectDescription: "'Te extraño' no se acentúa, pero con el paso de los días sí"
 	},
 	{
-		projectID: 56,
+		projectID: 3,
 		projectName: "Niño de manos",
 		projectVName: "Santiago",
 		projectURL:
@@ -96,7 +96,7 @@ const projectsList = [
 		projectDescription: " Me enamoré de ti por lo que eres, no por lo que algún día quiero que seas"
 	},
 	{
-		projectID: 345,
+		projectID: 4,
 		projectName: "Viaje incierto",
 		projectVName: "Isidoro Ferreira",
 		projectURL:
@@ -104,7 +104,7 @@ const projectsList = [
 		projectDescription: "Hoy no te voy a decir 'Te quiero', te lo voy a demostrar el resto de días del año"
 	},
 	{
-		projectID: 3467,
+		projectID: 5,
 		projectName: "Pentateuque",
 		projectVName: "Luis Angel Chaves",
 		projectURL:
@@ -112,7 +112,7 @@ const projectsList = [
 		projectDescription: "El físico atrae, el cariño seduce, pero que te contesten al momento en WhatsApp te enamora"
 	},
 	{
-		projectID: 2346,
+		projectID: 6,
 		projectName: "Soledad",
 		projectVName: "Santiago",
 		projectURL:
@@ -120,7 +120,7 @@ const projectsList = [
 		projectDescription: "Un buen destino es que dos personas se encuentren cuando ni siquiera se estaban buscando"
 	},
 	{
-		projectID: 18,
+		projectID: 7,
 		projectName: "score",
 		projectVName: "Juan Maria Peral",
 		projectURL:
@@ -128,7 +128,7 @@ const projectsList = [
 		projectDescription: "Estoy pensando patentar tus besos y caricias para que nadie me los robe"
 	},
 	{
-		projectID: 23456,
+		projectID: 8,
 		projectName: "Casiopea",
 		projectVName: "Noa Barrios",
 		projectURL:
@@ -136,7 +136,7 @@ const projectsList = [
 		projectDescription: "Te conocí y de repente todo cambió en mi vida. Ahora ya no la entiendo sin ti"
 	},
 	{
-		projectID: 23456,
+		projectID: 9,
 		projectName: "Misión californiana: Caballo",
 		projectVName: "Rachida Castellano",
 		projectURL:

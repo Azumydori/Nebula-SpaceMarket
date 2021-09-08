@@ -12,7 +12,9 @@ import Bottombar from "./component/bottombar.js";
 import Footer from "./component/footer";
 import UploadProduct from "./pages/uploadProduct.js";
 import Faq from "./pages/faq.js";
-
+import Whishlist from "./pages/whishlist.js";
+import NotFound from "./pages/notfound";
+import ControlPage from "./pages/controlpage";
 //create your first component
 const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -34,7 +36,7 @@ const Layout = () => {
 					<Route exact path="/register">
 						<SignUp />
 					</Route>
-					<Route exact path="/product">
+					<Route exact path="/upload">
 						<UploadProduct />
 					</Route>
 					<Route exact path="/faq">
@@ -46,8 +48,14 @@ const Layout = () => {
 					<Route exact path="/about-us">
 						<AboutUs />
 					</Route>
+					<Route exact path="/whishlist">
+						<Whishlist />
+					</Route>
+					<Route exact path="/controlpage">
+						<ControlPage />
+					</Route>
 					<Route>
-						<h1>Not found!</h1>
+						<NotFound />
 					</Route>
 				</Switch>
 				<Footer />

@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -23,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 		margin: "5px",
 
 		justifyContent: "flex-end",
+
 		[theme.breakpoints.down("sm")]: {
 			maxWidth: 169.5,
 			maxHeight: 225.594
@@ -110,6 +112,8 @@ const MediaCard = props => {
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
 	const [favorite, setFavorite] = useState(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+	actions.favorite();
+	const URL_CARD = "/product-detail/" + props.id_product;
 
 	useEffect(
 		() => {
@@ -118,8 +122,9 @@ const MediaCard = props => {
 			} else {
 				setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
 			}
-
-			console.log("is this shit even working");
+			store.whishList.find(element => {
+				console.log("soy elemento en whislist: " + element + props.id_product);
+			});
 		},
 		[store.whishList]
 	);
@@ -134,51 +139,53 @@ const MediaCard = props => {
 	};
 
 	return (
-		<Card className={classes.root}>
-			<CardMedia className={classes.media} image={props.image_card}>
-				<Button
-					className={classes.genericButton}
-					onClick={event => {
-						event.preventDefault();
-						if (store.whishList.find(element => element === props.id_product)) {
-							actions.unFavorite(props.id_product);
-						} else {
-							actions.Favorite(props.id_product);
-						}
-					}}>
-					{favorite}
-				</Button>
-			</CardMedia>
-
-			<CardContent className={classes.bodyCard}>
-				<Typography className={classes.title}>{props.title_card}</Typography>
-				<Typography className={classes.descriptionCard}>
-					{descriptionObserver(props.description_card)}
-				</Typography>
-				<Typography variant="body2" color="textSecondary" component="p" align="left">
-					Vendor:
-					{props.vendor_name}
-				</Typography>
-				<div className={classes.miniFooter}>
-					<Typography
-						variant="body2"
-						color="textSecondary"
-						component="p"
-						pt="20px"
-						className={classes.smallPrice}>
-						{props.ammount}$
-					</Typography>
+		<Link href={URL_CARD}>
+			<Card className={classes.root}>
+				<CardMedia className={classes.media} image={props.image_card}>
 					<Button
-						color="primary"
+						className={classes.genericButton}
 						onClick={event => {
 							event.preventDefault();
-							actions.ShopCart(props.id_product);
+							if (store.whishList.find(element => element === props.id_product)) {
+								actions.unFavorite(props.id_product);
+							} else {
+								actions.favorite(props.id_product);
+							}
 						}}>
-						<ShoppingCartIcon />
+						{favorite}
 					</Button>
-				</div>
-			</CardContent>
-		</Card>
+				</CardMedia>
+
+				<CardContent className={classes.bodyCard}>
+					<Typography className={classes.title}>{props.title_card}</Typography>
+					<Typography className={classes.descriptionCard}>
+						{descriptionObserver(props.description_card)}
+					</Typography>
+					<Typography variant="body2" color="textSecondary" component="p" align="left">
+						Vendor:
+						{props.vendor_name}
+					</Typography>
+					<div className={classes.miniFooter}>
+						<Typography
+							variant="body2"
+							color="textSecondary"
+							component="p"
+							pt="20px"
+							className={classes.smallPrice}>
+							{props.ammount}$
+						</Typography>
+						<Button
+							color="primary"
+							onClick={event => {
+								event.preventDefault();
+								actions.shopCart(props.id_product);
+							}}>
+							<ShoppingCartIcon />
+						</Button>
+					</div>
+				</CardContent>
+			</Card>
+		</Link>
 	);
 };
 

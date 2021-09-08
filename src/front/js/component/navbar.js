@@ -13,6 +13,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonIcon from "@material-ui/icons/Person";
 import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
+import Link from "@material-ui/core/Link";
 
 const useStyles = makeStyles(theme => ({
 	toolbar: {
@@ -97,16 +98,21 @@ const Navbar = () => {
 	return (
 		<AppBar position="fixed">
 			<Toolbar className={classes.toolbar}>
-				<Typography variant="h6" className={classes.logoLg}>
-					Nebula
-				</Typography>
-				<Button className={classes.logoSm}>
-					<ArrowBackIcon />
-				</Button>
-				<Box pr={3}>
-					<Typography variant="h6" className={classes.logoSm}>
+				<Link href="/" color="inherit">
+					<Typography variant="h6" className={classes.logoLg}>
 						Nebula
 					</Typography>
+				</Link>
+				<Button className={classes.logoSm} onClick={() => window.history.back()}>
+					<ArrowBackIcon color="white" />
+				</Button>
+
+				<Box pr={3}>
+					<Link href="/" color="inherit">
+						<Typography variant="h6" className={classes.logoSm}>
+							Nebula
+						</Typography>
+					</Link>
 				</Box>
 
 				<div className={classes.search}>
@@ -130,29 +136,41 @@ const Navbar = () => {
 							keepMounted
 							open={Boolean(anchorEl)}
 							onClose={handleClose}>
-							<MenuItem onClick={handleClose}>
-								<CameraEnhanceIcon />
-								Upload Product
-							</MenuItem>
-							<MenuItem onClick={handleClose}>
-								<FavoriteIcon /> Wishlist
-							</MenuItem>
-							<MenuItem onClick={handleClose}>
-								<ImportantDevicesIcon />
-								NFT Explorer
-							</MenuItem>
-							<MenuItem onClick={handleClose}>
-								<SettingsIcon />
-								Account
-							</MenuItem>
-							<MenuItem onClick={handleClose}>
-								<PersonIcon />
-								Log In / Log out
-							</MenuItem>
+							<Link href="/upload" color="inherit">
+								<MenuItem onClick={handleClose}>
+									<CameraEnhanceIcon />
+									Upload Product
+								</MenuItem>
+							</Link>
+							<Link href="/whishlist" color="inherit">
+								<MenuItem onClick={handleClose}>
+									<FavoriteIcon /> Wishlist
+								</MenuItem>
+							</Link>
+							<Link href="/nft" color="inherit">
+								<MenuItem onClick={handleClose}>
+									<ImportantDevicesIcon />
+									NFT Explorer
+								</MenuItem>
+							</Link>
+							<Link href="/account" color="inherit">
+								<MenuItem onClick={handleClose}>
+									<SettingsIcon />
+									Account
+								</MenuItem>
+							</Link>
+							<Link href="/login" color="inherit">
+								<MenuItem onClick={handleClose}>
+									<PersonIcon />
+									Log In / Log out
+								</MenuItem>
+							</Link>
 						</Menu>
-						<Button className={classes.myWhiteIcon}>
-							<ShoppingCartIcon />
-						</Button>
+						<Link href="/cart" color="inherit">
+							<Button className={classes.myWhiteIcon}>
+								<ShoppingCartIcon />
+							</Button>
+						</Link>
 					</div>
 				</div>
 			</Toolbar>
