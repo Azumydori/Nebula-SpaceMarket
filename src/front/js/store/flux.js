@@ -4,17 +4,26 @@ import UserProfile from "../pages/userprofile";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "https://3001-sapphire-flamingo-0qxvakih.ws-eu16.gitpod.io/api",
-			currentUser: {}
+			baseURL: "https://olive-cuckoo-o1ih9hlo.ws-eu16.gitpod.io/api",
+			currentUser: {},
+			whishList: [],
+			cart: [],
+			product: [],
+			vendor: []
 		},
 
 		actions: {
-			register: credentials => {
-				console.log(credentials);
-				fetch(getStore().baseURL.concat("/account"), {
+			register: (first_name, last_name, email, password, username) => {
+				fetch(getStore().baseURL.concat("/signup"), {
 					method: "POST",
-					body: JSON.stringify(credentials),
-					headers: { "Content-Type": "application/json" }
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({
+						first_name: first_name,
+						last_name: last_name,
+						email: email,
+						password: password,
+						username: username
+					})
 				})
 					.then(resp => {
 						if (!resp.ok) {
@@ -53,24 +62,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 			},
 
-			upload: data => {
-				fetch(getStore().baseURL.concat("/product"), {
-					method: "POST",
-					body: JSON.stringify(data),
-					headers: { "Content-Type": "application/json" }
-				})
-					.then(resp => {
-						if (!resp.ok) {
-							throw Error("Invalid product info");
-						}
-					})
-					.then(responseAsJson => {
-						console.log(data);
-					})
-					.catch(error => console.error("There as been an unknown error", error));
-			},	
-
-			favorite: product_id => {
+			Favorite: product_id => {
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
 				console.log("Soy favorite");
@@ -109,8 +101,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
-			
-			shopCart: product_id => {
+
+			ShopCart: product_id => {
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
 				console.log("Soy shoppingcard");
@@ -129,28 +121,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
-      
-			changeAccountInfo: data => {
-				const token = localStorage.getItem("token");
-				const tokenID = localStorage.getItem("tokenID");
-				fetch(getStore().baseURL.concat("/account", id), {
-					method: "PATCH",
-					body: JSON.stringify(data),
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${token}`
-					}
+
+			getProduct: product_id => {
+				fetch(getStore().baseURL.concat("/pruduct/", product_id), {
+					method: "GET"
 				})
 					.then(resp => {
 						if (!resp.ok) {
-							throw Error("Invalid changes");
+							throw Error("Invalid register info");
 						}
-						return resp.json();
 					})
 					.then(responseAsJson => {
-						console.log(responseAsJson);
+						setStore({ ...product, product: responseAsJson });
+						return responseAsJson;
 					})
-					.catch(error => console.error("there has been an error", error));
+					.catch(error => console.error("There as been an unknown error", error));
 			}
 		}
 	};
