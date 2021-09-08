@@ -63,6 +63,13 @@ class Account(db.Model):
         self._is_active = not _is_active
         db.session.commit()
     
+    def update_account_info(self, **kwargs):
+      print(kwargs)
+      for key, value in kwargs.items():
+         setattr(self, key, value)
+      db.session.commit()
+      return self
+
    @classmethod
    def get_by_id(cls, id):
       account = cls.query.get(id)
@@ -155,7 +162,6 @@ class Wishlist(db.Model):
    __tablename__ = 'wishlist'
    from_account = Column(db.ForeignKey('account.id'), primary_key=True)
    have_product = Column(db.ForeignKey('product.id'), primary_key=True)
-   name = db.Column(db.String, nullable = False)
    relation_products = relationship("Product", backref = "account_associations")
    relation_account = relationship("Account", backref = "product_associations")
 
@@ -165,11 +171,23 @@ class Wishlist(db.Model):
 
    def to_dict(self):
       return{
-        "wishlist_name": self.name,
         "account_id": self.from_account,
-        "product_id": self.have_product,
+        "product_id": self.have_product
       }
    
+   @classmethod
+   def get_by_id(cls, id):
+      one_product = cls.query.get(id)
+      return one_product
+
+   def create(self):
+      db.session.add(self)
+      db.session.commit()
+
+   def delete(self):
+      db.session.delete(self)
+      db.session.commit()
+
 
 class Line_Order(db.Model):
    __tablename__ = 'lineorder'
@@ -191,3 +209,6 @@ class Line_Order(db.Model):
         "order_id": self.order_id,
       }
 
+   def create(self):
+      db.session.add(self)
+      db.session.commit()

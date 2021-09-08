@@ -1,4 +1,5 @@
 import jwt_decode from "jwt-decode";
+import UserProfile from "../pages/userprofile";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -14,23 +15,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				price: 20,
 				text:
 					"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. "
-			},
-
-		
+			}
 		},
 
 		actions: {
-			register: (first_name, last_name, email, password, username) => {
-				fetch(getStore().baseURL.concat("/signup"), {
+			register: credentials => {
+				console.log(credentials);
+				fetch(getStore().baseURL.concat("/account"), {
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						first_name: first_name,
-						last_name: last_name,
-						email: email,
-						password: password,
-						username: username
-					})
+					body: JSON.stringify(credentials),
+					headers: { "Content-Type": "application/json" }
 				})
 					.then(resp => {
 						if (!resp.ok) {
@@ -126,7 +120,89 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
-			
+
+			favorite: product_id => {
+				let myToken = localStorage.getItem("token");
+				let myUser = getStore().currentUser.id;
+				console.log("Soy favorite");
+				fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
+					method: "POST",
+					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+					body: JSON.stringify({ product_id: product_id })
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid register info");
+						}
+					})
+					.then(responseAsJson => {
+						setStore({ whishList: responseAsJson });
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+			unFavorite: product_id => {
+				let myToken = localStorage.getItem("token");
+				let myUser = getStore().currentUser.id;
+				console.log("Soy unfavorite");
+				fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
+					method: "DELETE",
+					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+					body: JSON.stringify({ product_id: product_id })
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid register info");
+						}
+					})
+					.then(responseAsJson => {
+						setStore({ whishList: responseAsJson });
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+			shopCart: product_id => {
+				let myToken = localStorage.getItem("token");
+				let myUser = getStore().currentUser.id;
+				console.log("Soy shoppingcard");
+				fetch(getStore().baseURL.concat("/client/", myUser, "/cart"), {
+					method: "POST",
+					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+					body: JSON.stringify({ product_id: product_id })
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid register info");
+						}
+					})
+					.then(responseAsJson => {
+						setStore({ cart: responseAsJson });
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+			changeAccountInfo: data => {
+				const token = localStorage.getItem("token");
+				const tokenID = localStorage.getItem("tokenID");
+				fetch(getStore().baseURL.concat("/account", id), {
+					method: "PATCH",
+					body: JSON.stringify(data),
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid changes");
+						}
+						return resp.json();
+					})
+					.then(responseAsJson => {
+						console.log(responseAsJson);
+					})
+					.catch(error => console.error("there has been an error", error));
+			}
 		}
 	};
 };

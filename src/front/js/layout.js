@@ -4,11 +4,15 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Productdetail from "./pages/product-detail.js";
 import Home from "./pages/home.js";
 import LoginPage from "./pages/loginPage.js";
+import Nft from "./pages/nft.js";
+import { AboutUs } from "./pages/about-us.js";
+import SignUp from "./pages/registerpage.js";
 import injectContext from "./store/appContext";
 import Navbar from "./component/navbar.js";
 import Bottombar from "./component/bottombar.js";
 import Footer from "./component/footer";
 import UploadProduct from "./pages/uploadProduct.js";
+import Faq from "./pages/faq.js";
 
 //create your first component
 const Layout = () => {
@@ -28,11 +32,23 @@ const Layout = () => {
 					<Route exact path="/login">
 						<LoginPage />
 					</Route>
+					<Route exact path="/register">
+						<SignUp />
+					</Route>
 					<Route exact path="/product">
 						<UploadProduct />
 					</Route>
 					<Route exact path="/product-detail/:id">
 						<Productdetail />
+					</Route>
+					<Route exact path="/faq">
+						<Faq />
+					</Route>
+					<Route exact path="/nft">
+						<Nft />
+					</Route>
+					<Route exact path="/about-us">
+						<AboutUs />
 					</Route>
 					<Route>
 						<h1>Not found!</h1>
