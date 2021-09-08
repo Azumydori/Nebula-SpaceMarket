@@ -27,7 +27,7 @@ def get_account_profile(id):
     
     return({"error": "Account not found"}), 404
     
-@api.route("/addreview/<int:id>", methods=["POST"])
+@api.route("/review/<int:id>", methods=["POST"])
 def create_review(id):
     review_text = request.json.get("review_text", None)
     print(review_text, "asdfsadfsdfasdfdsfasd")

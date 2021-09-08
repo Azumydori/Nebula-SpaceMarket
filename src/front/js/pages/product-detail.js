@@ -20,7 +20,7 @@ const Productdetail = () => {
 		handleSubmit,
 		formState: { errors }
 	} = useForm();
-	const onSubmit = data => console.log(data);
+	const onSubmit = data => actions.addreview(data, localStorage.getItem("tokenID"));
 	const { store, actions } = useContext(Context);
 
 	useEffect(() => {
