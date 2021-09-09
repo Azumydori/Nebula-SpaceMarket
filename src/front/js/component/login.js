@@ -19,19 +19,7 @@ import Container from "@material-ui/core/Container";
 import { Palette } from "@material-ui/icons";
 import { useForm, Controller } from "react-hook-form";
 import Input from "@material-ui/core/Input";
-
-const Copyright = () => {
-	return (
-		<Typography variant="body2" color="textSecondary" align="center">
-			{"Copyright © "}
-			<Link color="inherit" href="https://material-ui.com/">
-				Nebula Space Market
-			</Link>{" "}
-			{new Date().getFullYear()}
-			{"."}
-		</Typography>
-	);
-};
+import LogoNebula from "../../img/nebulaLogoWhite.png";
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -46,7 +34,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	avatar: {
 		margin: theme.spacing(1),
-		backgroundColor: "#59189a"
+		width: "5rem",
+		height: "5rem"
 	},
 	form: {
 		width: "100%", // Fix IE 11 issue.
@@ -115,7 +104,7 @@ const Login = () => {
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<div className={classes.paper}>
-				<Avatar color="primary" />
+				<Avatar src={LogoNebula} className={classes.avatar} />
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
@@ -199,9 +188,7 @@ const Login = () => {
 					</Grid>
 				</form>
 			</div>
-			<Box mt={5}>
-				<Copyright />
-			</Box>
+			<Box mt={5} />
 		</Container>
 	);
 };

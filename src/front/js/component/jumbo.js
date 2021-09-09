@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import eco from "../../img/ecommerce.jpg";
+import NebulaLanding from "../../img/nebulaLanding.png";
 
 const Jumbotron = props => {
 	return (
@@ -10,7 +11,7 @@ const Jumbotron = props => {
 			<button className="learn-more" href="#" role="button">
 				Learn more
 			</button>
-			<img src={eco} className="eco" />
+			<img src={NebulaLanding} className="eco" />
 		</div>
 	);
 };
