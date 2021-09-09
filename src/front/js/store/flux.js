@@ -6,8 +6,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu16.gitpod.io/api",
 			currentUser: {},
-			whishList: [1, 4, 7],
+			wishlist: [1, 4, 7],
 			cart: [],
+			searchProduct: [],
 			product: [
 				{
 					id: 1,
@@ -248,6 +249,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(responseAsJson => {
 						setStore({ ...product, product: responseAsJson });
+						return responseAsJson;
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+			categorySearch: category => {
+				fetch(getStore().baseURL.concat("/search/", category), {
+					method: "GET"
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid register info");
+						}
+					})
+					.then(responseAsJson => {
 						return responseAsJson;
 					})
 					.catch(error => console.error("There as been an unknown error", error));

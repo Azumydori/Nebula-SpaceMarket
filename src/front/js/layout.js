@@ -12,7 +12,7 @@ import Bottombar from "./component/bottombar.js";
 import Footer from "./component/footer";
 import UploadProduct from "./pages/uploadProduct.js";
 import Faq from "./pages/faq.js";
-import Whishlist from "./pages/whishlist.js";
+import Wishlist from "./pages/wishlist.js";
 import NotFound from "./pages/notfound";
 import ControlPage from "./pages/controlpage";
 //create your first component
@@ -48,10 +48,13 @@ const Layout = () => {
 					<Route exact path="/about-us">
 						<AboutUs />
 					</Route>
-					<Route exact path="/whishlist">
-						<Whishlist />
+					<Route exact path="/wishlist">
+						<Wishlist />
 					</Route>
 					<Route exact path="/controlpage">
+						<ControlPage />
+					</Route>
+					<Route exact path="/controlpage/:str">
 						<ControlPage />
 					</Route>
 					<Route>

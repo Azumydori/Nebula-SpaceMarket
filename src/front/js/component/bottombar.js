@@ -11,10 +11,8 @@ import Hidden from "@material-ui/core/Hidden";
 import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles(theme => ({
-	root: {},
 	toolbar: {
 		width: "100%",
-
 		position: "fixed",
 		justifyContent: "space-evenly",
 		bottom: 0,
@@ -39,7 +37,7 @@ const Bottombar = () => {
 				<IconButton label="Chat" href="chat" className={classes.icon}>
 					<ChatBubbleIcon />
 				</IconButton>
-				<IconButton label="Whislist" href="whishlist" className={classes.icon}>
+				<IconButton label="Wishlist" href="wishlist" className={classes.icon}>
 					<FavoriteIcon />
 				</IconButton>
 				<IconButton label="Upload" href="upload" className={classes.icon}>

@@ -204,32 +204,3 @@ def change_credentials(id):
 
 
 
-    @app.route ("/search, methods =["GET", "POST"])
-def search():
-
-	if request.method == "POST":
-		search_value=request.json.get("search", None)
-		search = "%{}%".format (search_value)
-		result_title=product.query.filter(product.product_name.like(search)).all()
-		result_text=product.query.filter(product.text.like(search)).all()
-
-
-
-
-#@app.route('/search/<int:page>', methods=['GET', 'POST'], defaults={"page": 1}) 
-#def search(page):
-    #page = page
-    #pages = 5
-    #employees = Employees.query.filter().all()
-    #employees = Employees.query.paginate(page,pages,error_out=False)
-    #products = Product.query.order_by(Product.id.asc()).paginate(page,pages,error_out=False)  #desc()
-    #if request.method == 'POST' and 'tag' in request.form:
-       #tag = request.form["tag"]
-       #search = "%{}%".format(tag)
-       #employees = Employees.query.filter(Employees.fullname.like(search)).paginate(per_page=pages, error_out=False) # LIKE: query.filter(User.name.like('%ednalan%'))
-       #employees = Employees.query.filter(Employees.fullname == 'Tiger Nixon').paginate(per_page=pages, error_out=True) # equals: query.filter(User.name == 'ednalan')    
-       #employees = Employees.query.filter(Employees.fullname.in_(['rai', 'kenshin', 'Ednalan'])).paginate(per_page=pages, error_out=True) # IN: query.filter(User.name.in_(['rai', 'kenshin', 'Ednalan']))  
-       #employees = Employees.query.filter(Employees.fullname == 'Tiger Nixon', Employees.position == 'System Architect').paginate(per_page=pages, error_out=True) # AND: query.filter(User.name == 'ednalan', User.fullname == 'clyde ednalan')    
-       #employees = Employees.query.filter(or_(Employees.fullname == 'Tiger Nixon', Employees.fullname == 'Ednalan')).paginate(per_page=pages, error_out=True) # OR: from sqlalchemy import or_  filter(or_(User.name == 'ednalan', User.name == 'caite'))
-       #return render_template('index.html', employees=employees, tag=tag)
-    #return render_template('index.html', employees=employees)

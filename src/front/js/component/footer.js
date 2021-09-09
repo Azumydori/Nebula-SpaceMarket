@@ -43,7 +43,8 @@ const CssTextField = withStyles({
 const useStyles = makeStyles(theme => ({
 	resize: {
 		width: "100%",
-		marginTop: "auto",
+		marginTop: "100px",
+
 		[theme.breakpoints.down("1000")]: {
 			width: "100%"
 		}

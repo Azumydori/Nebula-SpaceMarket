@@ -28,18 +28,18 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const Whishlist = () => {
+const Wishlist = () => {
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
-	const [whishListTab, setwhislistTab] = useState(
+	const [wishListTab, setwislistTab] = useState(
 		<img src="https://c.tenor.com/DBqjevyA2o4AAAAd/bongo-cat-codes.gif" />
 	);
 
 	useEffect(() => {
 		actions.favorite();
-		if (store.whishList.lenght != 0) {
-			setwhislistTab(
-				store.whishList.map((element, index) => {
+		if (store.wishlist.lenght != 0) {
+			setwislistTab(
+				store.wishlist.map((element, index) => {
 					//let object = actions.getProduct(element);
 					let object = store.product.find(object => object.id == element);
 					return (
@@ -67,7 +67,7 @@ const Whishlist = () => {
 					<Container maxWidth="sm" align="center">
 						<FavoriteBorderIcon className={classes.heartOfIron} />
 						<Typography component="h1" variant="h2" color="textPrimary" gutterBottom>
-							Whishlist
+							Wishlist
 						</Typography>
 					</Container>
 				</div>
@@ -75,15 +75,15 @@ const Whishlist = () => {
 					<Grid container spacing={4} align="center" />
 					<Grid
 						container
-						gridTemplateColumns="repeat(12, 1fr)"
-						marginLeft="10px"
-						marginRight="10px"
+						gridtemplatecolumns="repeat(12, 1fr)"
+						marginleft="10px"
+						marginright="10px"
 						align="center">
-						{whishListTab}
+						{wishListTab}
 					</Grid>
 				</Container>
 			</main>
 		</Fragment>
 	);
 };
-export default Whishlist;
+export default Wishlist;

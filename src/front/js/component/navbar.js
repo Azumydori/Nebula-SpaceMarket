@@ -104,7 +104,7 @@ const Navbar = () => {
 					</Typography>
 				</Link>
 				<Button className={classes.logoSm} onClick={() => window.history.back()}>
-					<ArrowBackIcon color="white" />
+					<ArrowBackIcon className={classes.myWhiteIcon} />
 				</Button>
 
 				<Box pr={3}>
@@ -142,7 +142,7 @@ const Navbar = () => {
 									Upload Product
 								</MenuItem>
 							</Link>
-							<Link href="/whishlist" color="inherit">
+							<Link href="/wishlist" color="inherit">
 								<MenuItem onClick={handleClose}>
 									<FavoriteIcon /> Wishlist
 								</MenuItem>

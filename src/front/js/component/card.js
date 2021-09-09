@@ -117,23 +117,21 @@ const MediaCard = props => {
 
 	useEffect(
 		() => {
-			if (store.whishList.find(element => element === props.id_product)) {
+			if (store.wishlist.find(element => element === props.id_product)) {
 				setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
 			} else {
 				setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
 			}
-			store.whishList.find(element => {
-				console.log("soy elemento en whislist: " + element + props.id_product);
-			});
+			store.wishlist.find(element => {});
 		},
 		[store.whishList]
 	);
 
-	const descriptionObserver = description => {
-		if (description.length < 35) {
+	const textObserver = (description, number) => {
+		if (description.length < number) {
 			return description;
 		} else {
-			let descriptionFormat = description.slice(0, 35);
+			let descriptionFormat = description.slice(0, number);
 			return descriptionFormat.concat("...");
 		}
 	};
@@ -157,13 +155,13 @@ const MediaCard = props => {
 				</CardMedia>
 
 				<CardContent className={classes.bodyCard}>
-					<Typography className={classes.title}>{props.title_card}</Typography>
+					<Typography className={classes.title}>{textObserver(props.title_card, 15)}</Typography>
 					<Typography className={classes.descriptionCard}>
-						{descriptionObserver(props.description_card)}
+						{textObserver(props.description_card, 35)}
 					</Typography>
 					<Typography variant="body2" color="textSecondary" component="p" align="left">
 						Vendor:
-						{props.vendor_name}
+						{textObserver(props.vendor_name, 10)}
 					</Typography>
 					<div className={classes.miniFooter}>
 						<Typography
@@ -193,7 +191,7 @@ MediaCard.propTypes = {
 	id_product: PropTypes.number,
 	title_card: PropTypes.string,
 	description_card: PropTypes.string,
-	ammount: PropTypes.string,
+	ammount: PropTypes.number,
 	vendor_name: PropTypes.string,
 	image_card: PropTypes.string
 };
