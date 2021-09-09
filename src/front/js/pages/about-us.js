@@ -1,4 +1,4 @@
-import React, { Fragment, Col, Image } from "react";
+import React, { Fragment } from "react";
 import "../../styles/about-us.scss";
 
 export const AboutUs = () => {

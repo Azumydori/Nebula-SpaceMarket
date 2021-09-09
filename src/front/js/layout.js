@@ -6,6 +6,7 @@ import LoginPage from "./pages/loginPage.js";
 import Nft from "./pages/nft.js";
 import { AboutUs } from "./pages/about-us.js";
 import SignUp from "./pages/registerpage.js";
+import ShoppingProduct from "./pages/shopping-product.js";
 import injectContext from "./store/appContext";
 import Navbar from "./component/navbar.js";
 import Bottombar from "./component/bottombar.js";
@@ -45,6 +46,9 @@ const Layout = () => {
 					</Route>
 					<Route exact path="/about-us">
 						<AboutUs />
+					</Route>
+					<Route exact path="/shopping-product">
+						<ShoppingProduct />
 					</Route>
 					<Route>
 						<h1>Not found!</h1>
