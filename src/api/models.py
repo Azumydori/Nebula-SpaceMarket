@@ -63,7 +63,7 @@ class Account(db.Model):
         self._is_active = not _is_active
         db.session.commit()
     
-    def update_account_info(self, **kwargs):
+   def update_account_info(self, **kwargs):
       print(kwargs)
       for key, value in kwargs.items():
          setattr(self, key, value)
