@@ -92,6 +92,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	myWhiteIcon: {
 		color: "#FFFFFF"
+	},
+	img: {
+		margin: "0.5rem",
+		height: "3rem",
+		width: "3rem"
 	}
 }));
 
