@@ -11,6 +11,7 @@ import Navbar from "./component/navbar.js";
 import Bottombar from "./component/bottombar.js";
 import Footer from "./component/footer";
 import UploadProduct from "./pages/uploadProduct.js";
+import VendorProfile from "./pages/vendorprofile.js";
 import Checkout from "./pages/checkout.js";
 import Faq from "./pages/faq.js";
 
@@ -49,6 +50,9 @@ const Layout = () => {
 					</Route>
 					<Route exact path="/about-us">
 						<AboutUs />
+					</Route>
+					<Route exact path="/vendor">
+						<VendorProfile />
 					</Route>
 					<Route>
 						<h1>Not found!</h1>
