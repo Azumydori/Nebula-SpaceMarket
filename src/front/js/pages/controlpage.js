@@ -67,21 +67,24 @@ const ControlPage = props => {
 			} else {
 				actions.categorySearch(params.str);
 				setProductTab(
-					store.searchProduct.map((element, index) => {
-						let object = actions.getProduct(element);
-
-						return (
-							<Grid item key={index} xs={6} sm={4} md={2} aligncontent="center">
-								<MediaCard
-									id_product={object.id}
-									title_card={object.product_name}
-									description_card={object.text}
-									ammount={object.price}
-									vendor_name={object.vendor_name}
-									image_card={object.media}
-								/>
-							</Grid>
-						);
+					//store.searchProduct.map((element, index) => {
+					store.product.map((element, index) => {
+						//let object = actions.getProduct(element);
+						let object = element;
+						if (element.category == params.str) {
+							return (
+								<Grid item key={index} xs={6} sm={4} md={2} aligncontent="center">
+									<MediaCard
+										id_product={object.id}
+										title_card={object.product_name}
+										description_card={object.text}
+										ammount={object.price}
+										vendor_name={object.vendor_name}
+										image_card={object.media}
+									/>
+								</Grid>
+							);
+						}
 					})
 				);
 			}

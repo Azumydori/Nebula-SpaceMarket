@@ -17,7 +17,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/1000366/pexels-photo-1000366.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: " Tienes defectos si, pero son los más perfectos del mundo"
+					text: " Tienes defectos si, pero son los más perfectos del mundo",
+					category: "Clothing"
 				},
 				{
 					id: 2,
@@ -26,7 +27,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/3844786/pexels-photo-3844786.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "'Te extraño' no se acentúa, pero con el paso de los días sí"
+					text: "'Te extraño' no se acentúa, pero con el paso de los días sí",
+					category: "Appliances"
 				},
 				{
 					id: 3,
@@ -35,7 +37,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/1000366/pexels-photo-1000366.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: " Me enamoré de ti por lo que eres, no por lo que algún día quiero que seas"
+					text: " Me enamoré de ti por lo que eres, no por lo que algún día quiero que seas",
+					category: "Clothing"
 				},
 				{
 					id: 4,
@@ -44,7 +47,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/4226881/pexels-photo-4226881.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "Hoy no te voy a decir 'Te quiero', te lo voy a demostrar el resto de días del año"
+					text: "Hoy no te voy a decir 'Te quiero', te lo voy a demostrar el resto de días del año",
+					category: "Cellphones"
 				},
 				{
 					id: 5,
@@ -53,7 +57,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/4033325/pexels-photo-4033325.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "El físico atrae, el cariño seduce, pero que te contesten al momento en WhatsApp te enamora"
+					text: "El físico atrae, el cariño seduce, pero que te contesten al momento en WhatsApp te enamora",
+					category: "Cellphones"
 				},
 				{
 					id: 6,
@@ -62,7 +67,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/5603660/pexels-photo-5603660.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "Un buen destino es que dos personas se encuentren cuando ni siquiera se estaban buscando"
+					text: "Un buen destino es que dos personas se encuentren cuando ni siquiera se estaban buscando",
+					category: "Cellphones"
 				},
 				{
 					id: 7,
@@ -71,7 +77,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/4194850/pexels-photo-4194850.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "Estoy pensando patentar tus besos y caricias para que nadie me los robe"
+					text: "Estoy pensando patentar tus besos y caricias para que nadie me los robe",
+					category: "Sports"
 				},
 				{
 					id: 8,
@@ -80,7 +87,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/6847584/pexels-photo-6847584.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "Te conocí y de repente todo cambió en mi vida. Ahora ya no la entiendo sin ti"
+					text: "Te conocí y de repente todo cambió en mi vida. Ahora ya no la entiendo sin ti",
+					category: "Sports"
 				},
 				{
 					id: 9,
@@ -89,7 +97,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					price: 12,
 					media:
 						"https://images.pexels.com/photos/4386404/pexels-photo-4386404.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "No estaba buscando nada; pero te vi y encontré todo"
+					text: "No estaba buscando nada; pero te vi y encontré todo",
+					category: "Computers"
 				}
 			]
 		},
