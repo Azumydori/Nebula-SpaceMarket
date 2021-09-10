@@ -62,7 +62,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 			},
 
+
 			Favorite: product_id => {
+=======
+			upload: data => {
+				fetch(getStore().baseURL.concat("/product"), {
+					method: "POST",
+					body: JSON.stringify(data),
+					headers: { "Content-Type": "application/json" }
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid product info");
+						}
+					})
+					.then(responseAsJson => {
+						console.log(data);
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+			favorite: product_id => {
+
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
 				console.log("Soy favorite");
@@ -102,7 +123,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 
+
 			ShopCart: product_id => {
+
+			shopCart: product_id => {
+
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
 				console.log("Soy shoppingcard");
@@ -122,9 +147,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 
+
 			getProduct: product_id => {
 				fetch(getStore().baseURL.concat("/pruduct/", product_id), {
 					method: "GET"
+
+			changeAccountInfo: data => {
+				const token = localStorage.getItem("token");
+				const tokenID = localStorage.getItem("tokenID");
+				fetch(getStore().baseURL.concat("/account", id), {
+					method: "PATCH",
+					body: JSON.stringify(data),
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
 				})
 					.then(resp => {
 						if (!resp.ok) {
