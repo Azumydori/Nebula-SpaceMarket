@@ -123,3 +123,82 @@ def get_one_product(id):
         return jsonify(one_product.to_dict()), 200
     
     return({"error": "Product not found"}), 404
+
+@api.route('/client/<int:product_id>/favorites', methods=['POST'])
+@jwt_required()
+def add_whish(product_id):
+    current_user = get_jwt_identity()
+    if not get_jwt_identity().get("id") == id:
+        return {'error': 'Invalid action'}, 400
+
+    id_product = request.json.get("have_product", None)
+
+    new_whish = Wishlist(
+        from_account = current_user.get("id"),
+        have_product =  product_id,
+    )
+
+    try:
+        new_whish.create()
+        return jsonify(new_whish.to_dict())
+    except exc.IntegrityError: 
+        return {"error":"something went wrong"}, 409
+
+@api.route('/client/<int:id>/favorites', methods=['DELETE'])
+@jwt_required()
+def remove_wish(id):
+    user_with_wish = get_jwt_identity()
+    if not get_jwt_identity().get("id") == id:
+        return {'error': 'Incorrect user action'}, 400
+
+    current_user = Wishlist.get_by_id(id)
+    if current_user:
+        current_user.delete()
+        return jsonify(current_user.to_dict()), 200
+
+    return {'error': 'traveler not found'}, 400
+
+@api.route('/client/<int:id>/cart', methods=['POST'])
+@jwt_required()
+def add_item_cart(id):
+
+    if not get_jwt_identity().get("id") == id:
+        return {'error': 'Invalid action'}, 400
+
+    id_product = request.json.get("have_product", None)
+
+    new_cart = Product(
+        product_id = id_product
+    )
+
+    try:
+        cart.create()
+        return jsonify(cart.to_dict())
+    except exc.IntegrityError: 
+        return {"error":"something went wrong"}, 409
+
+@api.route('/account/<int:id>', methods=["PATCH"])
+@jwt_required()
+def change_credentials(id):
+    print(get_jwt_identity())
+    if not id == get_jwt_identity().get("id"):
+        return ({"error":"Changes denied"}), 301
+
+    account = Account.get_by_id(id)
+    if account:    
+        updated_info = { 
+            "city": request.json.get("city", None),
+            "state": request.json.get("state", None),
+            "country": request.json.get("country", None),
+            "address": request.json.get("address", None),
+            "username": request.json.get("username", None),
+            "email": request.json.get("email", None),
+            "first_name": request.json.get("first_name", None),
+            "last_name": request.json.get("last_name", None),
+        }
+        
+        
+        account_updated = account.update_account_info(** {key: value for key, value in updated_info.items() if value is not None})
+        return jsonify(account_updated.to_dict()), 200
+
+    return {"error":"user not found"}, 400

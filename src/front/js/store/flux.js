@@ -1,10 +1,15 @@
 import jwt_decode from "jwt-decode";
+import UserProfile from "../pages/userprofile";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu15.gitpod.io/api",
-			currentUser: {}
+			baseURL: "https://olive-cuckoo-o1ih9hlo.ws-eu16.gitpod.io/api",
+			currentUser: {},
+			whishList: [],
+			cart: [],
+			product: [],
+			vendor: []
 		},
 
 		actions: {
@@ -53,6 +58,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 			},
 
+
+			Favorite: product_id => {
+=======
 			upload: data => {
 				fetch(getStore().baseURL.concat("/product"), {
 					method: "POST",
@@ -66,6 +74,99 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(responseAsJson => {
 						console.log(data);
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+			favorite: product_id => {
+
+				let myToken = localStorage.getItem("token");
+				let myUser = getStore().currentUser.id;
+				console.log("Soy favorite");
+				fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
+					method: "POST",
+					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+					body: JSON.stringify({ product_id: product_id })
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid register info");
+						}
+					})
+					.then(responseAsJson => {
+						setStore({ whishList: responseAsJson });
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+			unFavorite: product_id => {
+				let myToken = localStorage.getItem("token");
+				let myUser = getStore().currentUser.id;
+				console.log("Soy unfavorite");
+				fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
+					method: "DELETE",
+					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+					body: JSON.stringify({ product_id: product_id })
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid register info");
+						}
+					})
+					.then(responseAsJson => {
+						setStore({ whishList: responseAsJson });
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+
+			ShopCart: product_id => {
+
+			shopCart: product_id => {
+
+				let myToken = localStorage.getItem("token");
+				let myUser = getStore().currentUser.id;
+				console.log("Soy shoppingcard");
+				fetch(getStore().baseURL.concat("/client/", myUser, "/cart"), {
+					method: "POST",
+					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+					body: JSON.stringify({ product_id: product_id })
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid register info");
+						}
+					})
+					.then(responseAsJson => {
+						setStore({ cart: responseAsJson });
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+
+			getProduct: product_id => {
+				fetch(getStore().baseURL.concat("/pruduct/", product_id), {
+					method: "GET"
+
+			changeAccountInfo: data => {
+				const token = localStorage.getItem("token");
+				const tokenID = localStorage.getItem("tokenID");
+				fetch(getStore().baseURL.concat("/account", id), {
+					method: "PATCH",
+					body: JSON.stringify(data),
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid register info");
+						}
+					})
+					.then(responseAsJson => {
+						setStore({ ...product, product: responseAsJson });
+						return responseAsJson;
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			}

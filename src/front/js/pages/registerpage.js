@@ -32,6 +32,8 @@ const Copyright = () => {
 	);
 };
 
+import LogoNebula from "../../img/nebulaLogoWhite.png";
+
 const useStyles = makeStyles(theme => ({
 	paper: {
 		marginTop: theme.spacing(3),
@@ -45,7 +47,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	avatar: {
 		margin: theme.spacing(1),
-		backgroundColor: "#59189a"
+		width: "5rem",
+		height: "5rem"
 	},
 	form: {
 		width: "100%", // Fix IE 11 issue.
@@ -116,7 +119,7 @@ const SignUp = () => {
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
 			<div className={classes.paper}>
-				<Avatar color="primary" />
+				<Avatar src={LogoNebula} className={classes.avatar} />
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
@@ -269,9 +272,7 @@ const SignUp = () => {
 					</Grid>
 				</form>
 			</div>
-			<Box mt={5}>
-				<Copyright />
-			</Box>
+			<Box mt={5} />
 		</Container>
 	);
 };

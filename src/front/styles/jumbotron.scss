@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.learn-more{
+    width: 10rem;
+    border: 2px solid #ff9100;
+    color: black;
+    background-color: #ff9100;
+    border-radius: 8px;
+    padding: 0.5rem;
+    align-self: flex-start;
+}
+
+.learn-more:hover{
+    background-color: #ff8500;
+}
+
+.eco {
+    width: 30rem;
+    align-self: center;
+    margin-top: 2rem;
+}
