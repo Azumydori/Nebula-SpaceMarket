@@ -1,11 +1,28 @@
 import React, { useContext } from "react";
 import "../../styles/accordion.scss";
+import { Grid } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import FaqNebula from "../../img/nebulaFAQ.png";
 
 import ControlledAccordions from "../component/accordion.js";
 
 export const Faq = () => {
 	return (
 		<div className="faq-container">
+			<Grid item xs={12} container direction="column" justifyContent="center" alignItems="center">
+				<Box p={2}>
+					<Typography variant="h3" component="h3">
+						F A Q
+					</Typography>
+				</Box>
+				<Typography>We hope we can solve all your inquiries</Typography>
+			</Grid>
+			<Grid container>
+				<Grid container item xs={12} direction="column" justifyContent="flex-end" alignItems="flex-end">
+					<img src={FaqNebula} />
+				</Grid>
+			</Grid>
 			<div className="faq-header">Crypto</div>
 			<ControlledAccordions
 				Question={"What is a crypto?"}

@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+.full-container {
+    margin: 5rem 3rem 3rem 3rem;
+}
+
+input[type=text] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+}
+
+input:focus{
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #000000;
+    outline: none;
+    outline-style: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.btn:hover {
+    background-color: #ff8500;
+}
+  
+.btn {
+    border: 2px solid #ff9100;
+    color: black;
+    background-color: #ff9100;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    padding: 0.7rem;
+}
+
+.cancel {
+    border: 2px solid #ff9100;
+    color: black;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    padding: 0.7rem;
+}
+
+.delivery-container{
+    margin-bottom: 4rem;
+}
+
+.delivery-options {
+    margin-bottom: 4rem;
+}
+
+.card-collection {
+    margin-top: 2rem;
+}
+
+.delivery-card {
+    border: 2px solid #ff9100;
+    border-radius: 8px;
+}
+
+.delivery-icons-title {
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.payment-options {
+    margin-top: 2rem;
+}
+
+.payment-buttons {
+    margin-top: 4rem;
+}

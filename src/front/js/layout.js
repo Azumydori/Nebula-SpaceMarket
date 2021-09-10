@@ -11,6 +11,8 @@ import Navbar from "./component/navbar.js";
 import Bottombar from "./component/bottombar.js";
 import Footer from "./component/footer";
 import UploadProduct from "./pages/uploadProduct.js";
+import VendorProfile from "./pages/vendorprofile.js";
+import Checkout from "./pages/checkout.js";
 import Faq from "./pages/faq.js";
 import Wishlist from "./pages/wishlist.js";
 import NotFound from "./pages/notfound";
@@ -39,6 +41,9 @@ const Layout = () => {
 					<Route exact path="/upload">
 						<UploadProduct />
 					</Route>
+					<Route exact path="/checkout">
+						<Checkout />
+					</Route>
 					<Route exact path="/faq">
 						<Faq />
 					</Route>
@@ -56,6 +61,9 @@ const Layout = () => {
 					</Route>
 					<Route exact path="/controlpage/:str">
 						<ControlPage />
+					</Route>
+					<Route exact path="/vendor">
+						<VendorProfile />
 					</Route>
 					<Route>
 						<NotFound />

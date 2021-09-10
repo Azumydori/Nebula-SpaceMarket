@@ -13,7 +13,8 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonIcon from "@material-ui/icons/Person";
 import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
-import Link from "@material-ui/core/Link";
+import NebulaLogoNavbar from "../../img/nebulaLogoNavbar.png";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
 	toolbar: {
@@ -22,12 +23,18 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: "#5A189A"
 	},
 	logoLg: {
+		margin: "0.5rem",
+		height: "3rem",
+		width: "3rem",
 		display: "none",
 		[theme.breakpoints.up("sm")]: {
 			display: "block"
 		}
 	},
 	logoSm: {
+		margin: "0.5rem",
+		height: "3rem",
+		width: "3rem",
 		display: "block",
 		[theme.breakpoints.up("sm")]: {
 			display: "none"
@@ -46,6 +53,11 @@ const useStyles = makeStyles(theme => ({
 			display: props => (props.open ? "flex" : "none"),
 			width: "70%"
 		}
+	},
+	img: {
+		margin: "0.5rem",
+		height: "3rem",
+		width: "3rem"
 	},
 	input: {
 		color: "white",
@@ -98,20 +110,16 @@ const Navbar = () => {
 	return (
 		<AppBar position="fixed">
 			<Toolbar className={classes.toolbar}>
-				<Link href="/" color="inherit">
-					<Typography variant="h6" className={classes.logoLg}>
-						Nebula
-					</Typography>
+				<Link to="/" color="inherit">
+					<img src={NebulaLogoNavbar} className={classes.logoLg} />
 				</Link>
 				<Button className={classes.logoSm} onClick={() => window.history.back()}>
 					<ArrowBackIcon className={classes.myWhiteIcon} />
 				</Button>
 
 				<Box pr={3}>
-					<Link href="/" color="inherit">
-						<Typography variant="h6" className={classes.logoSm}>
-							Nebula
-						</Typography>
+					<Link to="/" color="inherit">
+						<img className={classes.logoSm} src={NebulaLogoNavbar} />
 					</Link>
 				</Box>
 
@@ -136,37 +144,37 @@ const Navbar = () => {
 							keepMounted
 							open={Boolean(anchorEl)}
 							onClose={handleClose}>
-							<Link href="/upload" color="inherit">
+							<Link to="/upload" color="inherit">
 								<MenuItem onClick={handleClose}>
 									<CameraEnhanceIcon />
 									Upload Product
 								</MenuItem>
 							</Link>
-							<Link href="/wishlist" color="inherit">
+							<Link to="wishlist" color="inherit">
 								<MenuItem onClick={handleClose}>
 									<FavoriteIcon /> Wishlist
 								</MenuItem>
 							</Link>
-							<Link href="/nft" color="inherit">
+							<Link to="/nft" color="inherit">
 								<MenuItem onClick={handleClose}>
 									<ImportantDevicesIcon />
 									NFT Explorer
 								</MenuItem>
 							</Link>
-							<Link href="/account" color="inherit">
+							<Link to="/account" color="inherit">
 								<MenuItem onClick={handleClose}>
 									<SettingsIcon />
 									Account
 								</MenuItem>
 							</Link>
-							<Link href="/login" color="inherit">
+							<Link to="/login" color="inherit">
 								<MenuItem onClick={handleClose}>
 									<PersonIcon />
 									Log In / Log out
 								</MenuItem>
 							</Link>
 						</Menu>
-						<Link href="/cart" color="inherit">
+						<Link to="/cart" color="inherit">
 							<Button className={classes.myWhiteIcon}>
 								<ShoppingCartIcon />
 							</Button>

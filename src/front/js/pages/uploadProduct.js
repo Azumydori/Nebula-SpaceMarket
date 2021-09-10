@@ -1,6 +1,8 @@
 import React, { useContext, onSubmit, handleSubmit } from "react";
 import { Context } from "../store/appContext";
 import { useForm } from "react-hook-form";
+import { Grid } from "@material-ui/core";
+import NebulaUpload from "../../img/nebulaUploadProduct.png";
 
 import "../../styles/uploadProduct.scss";
 
@@ -84,6 +86,9 @@ const UploadProduct = () => {
 					</div>
 				</div>
 			</form>
+			<Grid container item xs={12} direction="row" justifyContent="flex-end" alignItems="flex-end">
+				<img src={NebulaUpload} />
+			</Grid>
 		</div>
 	);
 };

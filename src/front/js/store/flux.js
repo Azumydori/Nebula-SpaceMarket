@@ -100,7 +100,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					text: "No estaba buscando nada; pero te vi y encontré todo",
 					category: "Computers"
 				}
-			]
+			],
+			vendor: []
 		},
 
 		actions: {
@@ -238,17 +239,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 					.then(resp => {
 						if (!resp.ok) {
-							throw Error("Invalid changes");
+							throw Error("Invalid register info");
 						}
-						return resp.json();
 					})
 					.then(responseAsJson => {
-						console.log(responseAsJson);
+						setStore({ ...product, product: responseAsJson });
+						return responseAsJson;
 					})
 					.catch(error => console.error("there has been an error", error));
 			},
 			getProduct: product_id => {
-				fetch(getStore().baseURL.concat("/pruduct/", product_id), {
+				fetch(getStore().baseURL.concat("/product/", product_id), {
 					method: "GET"
 				})
 					.then(resp => {
