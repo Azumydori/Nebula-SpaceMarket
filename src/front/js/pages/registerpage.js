@@ -1,51 +1,38 @@
 import React from "react";
+import { useContext } from "react";
+import { Context } from "../store/appContext";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
+import CssBaseline from "@material-ui/core/CssBaseline";g
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import SvgIcon from "@material-ui/core/SvgIcon";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { borders } from "@material-ui/system";
 import Container from "@material-ui/core/Container";
 import { Palette } from "@material-ui/icons";
-import LogoNebula from "../../img/nebulaLogoWhite.png";
+import { useForm, Controller } from "react-hook-form";
+import Input from "@material-ui/core/Input";
 
-const CssTextField = withStyles({
-	root: {
-		"& label.Mui-focused": {
-			color: "white"
-		},
-		"& .MuiFormLabel-root": {
-			color: "white"
-		},
-		"& .MuiInput-underline:after": {
-			borderBottomColor: "white",
-			labelcolor: "white"
-		},
-		"& .MuiOutlinedInput-root": {
-			"& fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			},
-			"&:hover fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			},
-			"&.Mui-focused fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			}
-		}
-	}
-})(TextField);
+const Copyright = () => {
+	return (
+		<Typography variant="body2" color="textSecondary" align="center">
+			{"Copyright © "}
+			<Link color="inherit" href="https://material-ui.com/">
+				Nebula Space Market
+			</Link>{" "}
+			{new Date().getFullYear()}
+			{"."}
+		</Typography>
+	);
+};
+
+import LogoNebula from "../../img/nebulaLogoWhite.png";
 
 const useStyles = makeStyles(theme => ({
 	paper: {
@@ -75,6 +62,33 @@ const useStyles = makeStyles(theme => ({
 	},
 	whiteBox: {
 		color: "white"
+	},
+
+	inputField: {
+		"& label.Mui-focused": {
+			color: "white"
+		},
+		"& .MuiFormLabel-root": {
+			color: "white"
+		},
+		"& .MuiInput-underline:after": {
+			borderBottomColor: "white",
+			labelcolor: "white"
+		},
+		"& .MuiOutlinedInput-root": {
+			"& fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			},
+			"&:hover fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			},
+			"&.Mui-focused fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			}
+		}
 	}
 }));
 
@@ -96,7 +110,11 @@ const costumTheme = createTheme({
 
 const SignUp = () => {
 	const classes = useStyles();
-
+	const { store, actions } = useContext(Context);
+	const { control, handleSubmit } = useForm();
+	const onSubmit = data => {
+		actions.register(data);
+	};
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
@@ -105,58 +123,102 @@ const SignUp = () => {
 				<Typography component="h1" variant="h5">
 					Sign up
 				</Typography>
-				<form action="" method="post" className={classes.form} noValidate>
+				<form action="" method="post" className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
 					<Grid container spacing={1}>
 						<Grid item sm={12}>
-							<CssTextField
-								autoComplete="fname"
-								name="firstName"
-								fullWidth
-								id="firstName"
-								label="First Name"
-								autoFocus
-								required
+							<label htmlFor="first_name">First Name</label>
+							<Controller
+								name="first_name"
+								control={control}
+								defaultValue=""
+								render={({ field }) => (
+									<Input
+										{...field}
+										autoComplete="fname"
+										name="first_name"
+										fullWidth
+										id="first_name"
+										label="First Name"
+										autoFocus
+										required
+									/>
+								)}
 							/>
 						</Grid>
 						<Grid item sm={12}>
-							<CssTextField
-								fullWidth
-								id="lastName"
-								label="Last Name"
-								name="lastName"
-								autoComplete="lname"
-								required
+							<label htmlFor="last_name">Last Name</label>
+							<Controller
+								name="last_name"
+								control={control}
+								defaultValue=""
+								render={({ field }) => (
+									<Input
+										{...field}
+										fullWidth
+										id="last_name"
+										name="last_name"
+										autoComplete="lname"
+										required
+									/>
+								)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<CssTextField
-								required
-								fullWidth
-								id="email"
-								label="Email Address"
+							<label htmlFor="email">Email</label>
+							<Controller
 								name="email"
-								autoComplete="email"
+								control={control}
+								defaultValue=""
+								render={({ field }) => (
+									<Input
+										{...field}
+										required
+										fullWidth
+										id="email"
+										label="Email Address"
+										name="email"
+										autoComplete="email"
+									/>
+								)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<CssTextField
-								fullWidth
-								id="username"
-								label="Username"
+							<label htmlFor="username">Username</label>
+							<Controller
 								name="username"
-								autoComplete="username"
-								required
+								control={control}
+								defaultValue=""
+								render={({ field }) => (
+									<Input
+										{...field}
+										fullWidth
+										id="username"
+										label="Username"
+										name="username"
+										autoComplete="username"
+										required
+									/>
+								)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<CssTextField
-								fullWidth
+							<label htmlFor="password">Password</label>
+							<Controller
 								name="password"
-								label="Password"
-								type="password"
-								id="password"
-								autoComplete="current-password"
-								required
+								control={control}
+								defaultValue=""
+								render={({ field }) => (
+									<Input
+										fullWidth
+										{...field}
+										name="password"
+										label="Password"
+										type="password"
+										id="password"
+										autoComplete="current-password"
+										required
+									/>
+								)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
@@ -196,6 +258,7 @@ const SignUp = () => {
 							variant="contained"
 							color="secondary"
 							borderRadius="50%"
+							
 							className={classes.submit}>
 							Sign Up
 						</Button>

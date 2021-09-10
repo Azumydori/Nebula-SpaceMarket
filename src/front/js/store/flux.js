@@ -13,17 +13,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
-			register: (first_name, last_name, email, password, username) => {
-				fetch(getStore().baseURL.concat("/signup"), {
+			register: credentials => {
+				console.log(credentials);
+				fetch(getStore().baseURL.concat("/account"), {
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						first_name: first_name,
-						last_name: last_name,
-						email: email,
-						password: password,
-						username: username
-					})
+					body: JSON.stringify(credentials),
+					headers: { "Content-Type": "application/json" }
 				})
 					.then(resp => {
 						if (!resp.ok) {
@@ -35,6 +30,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
+
 
 			login: credentials => {
 				fetch(getStore().baseURL.concat("/login"), {

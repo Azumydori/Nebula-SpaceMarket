@@ -27,14 +27,16 @@ def get_account_profile(id):
     return({"error": "Account not found"}), 404
     
 
-@api.route('/register', methods=['POST'])
-def create_account():
-    #Creamos todas las varibles a la vez 
+@api.route('/account', methods=['POST'])
+def create_account(): 
+
     first_name = request.json.get("first_name", None)
     last_name = request.json.get("last_name", None)
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     username = request.json.get("username", None)
+
+    print(first_name, last_name, email, password, username)
 
     if not (first_name and last_name and email and password and username):
         return {"error":"Missing info"}, 400
@@ -52,7 +54,6 @@ def create_account():
         return jsonify(new_user.to_dict()), 201
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
-
 
 @api.route('/login', methods=["POST"])
 def login():
