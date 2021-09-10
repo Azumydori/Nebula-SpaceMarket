@@ -60,7 +60,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 			Favorite: product_id => {
-=======
 			upload: data => {
 				fetch(getStore().baseURL.concat("/product"), {
 					method: "POST",
