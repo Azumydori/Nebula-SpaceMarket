@@ -68,7 +68,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						console.log(data);
 					})
 					.catch(error => console.error("There as been an unknown error", error));
-			},	
+			},
 
 			favorite: product_id => {
 				let myToken = localStorage.getItem("token");
@@ -109,7 +109,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
-			
+
 			shopCart: product_id => {
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
@@ -129,7 +129,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
-      
+
 			changeAccountInfo: data => {
 				const token = localStorage.getItem("token");
 				const tokenID = localStorage.getItem("tokenID");

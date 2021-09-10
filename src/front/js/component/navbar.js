@@ -13,6 +13,7 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonIcon from "@material-ui/icons/Person";
 import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
+import NebulaLogoNavbar from "../../img/nebulaLogoNavbar.png";
 
 const useStyles = makeStyles(theme => ({
 	toolbar: {
@@ -97,17 +98,10 @@ const Navbar = () => {
 	return (
 		<AppBar position="fixed">
 			<Toolbar className={classes.toolbar}>
-				<Typography variant="h6" className={classes.logoLg}>
-					Nebula
-				</Typography>
+				<img className={classes.img} src={NebulaLogoNavbar} />
 				<Button className={classes.logoSm}>
 					<ArrowBackIcon />
 				</Button>
-				<Box pr={3}>
-					<Typography variant="h6" className={classes.logoSm}>
-						Nebula
-					</Typography>
-				</Box>
 
 				<div className={classes.search}>
 					<Search />
