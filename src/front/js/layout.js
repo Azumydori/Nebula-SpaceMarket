@@ -14,7 +14,9 @@ import UploadProduct from "./pages/uploadProduct.js";
 import VendorProfile from "./pages/vendorprofile.js";
 import Checkout from "./pages/checkout.js";
 import Faq from "./pages/faq.js";
-
+import Wishlist from "./pages/wishlist.js";
+import NotFound from "./pages/notfound";
+import ControlPage from "./pages/controlpage";
 //create your first component
 const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -36,7 +38,7 @@ const Layout = () => {
 					<Route exact path="/register">
 						<SignUp />
 					</Route>
-					<Route exact path="/product">
+					<Route exact path="/upload">
 						<UploadProduct />
 					</Route>
 					<Route exact path="/checkout">
@@ -51,11 +53,20 @@ const Layout = () => {
 					<Route exact path="/about-us">
 						<AboutUs />
 					</Route>
+					<Route exact path="/wishlist">
+						<Wishlist />
+					</Route>
+					<Route exact path="/controlpage">
+						<ControlPage />
+					</Route>
+					<Route exact path="/controlpage/:str">
+						<ControlPage />
+					</Route>
 					<Route exact path="/vendor">
 						<VendorProfile />
 					</Route>
 					<Route>
-						<h1>Not found!</h1>
+						<NotFound />
 					</Route>
 				</Switch>
 				<Footer />

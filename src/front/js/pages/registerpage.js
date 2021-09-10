@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Context } from "../store/appContext";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";g
+import CssBaseline from "@material-ui/core/CssBaseline";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
@@ -18,6 +18,7 @@ import Container from "@material-ui/core/Container";
 import { Palette } from "@material-ui/icons";
 import { useForm, Controller } from "react-hook-form";
 import Input from "@material-ui/core/Input";
+import TextField from "@material-ui/core/TextField";
 
 const Copyright = () => {
 	return (
@@ -32,6 +33,35 @@ const Copyright = () => {
 	);
 };
 
+const CssTextField = withStyles({
+	root: {
+		"& label.Mui-focused": {
+			color: "white"
+		},
+		"& .MuiFormLabel-root": {
+			color: "white",
+			marginTop: "0"
+		},
+		"& .MuiInput-underline:after": {
+			borderBottomColor: "white",
+			labelcolor: "white"
+		},
+		"& .MuiOutlinedInput-root": {
+			"& fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			},
+			"&:hover fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			},
+			"&.Mui-focused fieldset": {
+				borderColor: "white",
+				labelcolor: "white"
+			}
+		}
+	}
+})(TextField);
 import LogoNebula from "../../img/nebulaLogoWhite.png";
 
 const useStyles = makeStyles(theme => ({
@@ -258,7 +288,6 @@ const SignUp = () => {
 							variant="contained"
 							color="secondary"
 							borderRadius="50%"
-							
 							className={classes.submit}>
 							Sign Up
 						</Button>

@@ -16,7 +16,8 @@ const CssTextField = withStyles({
 		},
 		//Super importante esta shit, es la que controla el color del label
 		"& .MuiFormLabel-root": {
-			color: "white"
+			color: "white",
+			marginTop: "0"
 		},
 		"& .MuiInput-underline:after": {
 			borderBottomColor: "white",
@@ -42,6 +43,8 @@ const CssTextField = withStyles({
 const useStyles = makeStyles(theme => ({
 	resize: {
 		width: "100%",
+		marginTop: "100px",
+
 		[theme.breakpoints.down("1000")]: {
 			width: "100%"
 		}
@@ -55,7 +58,7 @@ const useStyles = makeStyles(theme => ({
 		marginTop: "5px",
 		paddingLeft: "0",
 		[theme.breakpoints.between("600", "1000")]: {
-			width: "20vh"
+			width: "50vh"
 		}
 	},
 	MuiFormLabel: {
@@ -75,6 +78,12 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 		height: "2%",
 		background: "#5A189A"
+	},
+	containerLinks: {
+		alignContent: "center",
+		display: "flex",
+		justifyContent: "start",
+		flexDirection: "Column"
 	}
 }));
 
@@ -89,31 +98,31 @@ const Footer = () => {
 				<Container maxWidth="lg">
 					<Box />
 					<Grid container spacing={5}>
-						<Grid item xs={12} sm={4} alignContent="center">
+						<Grid item xs={12} sm={4} container className={classes.containerLinks}>
 							<Box>
-								<Link href="/" color="inherit" variant="h6">
+								<Link href="/privacypolicy" color="inherit" variant="h6">
 									Privacy Policy
 								</Link>
 							</Box>
 							<Box>
-								<Link href="/" color="inherit" variant="h6">
+								<Link href="/faq" color="inherit" variant="h6">
 									FAQ
 								</Link>
 							</Box>
 						</Grid>
-						<Grid item xs={12} sm={4} alignContent="center">
+						<Grid item xs={12} sm={4} container className={classes.containerLinks}>
 							<Box>
-								<Link href="/" color="inherit" variant="h6">
+								<Link href="/about-us" color="inherit" variant="h6">
 									About us
 								</Link>
 							</Box>
 							<Box>
-								<Link href="/" color="inherit" variant="h6">
+								<Link href="/legalinfo" color="inherit" variant="h6">
 									Legal info
 								</Link>
 							</Box>
 						</Grid>
-						<Grid item xs={12} sm={4} alignContent="center">
+						<Grid item xs={12} sm={4}>
 							<Box borderBottom={1}>Suscribe to our newsletter</Box>
 							<Container className={classes.inputContainer}>
 								<CssTextField

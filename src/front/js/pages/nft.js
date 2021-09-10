@@ -7,7 +7,7 @@ import "../../styles/categories.scss";
 
 import PaginationCards from "../component/cardpagination.js";
 
-import nebulaNFT from "../../img/NFTS.png";
+import NFTS from "../../img/NFTS.png";
 
 const Nft = () => {
 	const { store, actions } = useContext(Context);
@@ -28,7 +28,7 @@ const Nft = () => {
 				</div>
 
 				<div className="col-6 ">
-					<img src={NebulaNFT} className="nft" />
+					<img src={NFTS} className="nft" />
 				</div>
 			</div>
 

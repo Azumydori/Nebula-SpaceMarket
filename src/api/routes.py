@@ -167,7 +167,7 @@ def add_item_cart(id):
 
     id_product = request.json.get("have_product", None)
 
-    new_cart = Product(
+    new_cart = Line_Order(
         product_id = id_product
     )
 
@@ -202,3 +202,6 @@ def change_credentials(id):
         return jsonify(account_updated.to_dict()), 200
 
     return {"error":"user not found"}, 400
+
+
+
