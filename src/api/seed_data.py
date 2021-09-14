@@ -46,21 +46,21 @@ data={
     "Product":[
         {
 					"id": 1,
-					"product_name": "Puerta",
+					"product_name": "Hakama de kendo",
 					"price": 12,
 					"media":
 						"https://images.pexels.com/photos/1000366/pexels-photo-1000366.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					"text": " Tienes defectos si, pero son los más perfectos del mundo",
+					"text": "Hay alguna mancha de sangre sin importancia",
 					"category": "Clothing",
                     "account_id":1
 				},
 				{
 					"id": 2,
-					"product_name": "Ego Erectus",
+					"product_name": "Tabla de planchar",
 					"price": 142,
 					"media":
 						"https://images.pexels.com/photos/3844786/pexels-photo-3844786.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					"text": "'Te extraño' no se acentúa, pero con el paso de los días sí",
+					"text": "Mas plana que mi novia",
 					"category": "Appliances",
                     "account_id":1
 				},
@@ -96,41 +96,41 @@ data={
 				},
 				{
 					"id": 6,
-					"product_name": "Soledad",
+					"product_name": "Iphone X",
 					"price": 5,
 					"media":
 						"https://images.pexels.com/photos/5603660/pexels-photo-5603660.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					"text": "Un buen destino es que dos personas se encuentren cuando ni siquiera se estaban buscando",
+					"text": "Un movil para demostrar tu status social y que no te confundan con la plebe",
 					"category": "Cellphones",
                     "account_id":2
 				},
 				{
 					"id": 7,
-					"product_name": "score",
+					"product_name": "Bate de beisbol",
 					"price": 6,
 					"media":
 						"https://images.pexels.com/photos/4194850/pexels-photo-4194850.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					"text": "Estoy pensando patentar tus besos y caricias para que nadie me los robe",
+					"text": "Perfecto para probarlo con tu amigo moroso",
 					"category": "Sports",
                     "account_id":3
 				},
 				{
 					"id": 8,
-					"product_name": "Casiopea",
+					"product_name": "El camino de los reyes",
 					"price": 54,
 					"media":
 						"https://images.pexels.com/photos/6847584/pexels-photo-6847584.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					"text": "Te conocí y de repente todo cambió en mi vida. Ahora ya no la entiendo sin ti",
-					"category": "Sports",
+					"text": "Es un libro corto de 1200 paginas, se lee en una tarde",
+					"category": "Movies, Books & Music",
                     "account_id":3
 				},
 				{
 					"id": 9,
-					"product_name": "Misión californiana: Caballo",
+					"product_name": "Comodore amiga A500",
 					"price": 65,
 					"media":
 						"https://images.pexels.com/photos/4386404/pexels-photo-4386404.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					"text": "No estaba buscando nada; pero te vi y encontré todo",
+					"text": "Es un pc gaming con una grafica de ultima generacion perfecta para jugar al lol en ultra",
 					"category": "Computers",
                     "account_id":3
 				}
@@ -173,10 +173,5 @@ data={
             "have_product": 4,
         }
     ],
-
-
-
-    ]
-
 
 }
