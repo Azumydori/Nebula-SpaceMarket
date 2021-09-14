@@ -100,7 +100,7 @@ const Footer = () => {
 					<Grid container spacing={5}>
 						<Grid item xs={12} sm={4} container className={classes.containerLinks}>
 							<Box>
-								<Link href="/privacypolicy" color="inherit" variant="h6">
+								<Link href="/privacy-policy" color="inherit" variant="h6">
 									Privacy Policy
 								</Link>
 							</Box>

@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
+import Link from "@material-ui/core/Link";
 
 import "../../styles/jumbotron.scss";
 import "../../styles/home.scss";
@@ -21,9 +22,9 @@ const Nft = () => {
 						<p className="lead text-left">
 							Want to get the latest digital assets? You have come to the right place
 						</p>
-						<button className="learn-more" href="#" role="button">
+						<Link className="learn-more" href="/nft-learn" role="button">
 							Learn more
-						</button>
+						</Link>
 					</div>
 				</div>
 

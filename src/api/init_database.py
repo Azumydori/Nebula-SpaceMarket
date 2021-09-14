@@ -10,7 +10,7 @@ from seed_data import data
 def load ():
     for table, rows in data.items():
         ModelClass = getattr(models, table)
-        print(ModelClass, 'AAAAAAAAAAAAAAAAAAAAAAAA')
+        print(ModelClass)
 
         for row in rows:
             inserted = insert(ModelClass).values(**row)
