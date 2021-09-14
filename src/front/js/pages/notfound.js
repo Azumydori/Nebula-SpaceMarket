@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, Fragment } from "react";
 
 import "../../styles/notfound.scss";
-import nebuladead from "/workspace/Nebula-SpaceMarket/src/front/img/nebula_404_landing_page_3.png";
+import nebuladead from "../../img/nebula_404_landing_page_3.png";
 
 const NotFound = () => {
 	return (
