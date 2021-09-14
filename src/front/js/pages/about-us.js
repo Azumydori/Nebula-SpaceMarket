@@ -1,10 +1,17 @@
 import React, { Fragment, Col, Image } from "react";
+import { Icon } from "@material-ui/core";
 import "../../styles/about-us.scss";
+
+import DesktopMacIcon from "@material-ui/icons/DesktopMac";
+import BusinessCenterSharpIcon from "@material-ui/icons/BusinessCenterSharp";
+import ExposurePlus1Icon from "@material-ui/icons/ExposurePlus1";
+import AllOutIcon from "@material-ui/icons/AllOut";
+import LanguageIcon from "@material-ui/icons/Language";
 
 export const AboutUs = () => {
 	return (
-		<Fragment className="container">
-			<div className="text-center mt-5">
+		<Fragment className="bodyContainer">
+			<div className="text-center up-aligator">
 				<h1>Meet our team</h1>
 				<h2 className="mt-2">
 					We are a team of young dreamers who want to create a real democratic marketplace where anyone from
@@ -13,38 +20,34 @@ export const AboutUs = () => {
 			</div>
 			<div className="container mt-5">
 				<div className="row d-flex justify-content-center">
-					<div className="queryimage col-sm-2 text-center">
-						<img
-							src="https://cdn.pixabay.com/photo/2021/08/23/17/53/cat-6568422__480.jpg"
-							className="teamimage rounded-circle"
-							alt="..."
-						/>
+					<a href="https://github.com/Jorge-GD" className="queryimage col-sm-2 text-center">
+						<img src="https://i.redd.it/wek7woh17zaz.jpg" className="teamimage rounded-circle" alt="..." />
 						<h2>Jorge</h2>
-					</div>
-					<div className="queryimage col-sm-2 text-center">
+					</a>
+					<a href=" https://github.com/Lucascg1997" className="queryimage col-sm-2 text-center">
 						<img
-							src="https://cdn.pixabay.com/photo/2021/08/23/17/53/cat-6568422__480.jpg"
+							src="https://cdn.pixabay.com/photo/2013/07/13/10/18/ghost-156969_960_720.png"
 							className="teamimage rounded-circle"
 							alt="..."
 						/>
 						<h2>Lucas</h2>
-					</div>
-					<div className="queryimage col-sm-2 text-center">
+					</a>
+					<a href="https://github.com/Azumydori" className="queryimage col-sm-2 text-center">
 						<img
-							src="https://cdn.pixabay.com/photo/2021/08/23/17/53/cat-6568422__480.jpg"
+							src="https://images.pexels.com/photos/1314550/pexels-photo-1314550.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
 							className="teamimage rounded-circle"
 							alt="..."
 						/>
 						<h2>Victoria</h2>
-					</div>
-					<div className="queryimage col-sm-2 text-center">
+					</a>
+					<a href="https://github.com/YifanYes/YifanYes" className="queryimage col-sm-2 text-center">
 						<img
-							src="https://cdn.pixabay.com/photo/2021/08/23/17/53/cat-6568422__480.jpg"
+							src="https://cdn.pixabay.com/photo/2013/07/13/13/56/chinese-161791_960_720.png"
 							className="teamimage rounded-circle"
 							alt="..."
 						/>
 						<h2>Yifan</h2>
-					</div>
+					</a>
 				</div>
 			</div>
 			<div className="maxwidth container-fluid mt-5">
@@ -54,51 +57,67 @@ export const AboutUs = () => {
 							<div className="card-body">
 								<h4 className="card-title mb-5 d-flex justify-content-center">Future plans</h4>
 
-								<div className="hori-timeline" dir="ltr">
-									<ul className="list-inline events">
-										<li className="list-inline-item event-list">
-											<div className="px-4">
-												<div className="event-date bg-soft-primary text-white">Q4 2021</div>
-												<h5 className="font-size-16">First goal</h5>
-												<p className="text-dark">Implementing a delegated PoS blockchain</p>
-												<div />
+								<div className="container">
+									<div className="row">
+										<div className="col-md-12">
+											<div className="main-timeline">
+												<div className="timeline">
+													<a className="timeline-content">
+														<span className="timeline-year">2021</span>
+														<div className="timeline-icon">
+															<BusinessCenterSharpIcon />
+														</div>
+														<h3 className="title"> Q1 First goal</h3>
+														<p className="description">
+															Implementing a delegated PoS blockchain
+														</p>
+													</a>
+												</div>
+												<div className="timeline">
+													<a className="timeline-content">
+														<span className="timeline-year">2022</span>
+														<div className="timeline-icon">
+															<DesktopMacIcon />
+														</div>
+														<h3 className="title">Q2 Second goal</h3>
+														<p className="description">Deployment of the application</p>
+													</a>
+												</div>
+												<div className="timeline">
+													<a className="timeline-content">
+														<span className="timeline-year">2023</span>
+														<div className="timeline-icon">
+															<ExposurePlus1Icon />
+														</div>
+														<h3 className="title">Q3 Third goal</h3>
+														<p className="description">First million users worldwide</p>
+													</a>
+												</div>
+												<div className="timeline">
+													<a className="timeline-content">
+														<span className="timeline-year">2024</span>
+														<div className="timeline-icon">
+															<AllOutIcon />
+														</div>
+														<h3 className="title">Q4 Fourth goal</h3>
+														<p className="description">
+															Becoming the biggest online market in the world
+														</p>
+													</a>
+												</div>
+												<div className="timeline">
+													<a className="timeline-content">
+														<span className="timeline-year">2025</span>
+														<div className="timeline-icon">
+															<LanguageIcon />
+														</div>
+														<h3 className="title">Q5 Fifth Goal</h3>
+														<p className="description">Conquering the whole world</p>
+													</a>
+												</div>
 											</div>
-										</li>
-										<li className="list-inline-item event-list">
-											<div className="px-4">
-												<div className="event-date bg-soft-success text-white">Q1 2022</div>
-												<h5 className="font-size-16">Second goal</h5>
-												<p className="text-dark">Deployment of the application</p>
-												<div />
-											</div>
-										</li>
-										<li className="list-inline-item event-list">
-											<div className="px-4">
-												<div className="event-date bg-soft-danger text-white">Q3 2022</div>
-												<h5 className="font-size-16">Third goal</h5>
-												<p className="text-dark">First million users worldwide</p>
-												<div />
-											</div>
-										</li>
-										<li className="list-inline-item event-list">
-											<div className="px-4">
-												<div className="event-date bg-soft-danger text-white">Q1 2023</div>
-												<h5 className="font-size-16">Fourth goal</h5>
-												<p className="text-dark">
-													Becoming the biggest online market in the world
-												</p>
-												<div />
-											</div>
-										</li>
-										<li className="list-inline-item event-list">
-											<div className="px-4">
-												<div className="event-date bg-soft-warning text-white">Q3 2023</div>
-												<h5 className="font-size-16">Fifth goal</h5>
-												<p className="text-dark">Conquering the whole world</p>
-												<div />
-											</div>
-										</li>
-									</ul>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
