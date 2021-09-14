@@ -19,7 +19,7 @@ export const AboutUs = () => {
 				</h2>
 			</div>
 			<div className="container mt-5">
-				<div className="row d-flex justify-content-center">
+				<div className="row d-flex justify-content-center moraleja">
 					<a href="https://github.com/Jorge-GD" className="queryimage col-sm-2 text-center">
 						<img src="https://i.redd.it/wek7woh17zaz.jpg" className="teamimage rounded-circle" alt="..." />
 						<h2>Jorge</h2>
