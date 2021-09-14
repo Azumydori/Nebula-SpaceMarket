@@ -1,16 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import eco from "../../img/ecommerce.jpg";
 import NebulaLanding from "../../img/nebulaLanding.png";
+import Link from "@material-ui/core/Link";
 
 const Jumbotron = props => {
 	return (
 		<div className="jumbotron d-flex flex-column justify-content-center">
 			<h2 className="display-4">{props.title}</h2>
 			<p className="lead text-left">{props.text}</p>
-			<button className="learn-more" href="#" role="button">
+			<Link className="learn-more" href="/blockchain" role="button">
 				Learn more
-			</button>
+			</Link>
 			<img src={NebulaLanding} className="eco" />
 		</div>
 	);
