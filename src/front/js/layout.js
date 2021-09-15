@@ -13,11 +13,15 @@ import Footer from "./component/footer";
 import UploadProduct from "./pages/uploadProduct.js";
 import VendorProfile from "./pages/vendorprofile.js";
 import Checkout from "./pages/checkout.js";
+import UserProfile from "./pages/userprofile.js";
 import Faq from "./pages/faq.js";
+import Blockchain from "./pages/blockchain.js";
+import NftLearn from "./pages/nft-learn.js";
 import Wishlist from "./pages/wishlist.js";
 import NotFound from "./pages/notfound";
 import ControlPage from "./pages/controlpage";
 import LogRegister from "./component/log&register";
+import PrivacyPolicy from "./pages/privacy-policy.js";
 //create your first component
 const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -39,6 +43,9 @@ const Layout = () => {
 					<Route exact path="/register">
 						<SignUp />
 					</Route>
+					<Route exact path="/account">
+						<UserProfile />
+					</Route>
 					<Route exact path="/upload">
 						<UploadProduct />
 					</Route>
@@ -48,8 +55,17 @@ const Layout = () => {
 					<Route exact path="/faq">
 						<Faq />
 					</Route>
+					<Route exact path="/privacy-policy">
+						<PrivacyPolicy />
+					</Route>
+					<Route exact path="/blockchain">
+						<Blockchain />
+					</Route>
 					<Route exact path="/nft">
 						<Nft />
+					</Route>
+					<Route exact path="/nft-learn">
+						<NftLearn />
 					</Route>
 					<Route exact path="/about-us">
 						<AboutUs />
