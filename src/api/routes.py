@@ -36,8 +36,6 @@ def create_account():
     password = request.json.get("password", None)
     username = request.json.get("username", None)
 
-    print(first_name, last_name, email, password, username)
-
     if not (first_name and last_name and email and password and username):
         return {"error":"Missing info"}, 400
 
