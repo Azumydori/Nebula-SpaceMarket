@@ -5,7 +5,7 @@ import Home from "./pages/home.js";
 import LoginPage from "./pages/loginPage.js";
 import Nft from "./pages/nft.js";
 import { AboutUs } from "./pages/about-us.js";
-import SignUp from "./pages/registerpage.js";
+import SignUp from "./component/registerpage.js";
 import injectContext from "./store/appContext";
 import Navbar from "./component/navbar.js";
 import Bottombar from "./component/bottombar.js";
@@ -20,6 +20,7 @@ import NftLearn from "./pages/nft-learn.js";
 import Wishlist from "./pages/wishlist.js";
 import NotFound from "./pages/notfound";
 import ControlPage from "./pages/controlpage";
+import LogRegister from "./component/log&register";
 import PrivacyPolicy from "./pages/privacy-policy.js";
 //create your first component
 const Layout = () => {
@@ -80,6 +81,9 @@ const Layout = () => {
 					</Route>
 					<Route exact path="/vendor">
 						<VendorProfile />
+					</Route>
+					<Route exact path="/loggg">
+						<LogRegister />
 					</Route>
 					<Route>
 						<NotFound />

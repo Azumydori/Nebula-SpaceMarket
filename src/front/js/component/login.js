@@ -18,40 +18,40 @@ import { borders } from "@material-ui/system";
 import Container from "@material-ui/core/Container";
 import { Palette } from "@material-ui/icons";
 import { useForm, Controller } from "react-hook-form";
-import Input from "@material-ui/core/Input";
+
 import LogoNebula from "../../img/nebulaLogoWhite.png";
 
-const useStyles = makeStyles(theme => ({
-	paper: {
-		marginTop: theme.spacing(3),
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		backgroundColor: "#9D4EDD",
-		borderRadius: "2rem",
-		padding: "1rem",
-		color: "white"
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		width: "5rem",
-		height: "5rem"
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(3),
-		color: "white"
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-		borderRadius: "2rem",
-		fontWeight: "bold"
-	},
-	whiteBox: {
-		color: "white"
-	},
-	inputField: {
+const Input = withStyles({
+	root: {
 		"& label.Mui-focused": {
+			color: "white"
+		},
+		"& .MuiFormLabel-root": {
+			color: "white",
+			marginTop: "0"
+		},
+		"& .MuiInput-underline": {
+			borderBottomColor: "white",
+			"&:after": {
+				borderBottomColor: "white"
+			},
+
+			"&:before": {
+				borderBottomColor: "white"
+			},
+			"&:hover:not($disabled):after": {
+				borderBottomColor: "white" //its when its hover and input is focused
+			},
+			"&:hover:not($disabled):before": {
+				borderBottomColor: "white" //its when you hover and input is not foucused
+			}
+		}
+	}
+})(TextField);
+
+const useStyles = makeStyles(theme => ({
+	Input: {
+		"& label.MuiInput-root": {
 			color: "white"
 		},
 		"& .MuiFormLabel-root": {
@@ -76,6 +76,35 @@ const useStyles = makeStyles(theme => ({
 				labelcolor: "white"
 			}
 		}
+	},
+	paper: {
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
+		backgroundColor: "#9D4EDD",
+		borderBottomLeftRadius: "2rem",
+		borderBottomRightRadius: "2rem",
+		padding: "1rem",
+		color: "white"
+	},
+	avatar: {
+		margin: theme.spacing(1),
+		width: "5rem",
+		height: "5rem"
+	},
+	form: {
+		width: "100%", // Fix IE 11 issue.
+		marginTop: theme.spacing(3),
+		color: "white"
+	},
+	submit: {
+		margin: theme.spacing(3, 0, 2),
+		borderRadius: "2rem",
+		fontWeight: "bold",
+		color: "white"
+	},
+	whiteBox: {
+		color: "white"
 	}
 }));
 
@@ -102,7 +131,7 @@ const Login = () => {
 	const onSubmit = data => actions.login(data);
 
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container component="main" maxWidth="xs" style={{ padding: 0 }}>
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar src={LogoNebula} className={classes.avatar} />
@@ -111,7 +140,6 @@ const Login = () => {
 				</Typography>
 				<form action="" method="post" className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
 					<Grid container spacing={1}>
-						<label htmlFor="email">Email</label>
 						<Grid item xs={12}>
 							<Controller
 								name="email"
@@ -120,11 +148,10 @@ const Login = () => {
 								render={({ field }) => (
 									<Input
 										{...field}
-										className={classes.inputField}
-										placeholder="example@gmail.com"
+										label="Enter your email"
 										required
 										fullWidth
-										id="email"
+										id="emailLogin"
 										name="email"
 										autoComplete="email"
 									/>
@@ -132,7 +159,6 @@ const Login = () => {
 							/>
 						</Grid>
 
-						<label htmlFor="password">Password</label>
 						<Grid item xs={12}>
 							<Controller
 								name="password"
@@ -141,11 +167,11 @@ const Login = () => {
 								render={({ field }) => (
 									<Input
 										{...field}
-										className={classes.inputField}
 										fullWidth
+										label="Enter your password"
 										name="password"
 										type="password"
-										id="password"
+										id="passwordLogin"
 										autoComplete="current-password"
 										required
 									/>
@@ -182,7 +208,7 @@ const Login = () => {
 
 					<Grid container justifyContent="flex-end">
 						<Grid item>
-							<Link href="#" variant="body2">
+							<Link href="controlpage" variant="body2">
 								{"Don't have an account? Sign up"}
 							</Link>
 						</Grid>

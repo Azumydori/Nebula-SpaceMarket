@@ -17,7 +17,7 @@ import { borders } from "@material-ui/system";
 import Container from "@material-ui/core/Container";
 import { Palette } from "@material-ui/icons";
 import { useForm, Controller } from "react-hook-form";
-import Input from "@material-ui/core/Input";
+
 import TextField from "@material-ui/core/TextField";
 
 const Copyright = () => {
@@ -33,7 +33,7 @@ const Copyright = () => {
 	);
 };
 
-const CssTextField = withStyles({
+const Input = withStyles({
 	root: {
 		"& label.Mui-focused": {
 			color: "white"
@@ -42,22 +42,20 @@ const CssTextField = withStyles({
 			color: "white",
 			marginTop: "0"
 		},
-		"& .MuiInput-underline:after": {
+		"& .MuiInput-underline": {
 			borderBottomColor: "white",
-			labelcolor: "white"
-		},
-		"& .MuiOutlinedInput-root": {
-			"& fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
+			"&:after": {
+				borderBottomColor: "white"
 			},
-			"&:hover fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
+
+			"&:before": {
+				borderBottomColor: "white"
 			},
-			"&.Mui-focused fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
+			"&:hover:not($disabled):after": {
+				borderBottomColor: "white" //its when its hover and input is focused
+			},
+			"&:hover:not($disabled):before": {
+				borderBottomColor: "white" //its when you hover and input is not foucused
 			}
 		}
 	}
@@ -66,12 +64,12 @@ import LogoNebula from "../../img/nebulaLogoWhite.png";
 
 const useStyles = makeStyles(theme => ({
 	paper: {
-		marginTop: theme.spacing(3),
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		backgroundColor: "#9D4EDD",
-		borderRadius: "2rem",
+		borderBottomLeftRadius: "2rem",
+		borderBottomRightRadius: "2rem",
 		padding: "1rem",
 		color: "white"
 	},
@@ -82,43 +80,20 @@ const useStyles = makeStyles(theme => ({
 	},
 	form: {
 		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(3),
+		marginTop: theme.spacing(2),
 		color: "white"
 	},
 	submit: {
 		margin: theme.spacing(3, 0, 2),
 		borderRadius: "2rem",
-		fontWeight: "bold"
+		fontWeight: "bold",
+		color: "white"
 	},
 	whiteBox: {
 		color: "white"
 	},
-
-	inputField: {
-		"& label.Mui-focused": {
-			color: "white"
-		},
-		"& .MuiFormLabel-root": {
-			color: "white"
-		},
-		"& .MuiInput-underline:after": {
-			borderBottomColor: "white",
-			labelcolor: "white"
-		},
-		"& .MuiOutlinedInput-root": {
-			"& fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			},
-			"&:hover fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			},
-			"&.Mui-focused fieldset": {
-				borderColor: "white",
-				labelcolor: "white"
-			}
-		}
+	allNightLong: {
+		width: "100%"
 	}
 }));
 
@@ -146,7 +121,7 @@ const SignUp = () => {
 		actions.register(data);
 	};
 	return (
-		<Container component="main" maxWidth="xs">
+		<Container component="main" maxWidth="xs" style={{ padding: 0 }}>
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar src={LogoNebula} className={classes.avatar} />
@@ -155,8 +130,7 @@ const SignUp = () => {
 				</Typography>
 				<form action="" method="post" className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
 					<Grid container spacing={1}>
-						<Grid item sm={12}>
-							<label htmlFor="first_name">First Name</label>
+						<Grid item xs={12} className={classes.allNightLong}>
 							<Controller
 								name="first_name"
 								control={control}
@@ -175,8 +149,7 @@ const SignUp = () => {
 								)}
 							/>
 						</Grid>
-						<Grid item sm={12}>
-							<label htmlFor="last_name">Last Name</label>
+						<Grid item xs={12}>
 							<Controller
 								name="last_name"
 								control={control}
@@ -186,15 +159,16 @@ const SignUp = () => {
 										{...field}
 										fullWidth
 										id="last_name"
+										label="Last Name"
 										name="last_name"
 										autoComplete="lname"
+										autoFocus
 										required
 									/>
 								)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<label htmlFor="email">Email</label>
 							<Controller
 								name="email"
 								control={control}
@@ -204,7 +178,7 @@ const SignUp = () => {
 										{...field}
 										required
 										fullWidth
-										id="email"
+										id="emailRegister"
 										label="Email Address"
 										name="email"
 										autoComplete="email"
@@ -212,8 +186,8 @@ const SignUp = () => {
 								)}
 							/>
 						</Grid>
+
 						<Grid item xs={12}>
-							<label htmlFor="username">Username</label>
 							<Controller
 								name="username"
 								control={control}
@@ -221,18 +195,18 @@ const SignUp = () => {
 								render={({ field }) => (
 									<Input
 										{...field}
+										autoComplete="username"
+										name="username"
 										fullWidth
 										id="username"
 										label="Username"
-										name="username"
-										autoComplete="username"
+										autoFocus
 										required
 									/>
 								)}
 							/>
 						</Grid>
 						<Grid item xs={12}>
-							<label htmlFor="password">Password</label>
 							<Controller
 								name="password"
 								control={control}
@@ -244,7 +218,7 @@ const SignUp = () => {
 										name="password"
 										label="Password"
 										type="password"
-										id="password"
+										id="passwordRegister"
 										autoComplete="current-password"
 										required
 									/>
@@ -283,18 +257,18 @@ const SignUp = () => {
 					</Grid>
 					<ThemeProvider theme={costumTheme}>
 						<Button
+							to="/controlpage"
 							type="submit"
 							fullWidth
 							variant="contained"
 							color="secondary"
-							borderRadius="50%"
 							className={classes.submit}>
 							Sign Up
 						</Button>
 					</ThemeProvider>
 					<Grid container justifyContent="flex-end">
 						<Grid item>
-							<Link href="#" variant="body2">
+							<Link to="/login" variant="body2">
 								Already have an account? Sign in
 							</Link>
 						</Grid>

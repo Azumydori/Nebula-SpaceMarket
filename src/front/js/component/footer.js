@@ -80,7 +80,6 @@ const useStyles = makeStyles(theme => ({
 		background: "#5A189A"
 	},
 	containerLinks: {
-		alignContent: "center",
 		display: "flex",
 		justifyContent: "start",
 		flexDirection: "Column"

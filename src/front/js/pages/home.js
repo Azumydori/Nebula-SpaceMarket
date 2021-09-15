@@ -6,13 +6,14 @@ import "../../styles/home.scss";
 import "../../styles/categories.scss";
 
 import Jumbotron from "../component/jumbo.js";
-import Signup from "./registerpage.js";
+import Signup from "../component/registerpage.js";
 import Categories from "../component/categories.js";
 import PaginationCards from "../component/cardpagination.js";
 
 import bitcoin from "../../img/bitcoin.png";
 import innovation from "../../img/innovation.png";
 import secure from "../../img/secure.png";
+import LogRegister from "../component/log&register.js";
 
 const Home = () => {
 	const { store, actions } = useContext(Context);
@@ -27,7 +28,7 @@ const Home = () => {
 					/>
 				</div>
 				<div className="col-5 login">
-					<Signup />
+					<LogRegister />
 				</div>
 			</div>
 
