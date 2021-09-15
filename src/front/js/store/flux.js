@@ -1,10 +1,10 @@
 import jwt_decode from "jwt-decode";
-import UserProfile from "../pages/userprofile";
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu16.gitpod.io/api",
+			baseURL: "https://3001-coral-crane-a2it6dfq.ws-eu16.gitpod.io/api",
+			domainURL: "https://3000-coral-crane-a2it6dfq.ws-eu16.gitpod.io/",
 			currentUser: {},
 			wishlist: [1, 4, 7],
 			cart: [],
@@ -105,12 +105,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
+			getUser: (id, currentUser) => {
+				fetch(getStore().baseURL.concat("/account", id))
+					.then(function(response) {
+						if (!response.ok) {
+							throw Error("I can't load user!");
+						}
+						return response.json();
+						console.log(response);
+					})
+					.then(function(responseAsJson) {
+						if (currentUser == true) {
+							setStore({ currentUser: responseAsJson });
+						} else {
+							setStore({ user: responseAsJson });
+						}
+					})
+					.catch(function(error) {
+						console.log("Looks like there was a problem: \n", error);
+					});
+			},
+
 			register: credentials => {
+				const redirect = () => {
+					if (localStorage.getItem("jwt-token") != null) {
+						window.location = getStore().domainURL.concat("controlpage");
+					}
+				};
+
 				console.log(credentials);
 				fetch(getStore().baseURL.concat("/account"), {
 					method: "POST",
 					body: JSON.stringify(credentials),
-					headers: { "Content-Type": "application/json" }
+					headers: new Headers({
+						"Content-Type": "application/json",
+						"Sec-Fetch-Mode": "no-cors"
+					})
 				})
 					.then(resp => {
 						if (!resp.ok) {
@@ -118,15 +148,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					})
 					.then(responseAsJson => {
-						localStorage.setItem("token", responseAsJson);
+						localStorage.setItem("jwt-token", responseAsJson);
+						redirect();
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 
 			login: credentials => {
+				const redirect = () => {
+					if (localStorage.getItem("jwt-token") != null) {
+						window.location = getStore().domainURL.concat("controlpage");
+					}
+				};
+
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
+					headers: new Headers({
+						"Content-Type": "application/json",
+						"Sec-Fetch-Mode": "no-cors"
+					}),
 					body: JSON.stringify(credentials)
 				})
 					.then(resp => {
@@ -248,6 +288,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("there has been an error", error));
 			},
+
 			getProduct: product_id => {
 				fetch(getStore().baseURL.concat("/product/", product_id), {
 					method: "GET"
@@ -263,6 +304,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
+
 			categorySearch: category => {
 				fetch(getStore().baseURL.concat("/search/", category), {
 					method: "GET"
