@@ -31,6 +31,12 @@ const useStyles = makeStyles(theme => ({
 			display: "block"
 		}
 	},
+	linkLogo: {
+		display: "none",
+		[theme.breakpoints.up("sm")]: {
+			display: "block"
+		}
+	},
 	logoSm: {
 		margin: "0.5rem",
 		height: "3rem",
@@ -113,9 +119,9 @@ const Navbar = () => {
 		setAnchorEl(null);
 	};
 	return (
-		<AppBar position="fixed">
+		<AppBar position="fixed" elevation={0}>
 			<Toolbar className={classes.toolbar}>
-				<Link to="/" color="inherit">
+				<Link to="/" color="inherit" className={classes.linkLogo}>
 					<img src={NebulaLogoNavbar} className={classes.logoLg} />
 				</Link>
 				<Button className={classes.logoSm} onClick={() => window.history.back()}>
