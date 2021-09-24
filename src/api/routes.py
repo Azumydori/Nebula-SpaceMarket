@@ -1,8 +1,9 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+import os
 import decimal
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, redirect
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, JWTManager
 from flask_cors import CORS
 
@@ -13,8 +14,13 @@ from decimal import Decimal
 from datetime import timedelta
 
 from werkzeug.security import check_password_hash, generate_password_hash
+import stripe
 
-api = Blueprint('api', __name__)
+api = Blueprint('api', __name__, static_url_path='', static_folder='public')
+
+DOMAIN = 'https://3000-purple-meerkat-cd1lvkvr.ws-eu16.gitpod.io/checkout'
+
+stripe.api_key = 'sk_test_51JXMcbFBOOWtTsFdzgGyOBEw5Ko5pVKfaGWwM8UECLtVeJeYV6CMP4q54DgNSyMzGsKsWLpo6wQwLht68ZiafTRx00JQhIDci6'
 
 
 @api.route('/account/<int:id>', methods={"GET"})
@@ -195,11 +201,80 @@ def change_credentials(id):
             "last_name": request.json.get("last_name", None),
         }
         
-        
         account_updated = account.update_account_info(** {key: value for key, value in updated_info.items() if value is not None})
         return jsonify(account_updated.to_dict()), 200
 
     return {"error":"user not found"}, 400
 
 
+@api.route('/checkout-session', methods=['GET'])
+def get_checkout_session():
+    id = request.args.get('sessionId')
+    checkout_session = stripe.checkout.Session.retrieve(id)
+    return jsonify(checkout_session)
 
+
+@api.route("/card", methods=["GET","POST"])
+def add_card_details():
+    if request.method == 'POST':
+        card_number = request.json.get['cardNumber']
+        card_expdate = request.json.get['expiryDate']
+        card_cvv = request.json.get['cvc']
+
+        print(card_number, card_expdate, card_cvv)
+
+        tokenid = generate_card_token(card_number, card_expdate, card_cvv)
+
+        payment_done = create_payment_charge(tokenid, 40)
+
+        return jsonify({"success":payment_done})
+    else:
+        return jsonify({"error":"card information incomplete"})
+
+
+@api.route('/create-checkout-session', methods=['POST'])
+def generate_card_token(cardnumber, expdate, cvc):
+    data= stripe.Token.create(
+            card={
+                "number": str(cardnumber),
+                "exp_date": int(expdate),
+                "cvc": str(cvc),
+            })
+    card_token = data['id']
+
+    return card_token
+
+def create_checkout_session():
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    'price': 'price_1JXRtUFBOOWtTsFdSgCJbJkI',
+                    'quantity': 1,
+                },
+            ],
+            payment_method_types=[
+              'card',
+              'sofort',
+            ],
+            mode='payment',
+            success_url = DOMAIN + '?success=true',
+            cancel_url= DOMAIN + '?canceled=true',
+        )
+    except Exception as e:
+        return jsonify(error=str(e)), 403
+
+    return redirect(checkout_session.url, code=303)
+
+def create_payment_charge(tokenid, amount):
+
+    payment = stripe.Charge.create(
+                amount= int(amount)*100,                  # convert amount to cents
+                currency='usd',
+                description='Example charge',
+                source=tokenid,
+                )
+
+    payment_check = payment['paid']    # return True for successfull payment
+
+    return payment_check
