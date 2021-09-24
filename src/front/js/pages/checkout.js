@@ -20,7 +20,7 @@ const Checkout = () => {
 
 	return (
 		<div className="full-container d-flex flex-column">
-			<form action="" method="post" onSubmit={handleSubmit(onSubmit)}>
+			<form action="/create-checkout-session" method="POST" onSubmit={handleSubmit(onSubmit)}>
 				<div className="delivery-container">
 					<div className="row">
 						<div className="col-12">
