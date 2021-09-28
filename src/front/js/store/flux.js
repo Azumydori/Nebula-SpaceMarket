@@ -1,10 +1,20 @@
 import jwt_decode from "jwt-decode";
-import UserProfile from "../pages/userprofile";
 
+//importante para obtener los atributos del token
+
+//const tokenDecode = token => {
+//	let decoded = jwt_decode(token);
+//return decoded;
+//};
+//const setTravelerFromToken = token => {
+//	localStorage.setItem("tokenID", token.sub.id);
+//	localStorage.setItem("tokenName", token.sub.name);
+//};
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "https://3001-aqua-yak-7fx7gv5u.ws-eu16.gitpod.io/api",
+			baseURL: "https://3001-teal-lemming-pqtgqqqx.ws-eu18.gitpod.io/api",
+			domainURL: "https://3000-teal-lemming-pqtgqqqx.ws-eu18.gitpod.io/",
 			currentUser: {},
 			wishlist: [1, 4, 7],
 			cart: [],
@@ -105,28 +115,71 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
+			getUser: (id, currentUser) => {
+				fetch(getStore().baseURL.concat("/account/", id))
+					.then(function(response) {
+						if (!response.ok) {
+							throw Error("I can't load user!");
+						}
+						return response.json();
+					})
+					.then(function(responseAsJson) {
+						if (currentUser == true) {
+							setStore({ currentUser: responseAsJson });
+						} else {
+							setStore({ user: responseAsJson });
+						}
+					})
+					.catch(function(error) {
+						console.log("Looks like there was a problem: \n", error);
+					});
+			},
+
 			register: credentials => {
+				const redirect = () => {
+					if (localStorage.getItem("jwt-token") != null) {
+						window.location = getStore().domainURL.concat("controlpage");
+					}
+				};
+
 				console.log(credentials);
 				fetch(getStore().baseURL.concat("/account"), {
 					method: "POST",
 					body: JSON.stringify(credentials),
-					headers: { "Content-Type": "application/json" }
+					headers: new Headers({
+						"Content-Type": "application/json",
+						"Sec-Fetch-Mode": "no-cors"
+					})
 				})
-					.then(resp => {
-						if (!resp.ok) {
-							throw Error("Invalid register info");
+					.then(function(response) {
+						console.log(response);
+						if (!response.ok) {
+							throw Error("I can't register this traveler!");
 						}
+						return response.json();
 					})
-					.then(responseAsJson => {
-						localStorage.setItem("token", responseAsJson);
+					.then(function(responseAsJson) {
+						localStorage.setItem("token", responseAsJson.token);
+						redirect();
 					})
-					.catch(error => console.error("There as been an unknown error", error));
+					.catch(function(error) {
+						console.log("Looks like there was a problem: \n", error);
+					});
 			},
 
 			login: credentials => {
+				const redirect = () => {
+					if (localStorage.getItem("jwt-token") != null) {
+						window.location = getStore().domainURL.concat("controlpage");
+					}
+				};
+
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
+					headers: new Headers({
+						"Content-Type": "application/json",
+						"Sec-Fetch-Mode": "no-cors"
+					}),
 					body: JSON.stringify(credentials)
 				})
 					.then(resp => {
@@ -161,49 +214,61 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					})
 					.then(responseAsJson => {
-						console.log(data);
+						console.log(responseAsJson);
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 
 			favorite: product_id => {
 				let myToken = localStorage.getItem("token");
-				let myUser = getStore().currentUser.id;
-				console.log("Soy favorite");
-				fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
-					method: "POST",
-					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
-					body: JSON.stringify({ product_id: product_id })
-				})
-					.then(resp => {
-						if (!resp.ok) {
-							throw Error("Invalid register info");
-						}
+
+				const tokenDecode = token => {
+					let decoded = jwt_decode(token);
+					return decoded;
+				};
+				const myUser = tokenDecode(myToken);
+				if (myUser != undefined) {
+					fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
+						method: "POST",
+						headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+						body: JSON.stringify({ product_id: product_id })
 					})
-					.then(responseAsJson => {
-						setStore({ whishList: responseAsJson });
-					})
-					.catch(error => console.error("There as been an unknown error", error));
+						.then(resp => {
+							if (!resp.ok) {
+								throw Error("Invalid register info");
+							}
+						})
+						.then(responseAsJson => {
+							setStore({ whishList: responseAsJson });
+						})
+						.catch(error => console.error("There as been an unknown error", error));
+				} else {
+					console.log(myToken);
+				}
 			},
 
 			unFavorite: product_id => {
 				let myToken = localStorage.getItem("token");
-				let myUser = getStore().currentUser.id;
-				console.log("Soy unfavorite");
-				fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
-					method: "DELETE",
-					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
-					body: JSON.stringify({ product_id: product_id })
-				})
-					.then(resp => {
-						if (!resp.ok) {
-							throw Error("Invalid register info");
-						}
+				let myUser = getStore().currentUser.sub;
+				if (myUser != undefined) {
+					fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
+						method: "DELETE",
+						headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+						body: JSON.stringify({ product_id: product_id })
 					})
-					.then(responseAsJson => {
-						setStore({ whishList: responseAsJson });
-					})
-					.catch(error => console.error("There as been an unknown error", error));
+						.then(resp => {
+							if (!resp.ok) {
+								throw Error("Invalid register info");
+							}
+						})
+						.then(responseAsJson => {
+							setStore({ whishList: responseAsJson });
+						})
+						.catch(error => console.error("There as been an unknown error", error));
+				} else {
+					console.log(myUser);
+					//window.location = getStore().domainURL.concat("login");
+				}
 			},
 
 			shopCart: product_id => {
@@ -229,7 +294,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			changeAccountInfo: data => {
 				const token = localStorage.getItem("token");
 				const tokenID = localStorage.getItem("tokenID");
-				fetch(getStore().baseURL.concat("/account", id), {
+				fetch(getStore().baseURL.concat("/account/", id), {
 					method: "PATCH",
 					body: JSON.stringify(data),
 					headers: {
@@ -248,6 +313,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("there has been an error", error));
 			},
+
 			getProduct: product_id => {
 				fetch(getStore().baseURL.concat("/product/", product_id), {
 					method: "GET"
@@ -263,6 +329,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
+
 			categorySearch: category => {
 				fetch(getStore().baseURL.concat("/search/", category), {
 					method: "GET"

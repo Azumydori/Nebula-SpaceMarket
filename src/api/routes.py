@@ -36,8 +36,6 @@ def create_account():
     password = request.json.get("password", None)
     username = request.json.get("username", None)
 
-    print(first_name, last_name, email, password, username)
-
     if not (first_name and last_name and email and password and username):
         return {"error":"Missing info"}, 400
 
@@ -51,9 +49,17 @@ def create_account():
 
     try:
         new_user.create()
-        return jsonify(new_user.to_dict()), 201
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
+
+    account = Account.get_by_email(email)
+
+
+    if account :
+        token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
+        return({'token' : token}), 200
+
+    
 
 @api.route('/login', methods=["POST"])
 def login():
@@ -64,12 +70,17 @@ def login():
         return({'error':'Missing info'}), 400
 
     account = Account.get_by_email(email)
-
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",account)
     if account and check_password_hash(account._password, password) and account._is_active:
-        token = create_access_token(identity=account.id, expires_delta=timedelta(minutes=100))
-        return({'token' : token}), 200
+        token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
+        print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",token)
+        return({'token' : token}) , 200
     else:
         return({'error':'Some parameter is wrong'}), 400
+
+
+
+
 
 
 @api.route('/account/<int:id>', methods = ['PATCH'])
@@ -204,4 +215,11 @@ def change_credentials(id):
     return {"error":"user not found"}, 400
 
 
+@api.route('/search/<int:category>', methods={"GET"})
+def get_products(category):
+    one_product = Product.get_category(id)
 
+    if one_product:
+        return jsonify(one_product.to_dict()), 200
+    
+    return({"error": "Product not found"}), 404

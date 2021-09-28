@@ -22,6 +22,7 @@ import NotFound from "./pages/notfound";
 import ControlPage from "./pages/controlpage";
 import LogRegister from "./component/log&register";
 import PrivacyPolicy from "./pages/privacy-policy.js";
+
 //create your first component
 const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain

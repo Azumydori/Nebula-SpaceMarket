@@ -8,13 +8,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
-
+import CustomSeparator from "../component/bread.js";
 import MediaCard from "../component/card.js";
+import { Box } from "@material-ui/core";
 const useStyles = makeStyles(theme => ({
-	purpledition: {
-		backgroundColor: "#9D4EDD",
-		paddingTop: "5px",
-		paddingBottom: "5px"
+	spacing: {
+		marginTop: "5rem"
 	},
 	rectangle1: {
 		width: "100%",
@@ -30,6 +29,9 @@ const useStyles = makeStyles(theme => ({
 		width: "100%",
 		height: "2%",
 		background: "#5A189A"
+	},
+	spacingControl: {
+		marginTop: "0.75rem"
 	}
 }));
 const ControlPage = props => {
@@ -38,7 +40,7 @@ const ControlPage = props => {
 	const [productTab, setProductTab] = useState(
 		<img src="https://c.tenor.com/DBqjevyA2o4AAAAd/bongo-cat-codes.gif" />
 	);
-
+	console.log(localStorage.getItem("token"));
 	//Recibo el parametro.
 	const params = useParams();
 
@@ -51,7 +53,7 @@ const ControlPage = props => {
 						//let object = actions.getProduct(element);
 						let object = element;
 						return (
-							<Grid item key={index} xs={6} sm={4} md={2} aligncontent="center">
+							<Grid item key={index} xs={6} sm={4} md={3} xl={2} aligncontent="center">
 								<MediaCard
 									id_product={object.id}
 									title_card={object.product_name}
@@ -73,7 +75,7 @@ const ControlPage = props => {
 						let object = element;
 						if (element.category == params.str) {
 							return (
-								<Grid item key={index} xs={6} sm={4} md={2} aligncontent="center">
+								<Grid item key={index} xs={6} sm={4} md={3} xl={2}>
 									<MediaCard
 										id_product={object.id}
 										title_card={object.product_name}
@@ -92,23 +94,59 @@ const ControlPage = props => {
 		[params.str]
 	);
 
+	const selectorCategory = category => {
+		if (category == undefined) {
+			return (
+				<div>
+					<CustomSeparator first="Nebula" second="Control Page" third="All" />
+					<Typography
+						component="h4"
+						variant="h4"
+						color="textPrimary"
+						gutterBottom
+						className={classes.spacingControl}>
+						All products:
+					</Typography>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<CustomSeparator first="Nebula" second="Control Page" third={category} />
+					<Typography
+						component="h4"
+						variant="h4"
+						color="textPrimary"
+						gutterBottom
+						className={classes.spacingControl}>
+						{category} products:
+					</Typography>
+				</div>
+			);
+		}
+	};
+
 	return (
-		<div className="text-center mt-5">
+		<div className={classes.spacing}>
 			<div>
 				<Container maxWidth="sm" align="center">
-					<Typography component="h1" variant="h2" color="textPrimary" gutterBottom>
-						Select Category
-					</Typography>
+					{
+						<Typography component="h1" variant="h2" color="textPrimary" gutterBottom>
+							Select Category
+						</Typography>
+					}
 				</Container>
 			</div>
 
-			<div className={classes.purpledition}>
+			<div>
 				<Categories />
 			</div>
+			<Box m={2}>{selectorCategory(params.str)}</Box>
 
 			<Grid container gridtemplatecolumns="repeat(12, 2fr)" align="center">
 				{productTab}
 			</Grid>
+			<div />
 		</div>
 	);
 };

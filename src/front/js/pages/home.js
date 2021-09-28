@@ -51,9 +51,6 @@ const Home = () => {
 			</div>
 
 			<div>
-				<div className="row d-flex container justify-content-center mt-3">
-					<h2>The stuff we can help you sell</h2>
-				</div>
 				<Categories />
 			</div>
 

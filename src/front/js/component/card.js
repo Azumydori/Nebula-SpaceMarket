@@ -5,8 +5,6 @@ import { Context } from "../store/appContext";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
@@ -25,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 		justifyContent: "flex-end",
 
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("md")]: {
 			maxWidth: 169.5,
 			maxHeight: 225.594
 		}
@@ -64,7 +62,7 @@ const useStyles = makeStyles(theme => ({
 			display: "flex"
 		},
 
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("md")]: {
 			maxWidth: 169.5,
 			maxHeight: 134.594
 		}
@@ -99,7 +97,7 @@ const useStyles = makeStyles(theme => ({
 		color: "textSecondary",
 		component: "p",
 		textAlign: "left",
-		[theme.breakpoints.down("sm")]: {
+		[theme.breakpoints.down("md")]: {
 			display: "none"
 		}
 	},
@@ -112,17 +110,25 @@ const MediaCard = props => {
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
 	const [favorite, setFavorite] = useState(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
-	actions.favorite();
-	const URL_CARD = "/product-detail/" + props.id_product;
+
+	const URL_CARD = "/productDetail/" + props.id_product;
 
 	useEffect(
 		() => {
-			if (store.wishlist.find(element => element === props.id_product)) {
-				setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
+			if (store.wishlist.length == 0) {
+				actions.favorite();
+				if (store.wishlist.find(element => element === props.id_product)) {
+					setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
+				} else {
+					setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+				}
 			} else {
-				setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+				if (store.wishlist.find(element => element === props.id_product)) {
+					setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
+				} else {
+					setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+				}
 			}
-			store.wishlist.find(element => {});
 		},
 		[store.whishList]
 	);
@@ -137,14 +143,14 @@ const MediaCard = props => {
 	};
 
 	return (
-		<Link href={URL_CARD}>
-			<Card className={classes.root}>
+		<Card className={classes.root}>
+			<Link href={URL_CARD} style={{ textDecoration: "none", color: "black" }}>
 				<CardMedia className={classes.media} image={props.image_card}>
 					<Button
 						className={classes.genericButton}
 						onClick={event => {
 							event.preventDefault();
-							if (store.whishList.find(element => element === props.id_product)) {
+							if (store.wishlist.find(element => element === props.id_product)) {
 								actions.unFavorite(props.id_product);
 							} else {
 								actions.favorite(props.id_product);
@@ -182,8 +188,8 @@ const MediaCard = props => {
 						</Button>
 					</div>
 				</CardContent>
-			</Card>
-		</Link>
+			</Link>
+		</Card>
 	);
 };
 

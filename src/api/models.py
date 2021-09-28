@@ -16,7 +16,6 @@ class Account(db.Model):
    __tablename__ = 'account'
 
    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-
    username=db.Column(db.String, unique=True, nullable = False)
    first_name=db.Column(db.String, nullable=False)
    last_name=db.Column(db.String, nullable=False)
@@ -29,11 +28,9 @@ class Account(db.Model):
    _password = db.Column(db.String, nullable=False)
    _is_active = db.Column(db.Boolean, default=True)
    payment_type = db.Column(db.Enum("Fiat", "Paypal", "Crypto", name="payment"))
-
    review_text = db.Column(db.String)
    reviews_id = db.Column(db.Integer, db.ForeignKey('account.id'))
    have_reviews = db.relationship('Account', backref = db.backref('reviews', remote_side=[id]), lazy='dynamic')
-
    order_id = relationship("Order", lazy=True)
    have_product = relationship("Product", lazy=True, backref = "account")
    have_wishlist = relationship("Product", secondary = "wishlist")
@@ -58,6 +55,12 @@ class Account(db.Model):
    def create(self):
       db.session.add(self)
       db.session.commit()
+   
+   def validate_email(self, email):
+        if self.email == email:
+            return True
+        else:
+            return False
 
    def update_account_status(self):
         self._is_active = not _is_active
@@ -155,6 +158,11 @@ class Product(db.Model):
    def get_by_id(cls, id):
       one_product = cls.query.get(id)
       return one_product
+
+   @classmethod
+   def get_category(cls, category):
+      products = cls.query.get(category)
+      return products
 
 class Wishlist(db.Model):
    __tablename__ = 'wishlist'
