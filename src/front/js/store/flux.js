@@ -202,21 +202,62 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 			},
 
-			upload: data => {
-				fetch(getStore().baseURL.concat("/product"), {
+			upload: (data, media) => {
+				let token = localStorage.getItem("token");
+				const redirect = () => {
+					if (localStorage.getItem("jwt-token") != null) {
+						window.location = getStore().domainURL.concat("controlpage");
+					}
+				};
+				const productMedia = (media, id) => {
+					let mybody = new FormData();
+					console.log(media);
+					mybody.append("media", media[0]);
+					fetch(getStore().baseURL.concat("/productmedia/", id), {
+						body: mybody,
+						method: "POST"
+					})
+						.then(function(response) {
+							if (!response.ok) {
+								throw Error("I can't upload media!");
+							}
+
+							return response.json();
+						})
+						.catch(function(error) {
+							console.log("Looks like there was a problem in media: \n", error);
+						});
+				};
+				//fetch(getStore().baseURL.concat("/newproduct/", localStorage.getItem("tokenID")), {
+				fetch(getStore().baseURL.concat("/newproduct/1"), {
 					method: "POST",
-					body: JSON.stringify(data),
-					headers: { "Content-Type": "application/json" }
+					body: data,
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+						"Sec-Fetch-Mode": "no-cors"
+					}
 				})
-					.then(resp => {
-						if (!resp.ok) {
-							throw Error("Invalid product info");
+					.then(function(response) {
+						if (!response.ok) {
+							throw Error("New product error");
+						}
+						return response.json();
+					})
+					.then(function(responseAsJson) {
+						productMedia(media, 2);
+						setStore({ posts: responseAsJson });
+						if (media[0]) {
+							setTimeout(() => {
+								redirect();
+							}, 2500);
+						} else {
+							redirect();
 						}
 					})
-					.then(responseAsJson => {
-						console.log(responseAsJson);
-					})
-					.catch(error => console.error("There as been an unknown error", error));
+					.catch(function(error) {
+						console.log("Looks like there was a problem in data: \n", error);
+					});
 			},
 
 			favorite: product_id => {

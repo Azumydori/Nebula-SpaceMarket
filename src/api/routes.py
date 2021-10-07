@@ -12,7 +12,12 @@ from sqlalchemy import exc
 from decimal import Decimal
 from datetime import timedelta
 
+from api.utils import generate_sitemap, APIException
 from werkzeug.security import check_password_hash, generate_password_hash
+
+import cloudinary
+import cloudinary.uploader
+
 
 api = Blueprint('api', __name__)
 
@@ -223,3 +228,48 @@ def get_products(category):
         return jsonify(one_product.to_dict()), 200
     
     return({"error": "Product not found"}), 404
+
+
+@api.route('/productmedia/<int:id>', methods=['POST'])
+def update_media_post(id):
+    
+    if 'media' in request.files:
+
+        result = cloudinary.uploader.upload(request.files['media'])
+        mediaProduct = Product.get_by_id(id)
+        mediaProduct.media = result['secure_url']
+
+        db.session.add(mediaProduct)
+        db.session.commit()
+
+        return jsonify(mediaProduct.to_dict()), 200
+
+    else:
+        raise APIException('Missing profile_image on the FormData')
+
+@api.route('/newproduct/<int:id>', methods=['POST'])
+#@jwt_required()
+def new_product(id):
+    account_id = 1
+    price = request.json.get('price',None)
+    text = request.json.get('text',None)
+    category = request.json.get('category',None)
+    product_name = request.json.get('product_name',None)
+    media = ""
+
+    
+    new_product = Product(
+                account_id=account_id,
+                product_name=product_name,
+                price=price,
+                text=text,
+                category=category,
+                media=media
+            )
+
+    if new_product: 
+        new_product.create()
+        return jsonify(new_product.to_dict()),201
+
+    else:
+        return {'error':'Something went wrong'},409

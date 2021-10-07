@@ -54,9 +54,7 @@ const Home = () => {
 				<Categories />
 			</div>
 
-			<div>
-				<PaginationCards />
-			</div>
+			<div />
 		</div>
 	);
 };
