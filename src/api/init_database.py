@@ -7,6 +7,7 @@ from sqlalchemy.exc import IntegrityError
 import models
 from models import db 
 from seed_data import data
+from app import app
 
 def load ():
     for table, rows in data.items():
@@ -16,17 +17,16 @@ def load ():
         for row in rows:
             inserted = insert(ModelClass).values(**row)
             print(inserted)
-        
+            db.session.execute(inserted)
         
         try:
-            db.session.execute(inserted)
             db.session.commit()
         except IntegrityError as exception:
             print(f'Fail inserting {row}, {exception}')
         
 
 if __name__ =="__main__":
-    app = Flask(__name__)
+    #app = Flask(__name__)
 
     print(os.environ.get('DATABASE_URL'), 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
     app.config['SQALCHEMY_DATABASE_URI']= os.environ.get('DATABASE_URL')
