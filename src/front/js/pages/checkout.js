@@ -25,39 +25,36 @@ const Checkout = () => {
 	const onSubmit = data => console.log(data);
 	console.log(errors);
 
-	const StripeComponent = event => {
+	const handleStripe = async event => {
 		const stripe = useStripe();
 		const elements = useElements();
 		event.preventDefault();
+		console.log("event: ", event);
+		const { error, paymentMethod } = await stripe.createPaymentMethod({
+			type: "card",
+			card: elements.getElement(CardElement)
+		});
 
-		const handleStripe = async event => {
-			console.log("event: ", event);
-			const { error, paymentMethod } = await stripe.createPaymentMethod({
-				type: "card",
-				card: elements.getElement(CardElement)
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(paymentMethod);
+			axios({
+				url: "https://3001-purple-meerkat-cd1lvkvr.ws-eu18.gitpod.io/api/payment/card",
+				method: "POST",
+				data: {
+					id: paymentMethod.id,
+					description: "Viva el capitalismo",
+					amount: 50 * 100
+				}
 			});
-
-			if (error) {
-				console.log(error);
-			} else {
-				console.log(paymentMethod);
-				axios({
-					url: "https://3001-purple-meerkat-cd1lvkvr.ws-eu18.gitpod.io/api/payment/card",
-					method: "POST",
-					data: {
-						id: paymentMethod.id,
-						description: "Viva el capitalismo",
-						amount: 50 * 100
-					}
-				});
-			}
-		};
+		}
 	};
 
 	return (
 		<Elements stripe={stripePromise}>
 			<div className="full-container d-flex flex-column">
-				<form onSubmit={event => StripeComponent(event)}>
+				<form onSubmit={event => handleStripe(event)}>
 					<div className="delivery-container">
 						<div className="row">
 							<div className="col-12">
