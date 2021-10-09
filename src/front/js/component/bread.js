@@ -24,9 +24,7 @@ const CustomSeparator = props => {
 		<Link underline="hover" key="2" color="inherit" href="/controlpage/">
 			{props.second}
 		</Link>,
-		<Typography key="3" color="text.primary">
-			{props.third}
-		</Typography>
+		<Typography key="3">{props.third}</Typography>
 	];
 
 	return (

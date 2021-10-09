@@ -141,8 +141,10 @@ class Product(db.Model):
       return f'Product id: {self.id}, name: {self.product_name}, description: {self.text}, price: {self.price}, category: {self.category}'
 
    def to_dict(self):
+      account = Account.get_by_id(self.account_id)
       return{
         "id": self.id,
+        "vendor_name":account.username,
         "product_name": self.product_name,
         "text": self.text,
         "media": self.media,
@@ -163,6 +165,11 @@ class Product(db.Model):
    @classmethod
    def get_category(cls, category):
       products = cls.query.get(category)
+      return products
+
+   @classmethod
+   def get_all(cls):
+      products = cls.query.all()
       return products
 
 class Wishlist(db.Model):

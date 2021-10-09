@@ -197,7 +197,7 @@ MediaCard.propTypes = {
 	id_product: PropTypes.number,
 	title_card: PropTypes.string,
 	description_card: PropTypes.string,
-	ammount: PropTypes.number,
+	ammount: PropTypes.string,
 	vendor_name: PropTypes.string,
 	image_card: PropTypes.string
 };

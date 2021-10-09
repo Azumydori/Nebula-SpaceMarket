@@ -40,14 +40,40 @@ const ControlPage = props => {
 	const [productTab, setProductTab] = useState(
 		<img src="https://c.tenor.com/DBqjevyA2o4AAAAd/bongo-cat-codes.gif" />
 	);
-	console.log(localStorage.getItem("token"));
 	//Recibo el parametro.
 	const params = useParams();
 
 	useEffect(
 		() => {
-			console.log(params.str);
+			console.log("Soy store", store.allProducts);
+
+			if (store.allProducts != 0) {
+				setProductTab(
+					store.allProducts.map((element, index) => {
+						return (
+							<Grid item key={index} xs={6} sm={4} md={3} xl={2} aligncontent="center">
+								<MediaCard
+									id_product={element.id}
+									title_card={element.product_name}
+									description_card={element.product_name}
+									ammount={element.price}
+									vendor_name={element.vendor_name}
+									image_card={element.media}
+								/>
+							</Grid>
+						);
+					})
+				);
+			}
+		},
+		[store.allProducts]
+	);
+
+	useEffect(
+		() => {
+			actions.getProducts();
 			if (params.str === undefined) {
+				console.log("Soy store", store.allProducts);
 				setProductTab(
 					store.product.map((element, index) => {
 						//let object = actions.getProduct(element);
@@ -99,12 +125,7 @@ const ControlPage = props => {
 			return (
 				<div>
 					<CustomSeparator first="Nebula" second="Control Page" third="All" />
-					<Typography
-						component="h4"
-						variant="h4"
-						color="textPrimary"
-						gutterBottom
-						className={classes.spacingControl}>
+					<Typography component="h4" variant="h4" gutterBottom className={classes.spacingControl}>
 						All products:
 					</Typography>
 				</div>
@@ -113,12 +134,7 @@ const ControlPage = props => {
 			return (
 				<div>
 					<CustomSeparator first="Nebula" second="Control Page" third={category} />
-					<Typography
-						component="h4"
-						variant="h4"
-						color="textPrimary"
-						gutterBottom
-						className={classes.spacingControl}>
+					<Typography component="h4" variant="h4" gutterBottom className={classes.spacingControl}>
 						{category} products:
 					</Typography>
 				</div>
@@ -131,7 +147,7 @@ const ControlPage = props => {
 			<div>
 				<Container maxWidth="sm" align="center">
 					{
-						<Typography component="h1" variant="h2" color="textPrimary" gutterBottom>
+						<Typography component="h1" variant="h2" gutterBottom>
 							Select Category
 						</Typography>
 					}

@@ -4,21 +4,21 @@ import jwt_decode from "jwt-decode";
 
 //const tokenDecode = token => {
 //	let decoded = jwt_decode(token);
-//return decoded;
+//	return decoded;
 //};
-//const setTravelerFromToken = token => {
-//	localStorage.setItem("tokenID", token.sub.id);
-//	localStorage.setItem("tokenName", token.sub.name);
+//const setUserFromToken = token => {
+//	localStorage.setItem("Id", token.sub.id);
+//	localStorage.setItem("Name", token.sub.first_name);
 //};
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			baseURL: "https://3001-teal-lemming-pqtgqqqx.ws-eu18.gitpod.io/api",
 			domainURL: "https://3000-teal-lemming-pqtgqqqx.ws-eu18.gitpod.io/",
-			currentUser: {},
 			wishlist: [1, 4, 7],
 			cart: [],
 			searchProduct: [],
+			allProducts: [],
 			product: [
 				{
 					id: 1,
@@ -115,31 +115,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
-			getUser: (id, currentUser) => {
-				fetch(getStore().baseURL.concat("/account/", id))
-					.then(function(response) {
-						if (!response.ok) {
-							throw Error("I can't load user!");
-						}
-						return response.json();
-					})
-					.then(function(responseAsJson) {
-						if (currentUser == true) {
-							setStore({ currentUser: responseAsJson });
-						} else {
-							setStore({ user: responseAsJson });
-						}
-					})
-					.catch(function(error) {
-						console.log("Looks like there was a problem: \n", error);
-					});
-			},
-
 			register: credentials => {
 				const redirect = () => {
 					if (localStorage.getItem("jwt-token") != null) {
 						window.location = getStore().domainURL.concat("controlpage");
 					}
+				};
+				const tokenDecode = token => {
+					let decoded = jwt_decode(token);
+					return decoded;
+				};
+				const setUserFromToken = token => {
+					localStorage.setItem("Id", token.sub.id);
+					localStorage.setItem("Name", token.sub.first_name);
 				};
 
 				console.log(credentials);
@@ -158,8 +146,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 						return response.json();
 					})
-					.then(function(responseAsJson) {
-						localStorage.setItem("token", responseAsJson.token);
+					.then(data => {
+						localStorage.setItem("jwt-token", data.token);
+						const tokenDecoded = tokenDecode(data.token);
+						setUserFromToken(tokenDecoded);
 						redirect();
 					})
 					.catch(function(error) {
@@ -172,6 +162,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (localStorage.getItem("jwt-token") != null) {
 						window.location = getStore().domainURL.concat("controlpage");
 					}
+				};
+				const tokenDecode = token => {
+					let decoded = jwt_decode(token);
+					return decoded;
+				};
+				const setUserFromToken = token => {
+					localStorage.setItem("Id", token.sub.id);
+					localStorage.setItem("Name", token.sub.first_name);
 				};
 
 				fetch(getStore().baseURL.concat("/login"), {
@@ -194,16 +192,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(data => {
 						localStorage.setItem("jwt-token", data.token);
+						const tokenDecoded = tokenDecode(data.token);
+						setUserFromToken(tokenDecoded);
 						redirect();
 					})
 					.catch(error => {
-						console.error("There as been an unknown error", error);
+						alert("hey");
 						localStorage.removeItem("jwt-token");
 					});
 			},
 
 			upload: (data, media) => {
-				let token = localStorage.getItem("token");
+				let token = localStorage.getItem("jwt-token");
+				let id = localStorage.getItem("Id");
 				const redirect = () => {
 					if (localStorage.getItem("jwt-token") != null) {
 						window.location = getStore().domainURL.concat("controlpage");
@@ -228,8 +229,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.log("Looks like there was a problem in media: \n", error);
 						});
 				};
-				//fetch(getStore().baseURL.concat("/newproduct/", localStorage.getItem("tokenID")), {
-				fetch(getStore().baseURL.concat("/newproduct/1"), {
+				fetch(getStore().baseURL.concat("/newproduct/", id), {
 					method: "POST",
 					body: data,
 					headers: {
@@ -245,8 +245,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return response.json();
 					})
 					.then(function(responseAsJson) {
-						productMedia(media, 2);
+						productMedia(media, id);
 						setStore({ posts: responseAsJson });
+						//Hay que meterle tiempo para que pueda cargar la informacion, si no da fallos
 						if (media[0]) {
 							setTimeout(() => {
 								redirect();
@@ -256,12 +257,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					})
 					.catch(function(error) {
-						console.log("Looks like there was a problem in data: \n", error);
+						console.log("Upload error \n", error);
 					});
 			},
 
 			favorite: product_id => {
-				let myToken = localStorage.getItem("token");
+				let myToken = localStorage.getItem("jwt-token");
 
 				const tokenDecode = token => {
 					let decoded = jwt_decode(token);
@@ -289,7 +290,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			unFavorite: product_id => {
-				let myToken = localStorage.getItem("token");
+				let myToken = localStorage.getItem("jwt-token");
 				let myUser = getStore().currentUser.sub;
 				if (myUser != undefined) {
 					fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
@@ -333,9 +334,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			changeAccountInfo: data => {
-				const token = localStorage.getItem("token");
-				const tokenID = localStorage.getItem("tokenID");
-				fetch(getStore().baseURL.concat("/account/", id), {
+				const token = localStorage.getItem("jwt-token");
+				const tokenID = localStorage.getItem("Id");
+				fetch(getStore().baseURL.concat("/account", id), {
 					method: "PATCH",
 					body: JSON.stringify(data),
 					headers: {
@@ -354,9 +355,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("there has been an error", error));
 			},
-
+			getProducts: () => {
+				fetch(getStore().baseURL.concat("/product"), {
+					method: "GET",
+					headers: new Headers({
+						"Content-Type": "application/json",
+						"Sec-Fetch-Mode": "no-cors"
+					})
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid products");
+						}
+						return resp.json();
+					})
+					.then(responseAsJson => {
+						setStore({ allProducts: responseAsJson });
+						console.log(responseAsJson);
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
 			getProduct: product_id => {
-				fetch(getStore().baseURL.concat("/product/", product_id), {
+				fetch(getStore().baseURL.concat("/product", product_id), {
 					method: "GET"
 				})
 					.then(resp => {
@@ -370,7 +390,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
-
 			categorySearch: category => {
 				fetch(getStore().baseURL.concat("/search/", category), {
 					method: "GET"

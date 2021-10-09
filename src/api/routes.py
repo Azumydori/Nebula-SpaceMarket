@@ -75,11 +75,11 @@ def login():
         return({'error':'Missing info'}), 400
 
     account = Account.get_by_email(email)
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",account)
+
     if account and check_password_hash(account._password, password) and account._is_active:
         token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
-        print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",token)
         return({'token' : token}) , 200
+
     else:
         return({'error':'Some parameter is wrong'}), 400
 
@@ -99,36 +99,16 @@ def update_account(id):
     return jsonify({'msg' : 'Account not foud'}), 404
 
 
-@api.route('/product', methods=['POST'])
-def add_new_product():
+@api.route('/product', methods=['GET'])
+def all_product():
+    prodc = Product.get_all()
 
-    product_name = request.json.get("product_name", None)
-    text = request.json.get("text", None)
-    price = request.json.get("price", None)
-    category = request.json.get("category", None)
+    if prodc:
+        products_all = [product.to_dict() for product in prodc]
 
+        return jsonify(products_all), 200
 
-    if isinstance(price, int):
-        price = Decimal(f'{price}')
-    
-    if isinstance(price, str):
-        price = Decimal(f'{price}')
-
-    if not (product_name and text and price and category):
-        return {"error":"Missing info"}, 400
-
-    new_product = Product(
-        product_name = product_name,
-        text = text,
-        price = price,
-        category = category,
-    )
-
-    try:
-        new_product.create()
-        return jsonify(new_product.to_dict())
-    except exc.IntegrityError: 
-        return {"error":"something went wrong"}, 409
+    return jsonify({'error': "Products not found"}), 404
 
 
 @api.route('/product/<int:id>', methods={"GET"})
@@ -248,7 +228,7 @@ def update_media_post(id):
         raise APIException('Missing profile_image on the FormData')
 
 @api.route('/newproduct/<int:id>', methods=['POST'])
-#@jwt_required()
+@jwt_required()
 def new_product(id):
     account_id = 1
     price = request.json.get('price',None)
