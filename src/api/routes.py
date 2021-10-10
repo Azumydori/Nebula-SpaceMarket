@@ -1,8 +1,9 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+import os
 import decimal
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, redirect
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, JWTManager
 from flask_cors import CORS
 
@@ -14,12 +15,18 @@ from datetime import timedelta
 
 from api.utils import generate_sitemap, APIException
 from werkzeug.security import check_password_hash, generate_password_hash
+import stripe
 
 import cloudinary
 import cloudinary.uploader
 
 
-api = Blueprint('api', __name__)
+
+api = Blueprint('api', __name__, static_url_path='', static_folder='public')
+
+DOMAIN = 'https://3000-purple-meerkat-cd1lvkvr.ws-eu16.gitpod.io/checkout'
+
+stripe.api_key = 'sk_test_51JXMcbFBOOWtTsFdzgGyOBEw5Ko5pVKfaGWwM8UECLtVeJeYV6CMP4q54DgNSyMzGsKsWLpo6wQwLht68ZiafTRx00JQhIDci6'
 
 
 @api.route('/account/<int:id>', methods={"GET"})
@@ -193,7 +200,6 @@ def change_credentials(id):
             "last_name": request.json.get("last_name", None),
         }
         
-        
         account_updated = account.update_account_info(** {key: value for key, value in updated_info.items() if value is not None})
         return jsonify(account_updated.to_dict()), 200
 
@@ -253,3 +259,20 @@ def new_product(id):
 
     else:
         return {'error':'Something went wrong'},409
+@api.route('/payment/card', methods=['POST'])
+def payment():
+    try:
+        data = request.json
+        charge = stripe.Charge.create(
+            amount = data["amount"],
+            currency = "usd",
+            description = data["description"],
+            source = "tok_visa",
+            idempotency_key = data["id"],
+            api_key = 'sk_test_51JXMcbFBOOWtTsFdzgGyOBEw5Ko5pVKfaGWwM8UECLtVeJeYV6CMP4q54DgNSyMzGsKsWLpo6wQwLht68ZiafTRx00JQhIDci6'
+        )
+        print(charge)
+        return jsonify({"success":"payment_done!"})
+    except stripe.error.StripeError as e:
+        print(e)
+        return jsonify({"error":"card information incomplete"})

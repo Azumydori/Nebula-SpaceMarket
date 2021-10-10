@@ -15,6 +15,8 @@ import VendorProfile from "./pages/vendorprofile.js";
 import Checkout from "./pages/checkout.js";
 import UserProfile from "./pages/userprofile.js";
 import Faq from "./pages/faq.js";
+import Success from "./pages/success.js";
+import Error from "./pages/error.js";
 import Blockchain from "./pages/blockchain.js";
 import NftLearn from "./pages/nft-learn.js";
 import Wishlist from "./pages/wishlist.js";
@@ -56,6 +58,12 @@ const Layout = () => {
 					</Route>
 					<Route exact path="/faq">
 						<Faq />
+					</Route>
+					<Route exact path="/success">
+						<Success />
+					</Route>
+					<Route exact path="/canceled">
+						<Error />
 					</Route>
 					<Route exact path="/privacy-policy">
 						<PrivacyPolicy />

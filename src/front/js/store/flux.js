@@ -115,6 +115,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
+			getUser: (id, currentUser) => {
+				fetch(getStore().baseURL.concat("/account", id))
+					.then(function(response) {
+						if (!response.ok) {
+							throw Error("I can't load user!");
+						}
+						return response.json();
+						console.log(response);
+					})
+					.then(function(responseAsJson) {
+						if (currentUser == true) {
+							setStore({ currentUser: responseAsJson });
+						} else {
+							setStore({ user: responseAsJson });
+						}
+					})
+					.catch(function(error) {
+						console.log("Looks like there was a problem: \n", error);
+					});
+			},
+
 			register: credentials => {
 				const redirect = () => {
 					if (localStorage.getItem("jwt-token") != null) {
@@ -394,6 +415,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
+
 			categorySearch: category => {
 				fetch(getStore().baseURL.concat("/search/", category), {
 					method: "GET"
