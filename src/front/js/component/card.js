@@ -115,8 +115,9 @@ const MediaCard = props => {
 
 	useEffect(
 		() => {
+			console.log(store.wishlist);
+
 			if (store.wishlist.length == 0) {
-				actions.favorite();
 				if (store.wishlist.find(element => element === props.id_product)) {
 					setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
 				} else {
@@ -130,7 +131,7 @@ const MediaCard = props => {
 				}
 			}
 		},
-		[store.whishList]
+		[store.wishlist]
 	);
 
 	const textObserver = (description, number) => {

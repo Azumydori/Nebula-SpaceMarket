@@ -174,6 +174,7 @@ class Product(db.Model):
 
 class Wishlist(db.Model):
    __tablename__ = 'wishlist'
+   id = db.Column(db.Integer,autoincrement=True, primary_key=True)
    from_account = Column(db.ForeignKey('account.id'), primary_key=True)
    have_product = Column(db.ForeignKey('product.id'), primary_key=True)
    relation_products = relationship("Product", backref = "account_associations")
@@ -181,7 +182,8 @@ class Wishlist(db.Model):
 
 
    def __repr__(self):
-      return f'Wishlist name: {self.name}'
+      return f'Wishlist id: {self.id}, account_id: {self.from_account}, have_product: {self.have_product}'
+
 
    def to_dict(self):
       return{

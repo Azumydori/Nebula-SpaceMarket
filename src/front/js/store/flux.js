@@ -15,7 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			baseURL: "https://3001-teal-lemming-pqtgqqqx.ws-eu18.gitpod.io/api",
 			domainURL: "https://3000-teal-lemming-pqtgqqqx.ws-eu18.gitpod.io/",
-			wishlist: [1, 4, 7],
+			wishlist: [],
 			cart: [],
 			searchProduct: [],
 			allProducts: [],
@@ -142,7 +142,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(function(response) {
 						console.log(response);
 						if (!response.ok) {
-							throw Error("I can't register this traveler!");
+							throw Error("I can't register this user!");
 						}
 						return response.json();
 					})
@@ -212,7 +212,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				};
 				const productMedia = (media, id) => {
 					let mybody = new FormData();
-					console.log(media);
+
 					mybody.append("media", media[0]);
 					fetch(getStore().baseURL.concat("/productmedia/", id), {
 						body: mybody,
@@ -245,7 +245,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return response.json();
 					})
 					.then(function(responseAsJson) {
-						productMedia(media, id);
+						console.log(responseAsJson);
+						productMedia(media, responseAsJson.id);
 						setStore({ posts: responseAsJson });
 						//Hay que meterle tiempo para que pueda cargar la informacion, si no da fallos
 						if (media[0]) {
@@ -263,37 +264,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			favorite: product_id => {
 				let myToken = localStorage.getItem("jwt-token");
+				let myUser = localStorage.getItem("Id");
 
-				const tokenDecode = token => {
-					let decoded = jwt_decode(token);
-					return decoded;
-				};
-				const myUser = tokenDecode(myToken);
 				if (myUser != undefined) {
-					fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
+					fetch(getStore().baseURL.concat("/favorite/", product_id), {
 						method: "POST",
-						headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: `Bearer ${myToken}`
+						},
 						body: JSON.stringify({ product_id: product_id })
 					})
 						.then(resp => {
+							console.log(resp);
 							if (!resp.ok) {
 								throw Error("Invalid register info");
 							}
 						})
 						.then(responseAsJson => {
-							setStore({ whishList: responseAsJson });
+							console.log("Soy tu deseo recien llegado", responseAsJson);
+							setStore({ wishlist: responseAsJson });
+							console.log("Soy tu deseo en la store", getStore().wishlist);
 						})
 						.catch(error => console.error("There as been an unknown error", error));
 				} else {
-					console.log(myToken);
+					alert("must login");
 				}
 			},
 
 			unFavorite: product_id => {
 				let myToken = localStorage.getItem("jwt-token");
-				let myUser = getStore().currentUser.sub;
+				let myUser = localStorage.getItem("Id");
 				if (myUser != undefined) {
-					fetch(getStore().baseURL.concat("/client/", myUser, "/favorite"), {
+					fetch(getStore().baseURL.concat("/favorite/", product_id), {
 						method: "DELETE",
 						headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
 						body: JSON.stringify({ product_id: product_id })
@@ -304,7 +307,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 							}
 						})
 						.then(responseAsJson => {
-							setStore({ whishList: responseAsJson });
+							setStore({ wishlist: responseAsJson });
+							alert(responseAsJson);
 						})
 						.catch(error => console.error("There as been an unknown error", error));
 				} else {
@@ -316,7 +320,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			shopCart: product_id => {
 				let myToken = localStorage.getItem("token");
 				let myUser = getStore().currentUser.id;
-				console.log("Soy shoppingcard");
+
 				fetch(getStore().baseURL.concat("/client/", myUser, "/cart"), {
 					method: "POST",
 					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },

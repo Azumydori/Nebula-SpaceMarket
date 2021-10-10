@@ -42,11 +42,13 @@ const ControlPage = props => {
 	);
 	//Recibo el parametro.
 	const params = useParams();
+	useEffect(() => {
+		actions.getProducts();
+		console.log();
+	}, []);
 
 	useEffect(
 		() => {
-			console.log("Soy store", store.allProducts);
-
 			if (store.allProducts != 0) {
 				setProductTab(
 					store.allProducts.map((element, index) => {
@@ -68,54 +70,26 @@ const ControlPage = props => {
 		},
 		[store.allProducts]
 	);
-
 	useEffect(
 		() => {
-			actions.getProducts();
-			if (params.str === undefined) {
-				console.log("Soy store", store.allProducts);
-				setProductTab(
-					store.product.map((element, index) => {
-						//let object = actions.getProduct(element);
-						let object = element;
+			setProductTab(
+				store.allProducts.map((element, index) => {
+					if (element.category == params.str) {
 						return (
-							<Grid item key={index} xs={6} sm={4} md={3} xl={2} aligncontent="center">
+							<Grid item key={index} xs={6} sm={4} md={3} xl={2}>
 								<MediaCard
-									id_product={object.id}
-									title_card={object.product_name}
-									description_card={object.text}
-									ammount={object.price}
-									vendor_name={object.vendor_name}
-									image_card={object.media}
+									id_product={element.id}
+									title_card={element.product_name}
+									description_card={element.text}
+									ammount={element.price}
+									vendor_name={element.vendor_name}
+									image_card={element.media}
 								/>
 							</Grid>
 						);
-					})
-				);
-			} else {
-				actions.categorySearch(params.str);
-				setProductTab(
-					//store.searchProduct.map((element, index) => {
-					store.product.map((element, index) => {
-						//let object = actions.getProduct(element);
-						let object = element;
-						if (element.category == params.str) {
-							return (
-								<Grid item key={index} xs={6} sm={4} md={3} xl={2}>
-									<MediaCard
-										id_product={object.id}
-										title_card={object.product_name}
-										description_card={object.text}
-										ammount={object.price}
-										vendor_name={object.vendor_name}
-										image_card={object.media}
-									/>
-								</Grid>
-							);
-						}
-					})
-				);
-			}
+					}
+				})
+			);
 		},
 		[params.str]
 	);

@@ -120,22 +120,22 @@ def get_one_product(id):
     
     return({"error": "Product not found"}), 404
 
-@api.route('/client/<int:product_id>/favorites', methods=['POST'])
+@api.route('/favorite/<int:product_id>/', methods=['POST'])
 @jwt_required()
-def add_whish(product_id):
-    current_user = get_jwt_identity()
-    if not get_jwt_identity().get("id") == id:
+def add_whish(product_id,):
+    current_user = get_jwt_identity().get("id")
+
+    if not get_jwt_identity().get("id"):
         return {'error': 'Invalid action'}, 400
 
-    id_product = request.json.get("have_product", None)
-
     new_whish = Wishlist(
-        from_account = current_user.get("id"),
+        from_account = current_user,
         have_product =  product_id,
     )
-
+    
     try:
         new_whish.create()
+        print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new_whish.to_dict())
         return jsonify(new_whish.to_dict())
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
@@ -143,8 +143,8 @@ def add_whish(product_id):
 @api.route('/client/<int:id>/favorites', methods=['DELETE'])
 @jwt_required()
 def remove_wish(id):
-    user_with_wish = get_jwt_identity()
-    if not get_jwt_identity().get("id") == id:
+    user_with_wish = get_jwt_identity().get("id")
+    if not get_jwt_identity().get("id"):
         return {'error': 'Incorrect user action'}, 400
 
     current_user = Wishlist.get_by_id(id)
@@ -152,7 +152,7 @@ def remove_wish(id):
         current_user.delete()
         return jsonify(current_user.to_dict()), 200
 
-    return {'error': 'traveler not found'}, 400
+    return {'error': 'user not found'}, 400
 
 @api.route('/client/<int:id>/cart', methods=['POST'])
 @jwt_required()
