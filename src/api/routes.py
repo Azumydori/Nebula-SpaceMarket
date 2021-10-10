@@ -13,8 +13,14 @@ from sqlalchemy import exc
 from decimal import Decimal
 from datetime import timedelta
 
+from api.utils import generate_sitemap, APIException
 from werkzeug.security import check_password_hash, generate_password_hash
 import stripe
+
+import cloudinary
+import cloudinary.uploader
+
+
 
 api = Blueprint('api', __name__, static_url_path='', static_folder='public')
 
@@ -55,9 +61,17 @@ def create_account():
 
     try:
         new_user.create()
-        return jsonify(new_user.to_dict()), 201
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
+
+    account = Account.get_by_email(email)
+
+
+    if account :
+        token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
+        return({'token' : token}), 200
+
+    
 
 @api.route('/login', methods=["POST"])
 def login():
@@ -70,10 +84,15 @@ def login():
     account = Account.get_by_email(email)
 
     if account and check_password_hash(account._password, password) and account._is_active:
-        token = create_access_token(identity=account.id, expires_delta=timedelta(minutes=100))
-        return({'token' : token}), 200
+        token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
+        return({'token' : token}) , 200
+
     else:
         return({'error':'Some parameter is wrong'}), 400
+
+
+
+
 
 
 @api.route('/account/<int:id>', methods = ['PATCH'])
@@ -87,36 +106,16 @@ def update_account(id):
     return jsonify({'msg' : 'Account not foud'}), 404
 
 
-@api.route('/product', methods=['POST'])
-def add_new_product():
+@api.route('/product', methods=['GET'])
+def all_product():
+    prodc = Product.get_all()
 
-    product_name = request.json.get("product_name", None)
-    text = request.json.get("text", None)
-    price = request.json.get("price", None)
-    category = request.json.get("category", None)
+    if prodc:
+        products_all = [product.to_dict() for product in prodc]
 
+        return jsonify(products_all), 200
 
-    if isinstance(price, int):
-        price = Decimal(f'{price}')
-    
-    if isinstance(price, str):
-        price = Decimal(f'{price}')
-
-    if not (product_name and text and price and category):
-        return {"error":"Missing info"}, 400
-
-    new_product = Product(
-        product_name = product_name,
-        text = text,
-        price = price,
-        category = category,
-    )
-
-    try:
-        new_product.create()
-        return jsonify(new_product.to_dict())
-    except exc.IntegrityError: 
-        return {"error":"something went wrong"}, 409
+    return jsonify({'error': "Products not found"}), 404
 
 
 @api.route('/product/<int:id>', methods={"GET"})
@@ -128,22 +127,22 @@ def get_one_product(id):
     
     return({"error": "Product not found"}), 404
 
-@api.route('/client/<int:product_id>/favorites', methods=['POST'])
+@api.route('/favorite/<int:product_id>/', methods=['POST'])
 @jwt_required()
-def add_whish(product_id):
-    current_user = get_jwt_identity()
-    if not get_jwt_identity().get("id") == id:
+def add_whish(product_id,):
+    current_user = get_jwt_identity().get("id")
+
+    if not get_jwt_identity().get("id"):
         return {'error': 'Invalid action'}, 400
 
-    id_product = request.json.get("have_product", None)
-
     new_whish = Wishlist(
-        from_account = current_user.get("id"),
+        from_account = current_user,
         have_product =  product_id,
     )
-
+    
     try:
         new_whish.create()
+        print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new_whish.to_dict())
         return jsonify(new_whish.to_dict())
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
@@ -151,8 +150,8 @@ def add_whish(product_id):
 @api.route('/client/<int:id>/favorites', methods=['DELETE'])
 @jwt_required()
 def remove_wish(id):
-    user_with_wish = get_jwt_identity()
-    if not get_jwt_identity().get("id") == id:
+    user_with_wish = get_jwt_identity().get("id")
+    if not get_jwt_identity().get("id"):
         return {'error': 'Incorrect user action'}, 400
 
     current_user = Wishlist.get_by_id(id)
@@ -160,7 +159,7 @@ def remove_wish(id):
         current_user.delete()
         return jsonify(current_user.to_dict()), 200
 
-    return {'error': 'traveler not found'}, 400
+    return {'error': 'user not found'}, 400
 
 @api.route('/client/<int:id>/cart', methods=['POST'])
 @jwt_required()
@@ -207,6 +206,59 @@ def change_credentials(id):
     return {"error":"user not found"}, 400
 
 
+@api.route('/search/<int:category>', methods={"GET"})
+def get_products(category):
+    one_product = Product.get_category(id)
+
+    if one_product:
+        return jsonify(one_product.to_dict()), 200
+    
+    return({"error": "Product not found"}), 404
+
+
+@api.route('/productmedia/<int:id>', methods=['POST'])
+def update_media_post(id):
+    
+    if 'media' in request.files:
+
+        result = cloudinary.uploader.upload(request.files['media'])
+        mediaProduct = Product.get_by_id(id)
+        mediaProduct.media = result['secure_url']
+
+        db.session.add(mediaProduct)
+        db.session.commit()
+
+        return jsonify(mediaProduct.to_dict()), 200
+
+    else:
+        raise APIException('Missing profile_image on the FormData')
+
+@api.route('/newproduct/<int:id>', methods=['POST'])
+@jwt_required()
+def new_product(id):
+    account_id = 1
+    price = request.json.get('price',None)
+    text = request.json.get('text',None)
+    category = request.json.get('category',None)
+    product_name = request.json.get('product_name',None)
+    media = ""
+
+    
+    new_product = Product(
+                account_id=account_id,
+                product_name=product_name,
+                price=price,
+                text=text,
+                category=category,
+                media=media
+            )
+
+    if new_product: 
+        new_product.create()
+        return jsonify(new_product.to_dict()),201
+
+    else:
+        return {'error':'Something went wrong'},409
 @api.route('/payment/card', methods=['POST'])
 def payment():
     try:

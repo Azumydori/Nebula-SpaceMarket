@@ -22,7 +22,6 @@ const Checkout = () => {
 		formState: { errors }
 	} = useForm();
 	const onSubmit = data => console.log(data);
-	console.log(errors);
 
 	return (
 		<Elements stripe={stripePromise}>
