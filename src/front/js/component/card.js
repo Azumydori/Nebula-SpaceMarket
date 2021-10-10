@@ -115,8 +115,6 @@ const MediaCard = props => {
 
 	useEffect(
 		() => {
-			console.log(store.wishlist);
-
 			if (store.wishlist.length == 0) {
 				if (store.wishlist.find(element => element === props.id_product)) {
 					setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);

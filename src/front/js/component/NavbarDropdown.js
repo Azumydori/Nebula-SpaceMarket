@@ -41,10 +41,15 @@ export default function NavbarDropdown() {
 	const renderMenu = (
 		<Menu
 			anchorEl={anchorEl}
-			anchorOrigin={{ vertical: "top", horizontal: "right" }}
+			
+			anchorOrigin={{
+				vertical: 'bottom',
+				horizontal: 'left',
+			  }}
+			
 			id={menuId}
 			keepMounted
-			transformOrigin={{ vertical: "top", horizontal: "right" }}
+			
 			open={isMenuOpen}
 			onClose={handleMenuClose}>
 			<Typography variant="h6" component="h6" classes={{ root: classes.menuTitle }}>
