@@ -3,8 +3,8 @@ import jwt_decode from "jwt-decode";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "https://3001-purple-meerkat-cd1lvkvr.ws-eu18.gitpod.io/api",
-			domainURL: "https://3000-purple-meerkat-cd1lvkvr.ws-eu18.gitpod.io/",
+			baseURL: "https://3001-kumquat-cheetah-ulkogp8r.ws-eu18.gitpod.io/api",
+			domainURL: "https://3000-kumquat-cheetah-ulkogp8r.ws-eu18.gitpod.io/",
 			currentUser: {},
 			wishlist: [1, 4, 7],
 			cart: [],
