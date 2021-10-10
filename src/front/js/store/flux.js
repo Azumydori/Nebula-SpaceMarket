@@ -13,108 +13,25 @@ import jwt_decode from "jwt-decode";
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			baseURL: "https://3001-teal-lemming-pqtgqqqx.ws-eu18.gitpod.io/api",
-			domainURL: "https://3000-teal-lemming-pqtgqqqx.ws-eu18.gitpod.io/",
+			//https://nebula-spacemarket.herokuapp.com/
+			baseURL: "https://nebula-spacemarket.herokuapp.com/api",
+			domainURL: "https://nebula-spacemarket.herokuapp.com/",
 			wishlist: [],
 			cart: [],
 			searchProduct: [],
 			allProducts: [],
-			product: [
-				{
-					id: 1,
-					product_name: "Puerta",
-					vendor_name: "Isidoro Ferreira",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/1000366/pexels-photo-1000366.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: " Tienes defectos si, pero son los más perfectos del mundo",
-					category: "Clothing"
-				},
-				{
-					id: 2,
-					product_name: "Ego Erectus",
-					vendor_name: "Santiago",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/3844786/pexels-photo-3844786.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "'Te extraño' no se acentúa, pero con el paso de los días sí",
-					category: "Appliances"
-				},
-				{
-					id: 3,
-					product_name: "Niño de manos",
-					vendor_name: "Santiago",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/1000366/pexels-photo-1000366.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: " Me enamoré de ti por lo que eres, no por lo que algún día quiero que seas",
-					category: "Clothing"
-				},
-				{
-					id: 4,
-					product_name: "Viaje incierto",
-					vendor_name: "Isidoro Ferreira",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/4226881/pexels-photo-4226881.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "Hoy no te voy a decir 'Te quiero', te lo voy a demostrar el resto de días del año",
-					category: "Cellphones"
-				},
-				{
-					id: 5,
-					product_name: "Pentateuque",
-					vendor_name: "Luis Angel Chaves",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/4033325/pexels-photo-4033325.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "El físico atrae, el cariño seduce, pero que te contesten al momento en WhatsApp te enamora",
-					category: "Cellphones"
-				},
-				{
-					id: 6,
-					product_name: "Soledad",
-					vendor_name: "Santiago",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/5603660/pexels-photo-5603660.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "Un buen destino es que dos personas se encuentren cuando ni siquiera se estaban buscando",
-					category: "Cellphones"
-				},
-				{
-					id: 7,
-					product_name: "score",
-					vendor_name: "Juan Maria Peral",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/4194850/pexels-photo-4194850.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "Estoy pensando patentar tus besos y caricias para que nadie me los robe",
-					category: "Sports"
-				},
-				{
-					id: 8,
-					product_name: "Casiopea",
-					vendor_name: "Noa Barrios",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/6847584/pexels-photo-6847584.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "Te conocí y de repente todo cambió en mi vida. Ahora ya no la entiendo sin ti",
-					category: "Sports"
-				},
-				{
-					id: 9,
-					product_name: "Misión californiana: Caballo",
-					vendor_name: "Rachida Castellano",
-					price: 12,
-					media:
-						"https://images.pexels.com/photos/4386404/pexels-photo-4386404.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
-					text: "No estaba buscando nada; pero te vi y encontré todo",
-					category: "Computers"
-				}
-			],
+			product: [],
 			vendor: []
 		},
 
 		actions: {
+			logOut: () => {
+				if (localStorage.getItem("jwt-token")) {
+					localStorage.removeItem("jwt-token");
+					localStorage.removeItem("Id");
+					localStorage.removeItem("Name");
+				}
+			},
 			getUser: (id, currentUser) => {
 				fetch(getStore().baseURL.concat("/account", id))
 					.then(function(response) {
@@ -122,7 +39,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 							throw Error("I can't load user!");
 						}
 						return response.json();
-						console.log(response);
 					})
 					.then(function(responseAsJson) {
 						if (currentUser == true) {

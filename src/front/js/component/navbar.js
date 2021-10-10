@@ -159,7 +159,7 @@ const Navbar = () => {
 									Upload Product
 								</MenuItem>
 							</Link>
-							<Link to="wishlist" color="inherit">
+							<Link to="/wishlist" color="inherit">
 								<MenuItem onClick={handleClose}>
 									<FavoriteIcon /> Wishlist
 								</MenuItem>
@@ -177,7 +177,10 @@ const Navbar = () => {
 								</MenuItem>
 							</Link>
 							<Link to="/login" color="inherit">
-								<MenuItem onClick={handleClose}>
+								<MenuItem
+									onClick={() => {
+										handleClose;
+									}}>
 									<PersonIcon />
 									Log In / Log out
 								</MenuItem>

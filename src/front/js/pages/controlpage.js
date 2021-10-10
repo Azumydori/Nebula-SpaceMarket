@@ -44,54 +44,53 @@ const ControlPage = props => {
 	const params = useParams();
 	useEffect(() => {
 		actions.getProducts();
-		console.log();
 	}, []);
 
 	useEffect(
 		() => {
 			if (store.allProducts != 0) {
-				setProductTab(
-					store.allProducts.map((element, index) => {
-						return (
-							<Grid item key={index} xs={6} sm={4} md={3} xl={2} aligncontent="center">
-								<MediaCard
-									id_product={element.id}
-									title_card={element.product_name}
-									description_card={element.product_name}
-									ammount={element.price}
-									vendor_name={element.vendor_name}
-									image_card={element.media}
-								/>
-							</Grid>
-						);
-					})
-				);
+				console.log("Soy params", params.str);
+				if (params.str == undefined) {
+					setProductTab(
+						store.allProducts.map((element, index) => {
+							return (
+								<Grid item key={index} xs={6} sm={4} md={3} xl={2} aligncontent="center">
+									<MediaCard
+										id_product={element.id}
+										title_card={element.product_name}
+										description_card={element.product_name}
+										ammount={element.price}
+										vendor_name={element.vendor_name}
+										image_card={element.media}
+									/>
+								</Grid>
+							);
+						})
+					);
+				} else {
+					setProductTab(
+						store.allProducts.map((element, index) => {
+							if (element.category == params.str) {
+								console.log(element);
+								return (
+									<Grid item key={index} xs={6} sm={4} md={3} xl={2}>
+										<MediaCard
+											id_product={element.id}
+											title_card={element.product_name}
+											description_card={element.text}
+											ammount={element.price}
+											vendor_name={element.vendor_name}
+											image_card={element.media}
+										/>
+									</Grid>
+								);
+							}
+						})
+					);
+				}
 			}
 		},
-		[store.allProducts]
-	);
-	useEffect(
-		() => {
-			setProductTab(
-				store.allProducts.map((element, index) => {
-					if (element.category == params.str) {
-						return (
-							<Grid item key={index} xs={6} sm={4} md={3} xl={2}>
-								<MediaCard
-									id_product={element.id}
-									title_card={element.product_name}
-									description_card={element.text}
-									ammount={element.price}
-									vendor_name={element.vendor_name}
-									image_card={element.media}
-								/>
-							</Grid>
-						);
-					}
-				})
-			);
-		},
-		[params.str]
+		[params.str, store.allProducts]
 	);
 
 	const selectorCategory = category => {
