@@ -39,10 +39,10 @@ const Input = withStyles({
 			"&:before": {
 				borderBottomColor: "white"
 			},
-			"&:hover:not($disabled):after": {
+			"&:hover:not(disabled):after": {
 				borderBottomColor: "white" //its when its hover and input is focused
 			},
-			"&:hover:not($disabled):before": {
+			"&:hover:not(disabled):before": {
 				borderBottomColor: "white" //its when you hover and input is not foucused
 			}
 		}

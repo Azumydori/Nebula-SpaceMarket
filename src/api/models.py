@@ -16,7 +16,6 @@ class Account(db.Model):
    __tablename__ = 'account'
 
    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-
    username=db.Column(db.String, unique=True, nullable = False)
    first_name=db.Column(db.String, nullable=False)
    last_name=db.Column(db.String, nullable=False)
@@ -29,11 +28,9 @@ class Account(db.Model):
    _password = db.Column(db.String, nullable=False)
    _is_active = db.Column(db.Boolean, default=True)
    payment_type = db.Column(db.Enum("Fiat", "Paypal", "Crypto", name="payment"))
-
    review_text = db.Column(db.String)
    reviews_id = db.Column(db.Integer, db.ForeignKey('account.id'))
    have_reviews = db.relationship('Account', backref = db.backref('reviews', remote_side=[id]), lazy='dynamic')
-
    order_id = relationship("Order", lazy=True)
    have_product = relationship("Product", lazy=True, backref = "account")
    have_wishlist = relationship("Product", secondary = "wishlist")
@@ -58,6 +55,12 @@ class Account(db.Model):
    def create(self):
       db.session.add(self)
       db.session.commit()
+   
+   def validate_email(self, email):
+        if self.email == email:
+            return True
+        else:
+            return False
 
    def update_account_status(self):
         self._is_active = not _is_active
@@ -138,8 +141,10 @@ class Product(db.Model):
       return f'Product id: {self.id}, name: {self.product_name}, description: {self.text}, price: {self.price}, category: {self.category}'
 
    def to_dict(self):
+      account = Account.get_by_id(self.account_id)
       return{
         "id": self.id,
+        "vendor_name":account.username,
         "product_name": self.product_name,
         "text": self.text,
         "media": self.media,
@@ -150,14 +155,26 @@ class Product(db.Model):
    def create(self):
       db.session.add(self)
       db.session.commit()
+      return self
 
    @classmethod
    def get_by_id(cls, id):
       one_product = cls.query.get(id)
       return one_product
 
+   @classmethod
+   def get_category(cls, category):
+      products = cls.query.get(category)
+      return products
+
+   @classmethod
+   def get_all(cls):
+      products = cls.query.all()
+      return products
+
 class Wishlist(db.Model):
    __tablename__ = 'wishlist'
+   id = db.Column(db.Integer,autoincrement=True, primary_key=True)
    from_account = Column(db.ForeignKey('account.id'), primary_key=True)
    have_product = Column(db.ForeignKey('product.id'), primary_key=True)
    relation_products = relationship("Product", backref = "account_associations")
@@ -165,7 +182,8 @@ class Wishlist(db.Model):
 
 
    def __repr__(self):
-      return f'Wishlist name: {self.name}'
+      return f'Wishlist id: {self.id}, account_id: {self.from_account}, have_product: {self.have_product}'
+
 
    def to_dict(self):
       return{

@@ -36,7 +36,7 @@ const Wishlist = () => {
 	);
 
 	useEffect(() => {
-		actions.favorite();
+		//actions.favorite();
 		if (store.wishlist.lenght != 0) {
 			setwislistTab(
 				store.wishlist.map((element, index) => {

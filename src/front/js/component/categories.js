@@ -20,16 +20,70 @@ import motorcycle from "../../img/motorcycle.png";
 import diamond from "../../img/diamond.png";
 
 const useStyles = makeStyles(theme => ({
-	button: {
+	center: {
 		display: "flex",
-		flexDirection: "column"
+		flexDirection: "column",
+		alignItems: "center"
 	},
-	alination: {
-		gridTemplateColumns: "repeat(12, 1fr)",
-		marginLeft: "10px",
-		marginRight: "10px",
-		align: "center",
-		justifyContent: "center"
+	container: {
+		paddingLeft: "1rem",
+		paddingRight: "1rem",
+		alignSelf: "center",
+		[theme.breakpoints.down("sm")]: {
+			flexDirection: "row"
+		}
+	},
+
+	subColumn: {
+		display: "flex"
+	},
+	heading: {
+		fontFamily: "Roboto",
+		fontSize: " 1.5em",
+		letterSpacing: "0.08em",
+		fontWeight: "300",
+		textShadow: "0 1px 1px #FFFFFF",
+		textTransform: "uppercase",
+		color: "#9D4EDD",
+		paddingLeft: "1rem",
+		paddingRight: "1rem"
+	},
+	divider: {
+		borderBottom: "1px solid #FF9100",
+		backgroundColor: "#FF9100",
+		height: "1px",
+		margin: "0.5em 0px 0.5em",
+		paddingLeft: "1rem",
+		paddingRight: "1rem"
+	},
+	dividerSpan: {
+		display: "block",
+		width: "100%",
+		height: "1px",
+		backgroundColor: " #9D4EDD",
+		paddingLeft: "1rem",
+		paddingRight: "1rem"
+	},
+	iconsCategory: {
+		[theme.breakpoints.up("md")]: {
+			width: "5rem"
+		},
+		[theme.breakpoints.down("sm")]: {
+			width: "2rem"
+		}
+	},
+	textCategory: {
+		fontSize: "1rem",
+		fontWeight: "bold",
+		color: "black",
+		textDecoration: "none"
+	},
+	borderCategory: {
+		"&:hover": {
+			background: "#bf9ed9",
+			borderRadius: 16,
+			border: 1
+		}
 	}
 }));
 
@@ -38,104 +92,112 @@ const Categories = () => {
 	const { store, actions } = useContext(Context);
 	return (
 		<div>
-			<Grid container className={classes.alination}>
-				<Link to="/controlpage/Clothing">
-					<Button onClick={actions.categorySearch("Clothing")}>
-						<div className={classes.button}>
-							<img src={clothing} className="categories-icons" />
-							<span>Clothing</span>
+			<h1 className={classes.heading}>The stuff we can help you sell</h1>
+			<div className={classes.divider}>
+				<span className={classes.dividerSpan} />
+			</div>
+			<Grid container className={classes.container}>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Clothing" className={classes.center}>
+						<div className={classes.center}>
+							<img src={clothing} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Clothing</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Computers">
-					<Button onClick={actions.categorySearch("Computers")}>
-						<div className={classes.button}>
-							<img src={laptop} className="categories-icons" />
-							<span>Computers</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Computers" className={classes.center}>
+						<div className={classes.center}>
+							<img src={laptop} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Computers</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Home&Garden">
-					<Button onClick={actions.categorySearch("Home&Garden")}>
-						<div className={classes.button}>
-							<img src={drill} className="categories-icons" />
-							<span>Home & Garden</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Gaming" className={classes.center}>
+						<div className={classes.center}>
+							<img src={console} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Gaming</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Sports">
-					<Button onClick={actions.categorySearch("Sports")}>
-						<div className={classes.button}>
-							<img src={sports} className="categories-icons" />
-							<span>Sports</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Sports" className={classes.center}>
+						<div className={classes.center}>
+							<img src={sports} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Sports</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/NFTs">
-					<Button onClick={actions.categorySearch("NFTs")}>
-						<div className={classes.button}>
-							<img src={nft} className="categories-icons" />
-							<span>NFTs</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/NFTs" className={classes.center}>
+						<div className={classes.center}>
+							<img src={nft} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>NFTs</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Cellphones">
-					<Button onClick={actions.categorySearch("Cellphones")}>
-						<div className={classes.button}>
-							<img src={phone} className="categories-icons" />
-							<span>Cellphones</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Cellphones" className={classes.center}>
+						<div className={classes.center}>
+							<img src={phone} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Cellphones</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Gaming">
-					<Button onClick={actions.categorySearch("Gaming")}>
-						<div className={classes.button}>
-							<img src={console} className="categories-icons" />
-							<span>Gaming</span>
+					</Link>
+				</Grid>
+
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Motorbikes" className={classes.center}>
+						<div className={classes.center}>
+							<img src={motorcycle} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Motorbikes</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Movies,Books&Music">
-					<Button onClick={actions.categorySearch("Movies,Books&Music")}>
-						<div className={classes.button}>
-							<img src={movies} className="categories-icons" />
-							<span>Movies, Books & Music</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Other" className={classes.center}>
+						<div className={classes.center}>
+							<img src={diamond} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Other</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Appliances">
-					<Button onClick={actions.categorySearch("Appliances")}>
-						<div className={classes.button}>
-							<img src={washingmachine} className="categories-icons" />
-							<span>Appliances</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Appliances" className={classes.center}>
+						<div className={classes.center}>
+							<img src={washingmachine} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Appliances</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/TV,Audio&Cameras">
-					<Button onClick={actions.categorySearch("TV,Audio&Cameras")}>
-						<div className={classes.button}>
-							<img src={tv} className="categories-icons" />
-							<span>TV, Audio & Cameras</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/TV,Audio&Cameras" className={classes.center}>
+						<div className={classes.center}>
+							<img src={tv} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>TV, Audio & Cameras</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Motorbikes">
-					<Button onClick={actions.categorySearch("Motorbikes")}>
-						<div className={classes.button}>
-							<img src={motorcycle} className="categories-icons" />
-							<span>Motorbikes</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Home&Garden" className={classes.center}>
+						<div className={classes.center}>
+							<img src={drill} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Home & Garden</span>
 						</div>
-					</Button>
-				</Link>
-				<Link to="/controlpage/Other">
-					<Button onClick={actions.categorySearch("Other")}>
-						<div className={classes.button}>
-							<img src={diamond} className="categories-icons" />
-							<span>Other</span>
+					</Link>
+				</Grid>
+				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
+					<Link to="/controlpage/Movies,Books&Music" className={classes.center}>
+						<div className={classes.center}>
+							<img src={movies} className={classes.iconsCategory} />
+							<span className={classes.textCategory}>Movies, Books & Music</span>
 						</div>
-					</Button>
-				</Link>
+					</Link>
+				</Grid>
 			</Grid>
+			<div className={classes.divider}>
+				<span className={classes.dividerSpan} />
+			</div>
 		</div>
 	);
 };

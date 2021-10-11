@@ -34,7 +34,7 @@ const Nft = () => {
 			</div>
 
 			<div>
-				<PaginationCards />
+				<PaginationCards params="NFTs" />
 			</div>
 		</div>
 	);

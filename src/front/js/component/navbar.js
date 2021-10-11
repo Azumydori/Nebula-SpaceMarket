@@ -60,11 +60,6 @@ const useStyles = makeStyles(theme => ({
 			width: "70%"
 		}
 	},
-	img: {
-		margin: "0.5rem",
-		height: "3rem",
-		width: "3rem"
-	},
 	input: {
 		color: "white",
 		marginLeft: theme.spacing(1),
@@ -83,7 +78,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	icons: {
 		alignItems: "center",
-		display: props => (props.open ? "none" : "flex")
+		display: props => (props.open ? "none" : "flex"),
+		[theme.breakpoints.between("md", "sm")]: {
+			display: "none"
+		}
 	},
 	hiden: {
 		alignItems: "center",
@@ -161,7 +159,7 @@ const Navbar = () => {
 									Upload Product
 								</MenuItem>
 							</Link>
-							<Link to="wishlist" color="inherit">
+							<Link to="/wishlist" color="inherit">
 								<MenuItem onClick={handleClose}>
 									<FavoriteIcon /> Wishlist
 								</MenuItem>
@@ -179,7 +177,10 @@ const Navbar = () => {
 								</MenuItem>
 							</Link>
 							<Link to="/login" color="inherit">
-								<MenuItem onClick={handleClose}>
+								<MenuItem
+									onClick={() => {
+										handleClose;
+									}}>
 									<PersonIcon />
 									Log In / Log out
 								</MenuItem>

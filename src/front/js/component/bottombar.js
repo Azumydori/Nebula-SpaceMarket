@@ -28,7 +28,7 @@ const Bottombar = () => {
 	const [selected, setSelected] = useState(0);
 	const classes = useStyles({ open });
 	return (
-		<Hidden only={["xl", "lg", "md"]}>
+		<Hidden div only={["xl", "lg", "md"]}>
 			<BottomNavigation
 				onChange={(value, newValue) => {
 					setSelected(newValue);

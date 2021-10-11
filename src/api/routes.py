@@ -13,12 +13,19 @@ from sqlalchemy import exc
 from decimal import Decimal
 from datetime import timedelta
 
+from api.utils import generate_sitemap, APIException
 from werkzeug.security import check_password_hash, generate_password_hash
 import stripe
 
+import cloudinary
+import cloudinary.uploader
+
+
+
 api = Blueprint('api', __name__, static_url_path='', static_folder='public')
 
-DOMAIN = 'https://3000-purple-meerkat-cd1lvkvr.ws-eu16.gitpod.io/checkout'
+DOMAIN_SUCCESS = 'https://3000-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/success'
+DOMAIN_FAILED = 'https://3000-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/error'
 
 stripe.api_key = 'sk_test_51JXMcbFBOOWtTsFdzgGyOBEw5Ko5pVKfaGWwM8UECLtVeJeYV6CMP4q54DgNSyMzGsKsWLpo6wQwLht68ZiafTRx00JQhIDci6'
 
@@ -55,9 +62,17 @@ def create_account():
 
     try:
         new_user.create()
-        return jsonify(new_user.to_dict()), 201
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
+
+    account = Account.get_by_email(email)
+
+
+    if account :
+        token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
+        return({'token' : token}), 200
+
+    
 
 @api.route('/login', methods=["POST"])
 def login():
@@ -70,10 +85,15 @@ def login():
     account = Account.get_by_email(email)
 
     if account and check_password_hash(account._password, password) and account._is_active:
-        token = create_access_token(identity=account.id, expires_delta=timedelta(minutes=100))
-        return({'token' : token}), 200
+        token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
+        return({'token' : token}) , 200
+
     else:
         return({'error':'Some parameter is wrong'}), 400
+
+
+
+
 
 
 @api.route('/account/<int:id>', methods = ['PATCH'])
@@ -87,36 +107,16 @@ def update_account(id):
     return jsonify({'msg' : 'Account not foud'}), 404
 
 
-@api.route('/product', methods=['POST'])
-def add_new_product():
+@api.route('/product', methods=['GET'])
+def all_product():
+    prodc = Product.get_all()
 
-    product_name = request.json.get("product_name", None)
-    text = request.json.get("text", None)
-    price = request.json.get("price", None)
-    category = request.json.get("category", None)
+    if prodc:
+        products_all = [product.to_dict() for product in prodc]
 
+        return jsonify(products_all), 200
 
-    if isinstance(price, int):
-        price = Decimal(f'{price}')
-    
-    if isinstance(price, str):
-        price = Decimal(f'{price}')
-
-    if not (product_name and text and price and category):
-        return {"error":"Missing info"}, 400
-
-    new_product = Product(
-        product_name = product_name,
-        text = text,
-        price = price,
-        category = category,
-    )
-
-    try:
-        new_product.create()
-        return jsonify(new_product.to_dict())
-    except exc.IntegrityError: 
-        return {"error":"something went wrong"}, 409
+    return jsonify({'error': "Products not found"}), 404
 
 
 @api.route('/product/<int:id>', methods={"GET"})
@@ -128,22 +128,22 @@ def get_one_product(id):
     
     return({"error": "Product not found"}), 404
 
-@api.route('/client/<int:product_id>/favorites', methods=['POST'])
+@api.route('/favorite/<int:product_id>/', methods=['POST'])
 @jwt_required()
-def add_whish(product_id):
-    current_user = get_jwt_identity()
-    if not get_jwt_identity().get("id") == id:
+def add_whish(product_id,):
+    current_user = get_jwt_identity().get("id")
+
+    if not get_jwt_identity().get("id"):
         return {'error': 'Invalid action'}, 400
 
-    id_product = request.json.get("have_product", None)
-
     new_whish = Wishlist(
-        from_account = current_user.get("id"),
+        from_account = current_user,
         have_product =  product_id,
     )
-
+    
     try:
         new_whish.create()
+        print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new_whish.to_dict())
         return jsonify(new_whish.to_dict())
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
@@ -151,8 +151,8 @@ def add_whish(product_id):
 @api.route('/client/<int:id>/favorites', methods=['DELETE'])
 @jwt_required()
 def remove_wish(id):
-    user_with_wish = get_jwt_identity()
-    if not get_jwt_identity().get("id") == id:
+    user_with_wish = get_jwt_identity().get("id")
+    if not get_jwt_identity().get("id"):
         return {'error': 'Incorrect user action'}, 400
 
     current_user = Wishlist.get_by_id(id)
@@ -160,7 +160,7 @@ def remove_wish(id):
         current_user.delete()
         return jsonify(current_user.to_dict()), 200
 
-    return {'error': 'traveler not found'}, 400
+    return {'error': 'user not found'}, 400
 
 @api.route('/client/<int:id>/cart', methods=['POST'])
 @jwt_required()
@@ -207,74 +207,73 @@ def change_credentials(id):
     return {"error":"user not found"}, 400
 
 
-@api.route('/checkout-session', methods=['GET'])
-def get_checkout_session():
-    id = request.args.get('sessionId')
-    checkout_session = stripe.checkout.Session.retrieve(id)
-    return jsonify(checkout_session)
+@api.route('/search/<int:category>', methods={"GET"})
+def get_products(category):
+    one_product = Product.get_category(id)
+
+    if one_product:
+        return jsonify(one_product.to_dict()), 200
+    
+    return({"error": "Product not found"}), 404
 
 
-@api.route("/card", methods=["GET","POST"])
-def add_card_details():
-    if request.method == 'POST':
-        card_number = request.json.get['cardNumber']
-        card_expdate = request.json.get['expiryDate']
-        card_cvv = request.json.get['cvc']
+@api.route('/productmedia/<int:id>', methods=['POST'])
+def update_media_post(id):
+    
+    if 'media' in request.files:
 
-        print(card_number, card_expdate, card_cvv)
+        result = cloudinary.uploader.upload(request.files['media'])
+        mediaProduct = Product.get_by_id(id)
+        mediaProduct.media = result['secure_url']
 
-        tokenid = generate_card_token(card_number, card_expdate, card_cvv)
+        db.session.add(mediaProduct)
+        db.session.commit()
 
-        payment_done = create_payment_charge(tokenid, 40)
+        return jsonify(mediaProduct.to_dict()), 200
 
-        return jsonify({"success":payment_done})
     else:
-        return jsonify({"error":"card information incomplete"})
+        raise APIException('Missing profile_image on the FormData')
 
+@api.route('/newproduct/<int:id>', methods=['POST'])
+@jwt_required()
+def new_product(id):
+    account_id = 1
+    price = request.json.get('price',None)
+    text = request.json.get('text',None)
+    category = request.json.get('category',None)
+    product_name = request.json.get('product_name',None)
+    media = ""
 
-@api.route('/create-checkout-session', methods=['POST'])
-def generate_card_token(cardnumber, expdate, cvc):
-    data= stripe.Token.create(
-            card={
-                "number": str(cardnumber),
-                "exp_date": int(expdate),
-                "cvc": str(cvc),
-            })
-    card_token = data['id']
+    
+    new_product = Product(
+                account_id=account_id,
+                product_name=product_name,
+                price=price,
+                text=text,
+                category=category,
+                media=media
+            )
 
-    return card_token
+    if new_product: 
+        new_product.create()
+        return jsonify(new_product.to_dict()),201
 
-def create_checkout_session():
+    else:
+        return {'error':'Something went wrong'},409
+@api.route('/payment/card', methods=['POST'])
+def payment():
     try:
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {
-                    'price': 'price_1JXRtUFBOOWtTsFdSgCJbJkI',
-                    'quantity': 1,
-                },
-            ],
-            payment_method_types=[
-              'card',
-              'sofort',
-            ],
-            mode='payment',
-            success_url = DOMAIN + '?success=true',
-            cancel_url= DOMAIN + '?canceled=true',
+        data = request.json
+        charge = stripe.Charge.create(
+            amount = data["amount"],
+            currency = "usd",
+            description = data["description"],
+            source = "tok_visa",
+            idempotency_key = data["id"],
+            api_key = 'sk_test_51JXMcbFBOOWtTsFdzgGyOBEw5Ko5pVKfaGWwM8UECLtVeJeYV6CMP4q54DgNSyMzGsKsWLpo6wQwLht68ZiafTRx00JQhIDci6'
         )
-    except Exception as e:
-        return jsonify(error=str(e)), 403
-
-    return redirect(checkout_session.url, code=303)
-
-def create_payment_charge(tokenid, amount):
-
-    payment = stripe.Charge.create(
-                amount= int(amount)*100,                  # convert amount to cents
-                currency='usd',
-                description='Example charge',
-                source=tokenid,
-                )
-
-    payment_check = payment['paid']    # return True for successfull payment
-
-    return payment_check
+        print(charge)
+        return jsonify({"success":"payment_done!"})
+    except stripe.error.StripeError as e:
+        print(e)
+        return jsonify({"error":"card information incomplete"})

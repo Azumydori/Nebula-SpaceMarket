@@ -25,6 +25,8 @@ import ControlPage from "./pages/controlpage";
 import ProductDetail from "./pages/productdetail.js";
 import LogRegister from "./component/log&register";
 import PrivacyPolicy from "./pages/privacy-policy.js";
+import "/workspace/Nebula-SpaceMarket/src/front/styles/home.scss";
+
 //create your first component
 const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -32,7 +34,7 @@ const Layout = () => {
 	const basename = process.env.BASENAME || "";
 
 	return (
-		<div className="d-flex flex-column h-100">
+		<div className="HomeCenter">
 			<BrowserRouter basename={basename}>
 				<Navbar />
 				<Bottombar />
@@ -97,6 +99,7 @@ const Layout = () => {
 					<Route exact path="/product/:id">
 						<ProductDetail />
 					</Route>
+
 					<Route>
 						<NotFound />
 					</Route>

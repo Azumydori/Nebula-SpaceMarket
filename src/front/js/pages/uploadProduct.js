@@ -1,9 +1,10 @@
-import React, { useContext, onSubmit, handleSubmit } from "react";
+import React, { useContext, onSubmit, handleSubmit, onChange, useState } from "react";
 import { Context } from "../store/appContext";
 import { useForm } from "react-hook-form";
 import { Grid } from "@material-ui/core";
 import NebulaUpload from "../../img/nebulaUploadProduct.png";
-
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import CheckIcon from "@material-ui/icons/Check";
 import "../../styles/uploadProduct.scss";
 
 const UploadProduct = () => {
@@ -13,29 +14,60 @@ const UploadProduct = () => {
 		handleSubmit,
 		formState: { errors }
 	} = useForm();
+	const [validateImage, setValidateImage] = useState("file-upload noValidate");
+	const [changeIcon, setchangeIcon] = useState(<ArrowUpwardIcon className="iconGiant" />);
 	const onSubmit = data => {
-		console.log(data);
-		actions.upload(data);
+		actions.upload(JSON.stringify(data), data.media);
 	};
+
+	function handleChange(e) {
+		setValidateImage("file-upload validate");
+		setchangeIcon(<CheckIcon className="iconGiant" />);
+	}
 
 	return (
 		<div className="full-container">
-			<form action="" method="post" noValidate onSubmit={handleSubmit(onSubmit)}>
-				<div className="row">
-					<div className="col-6">
-						<div className="upload-container">
-							<h2>ADD THE BEST PHOTO YOU HAVE</h2>
-							<div>
-								<button className="btn">
-									<i className="fas fa-image" />
-									Browse
-								</button>
+			<form action="" method="post" noValidate onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+				<div className="d-flex flex-column justify-content-center">
+					<div className="h2">Upload product</div>
+					<div className="d-flex flex-wrap justify-content-around align-items-center ">
+						<div className="upload-container maxWith">
+							<h2>Add Photo</h2>
+
+							<div className="wrapper">
+								<div className={validateImage}>
+									<input
+										id="media"
+										type="file"
+										name="media"
+										className="fas fa-image "
+										accept=".jpg,.png"
+										{...register("media")}
+										onChange={handleChange}
+									/>
+									{changeIcon}
+								</div>
 							</div>
 						</div>
 
-						<div className="d-flex flex-column">
+						<div className="d-flex flex-column maxWith">
+							<label htmlFor="product_name">Tell us the name of the product</label>
+							<input
+								type="text"
+								{...register("product_name", { required: true })}
+								id="product_name"
+								name="product_name"
+							/>
+						</div>
+					</div>
+					<div className="d-flex flex-wrap justify-content-around align-items-center ">
+						<div className="d-flex flex-column maxWith">
 							<label htmlFor="category">Category</label>
-							<select defaultValue={"DEFAULT"} {...register("category", { required: true })}>
+							<select
+								defaultValue={"DEFAULT"}
+								{...register("category", { required: true })}
+								id="category"
+								name="category">
 								<option value="DEFAULT" disabled hidden>
 									Choose category
 								</option>
@@ -53,26 +85,30 @@ const UploadProduct = () => {
 								<option value="Other"> Other</option>
 							</select>
 						</div>
-
-						<div className="d-flex flex-column">
-							<label htmlFor="text">Product description</label>
-							<textarea {...register("text", {})} />
+						<div className="d-flex flex-column maxWith">
+							<label htmlFor="price">Price</label>
+							<div className="input-group mb-2">
+								<div className="input-group-prepend">
+									<div className="input-group-text">€</div>
+								</div>
+								<input
+									type="text"
+									{...register("price", { required: true })}
+									id="price"
+									name="price"
+									className="form-control"
+									placeholder="0.00"
+								/>
+							</div>
 						</div>
 					</div>
-
-					<div className="col-6">
-						<div className="d-flex flex-column">
-							<label htmlFor="product_name">What are you selling?</label>
-							<input
-								type="text"
-								placeholder="Explain what you want to sell in a few words"
-								{...register("product_name", { required: true })}
-							/>
+					<div className="d-flex flex-wrap justify-content-around   ">
+						<div className="d-flex flex-column maxWith">
+							<label htmlFor="text">Product description</label>
+							<textarea {...register("text", {})} name="text" id="text" />
 						</div>
-
-						<div className="d-flex flex-column">
-							<label htmlFor="price">Price</label>
-							<input type="text" {...register("price", { required: true })} />
+						<div className="d-flex flex-column maxWith">
+							<img src={NebulaUpload} />
 						</div>
 					</div>
 				</div>
@@ -86,9 +122,6 @@ const UploadProduct = () => {
 					</div>
 				</div>
 			</form>
-			<Grid container item xs={12} direction="row" justifyContent="flex-end" alignItems="flex-end">
-				<img src={NebulaUpload} />
-			</Grid>
 		</div>
 	);
 };
