@@ -11,6 +11,8 @@ import { createTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import { Grid } from "@material-ui/core";
 import InputStripe from "./inputStripe";
+import Metamask from "./metamask";
+
 const costumTheme = createTheme({
 	palette: {
 		primary: {
@@ -110,9 +112,9 @@ const checkoutTab = () => {
 							textColor="primary"
 							variant="fullWidth"
 							aria-label="full width tabs example">
-							<Tab label="Item One" {...a11yProps(0)} />
-							<Tab label="Item Two" {...a11yProps(1)} />
-							<Tab label="Item Three" {...a11yProps(2)} />
+							<Tab label="Credit Card" {...a11yProps(0)} />
+							<Tab label="Crypto" {...a11yProps(1)} />
+							<Tab label="Paypal" {...a11yProps(2)} />
 						</Tabs>
 					</ThemeProvider>
 				</AppBar>
@@ -125,7 +127,7 @@ const checkoutTab = () => {
 					<InputStripe />
 				</TabPanel>
 				<TabPanel value={value} index={1} dir={theme.direction}>
-					Item Two
+					<Metamask />
 				</TabPanel>
 				<TabPanel value={value} index={2} dir={theme.direction}>
 					Item Three
