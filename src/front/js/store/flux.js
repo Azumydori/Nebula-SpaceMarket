@@ -14,8 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			//https://nebula-spacemarket.herokuapp.com/
-			baseURL: "https://3001-violet-locust-fj73hnnc.ws-eu18.gitpod.io/api",
-			domainURL: "https://3000-violet-locust-fj73hnnc.ws-eu18.gitpod.io/",
+			baseURL: "https://nebulav2.herokuapp.com/api",
+			domainURL: "https://nebulav2.herokuapp.com/",
 			wishlist: [],
 			cart: [],
 			searchProduct: [],
