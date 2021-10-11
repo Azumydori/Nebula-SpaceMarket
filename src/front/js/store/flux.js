@@ -184,7 +184,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(function(responseAsJson) {
 						console.log(responseAsJson);
 						productMedia(media, responseAsJson.id);
-						setStore({ posts: responseAsJson });
+						
 						//Hay que meterle tiempo para que pueda cargar la informacion, si no da fallos
 						if (media[0]) {
 							setTimeout(() => {
