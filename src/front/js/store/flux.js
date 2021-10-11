@@ -9,6 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			wishlist: [1, 4, 7],
 			cart: [],
 			searchProduct: [],
+			productInformation: [],
 			product: [
 				{
 					id: 1,
