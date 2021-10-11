@@ -40,6 +40,7 @@ const ControlPage = props => {
 	const [productTab, setProductTab] = useState(
 		<img src="https://c.tenor.com/DBqjevyA2o4AAAAd/bongo-cat-codes.gif" />
 	);
+
 	//Recibo el parametro.
 	const params = useParams();
 	useEffect(() => {
@@ -53,6 +54,7 @@ const ControlPage = props => {
 				if (params.str == undefined) {
 					setProductTab(
 						store.allProducts.map((element, index) => {
+							element.price;
 							return (
 								<Grid item key={index} xs={6} sm={4} md={3} xl={2} aligncontent="center">
 									<MediaCard

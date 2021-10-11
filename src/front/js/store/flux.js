@@ -14,8 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			//https://nebula-spacemarket.herokuapp.com/
-			baseURL: "https://nebula-spacemarket.herokuapp.com/api",
-			domainURL: "https://nebula-spacemarket.herokuapp.com/",
+			baseURL: "https://3001-violet-locust-fj73hnnc.ws-eu18.gitpod.io/api",
+			domainURL: "https://3000-violet-locust-fj73hnnc.ws-eu18.gitpod.io/",
 			wishlist: [],
 			cart: [],
 			searchProduct: [],
@@ -184,7 +184,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(function(responseAsJson) {
 						console.log(responseAsJson);
 						productMedia(media, responseAsJson.id);
-						setStore({ posts: responseAsJson });
 						//Hay que meterle tiempo para que pueda cargar la informacion, si no da fallos
 						if (media[0]) {
 							setTimeout(() => {
@@ -327,6 +326,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(responseAsJson => {
 						setStore({ ...product, product: responseAsJson });
+						console.log(responseAsJson);
 						return responseAsJson;
 					})
 					.catch(error => console.error("There as been an unknown error", error));
