@@ -156,8 +156,16 @@ def remove_wish(id):
 
     return {'error': 'traveler not found'}, 400
 
+@api.route('/cart/<int:id>', methods={"GET"})
+def get_cart():
+    get_cart = Line_Order.get_by_id(id)
+
+    if get_cart:
+        return jsonify(get_cart.to_dict()), 200
+    
+    return({"error": "lineOrder not found"}), 404
+
 @api.route('/client/<int:id>/cart', methods=['POST'])
-@jwt_required()
 def add_item_cart(id):
 
     if not get_jwt_identity().get("id") == id:
@@ -174,6 +182,17 @@ def add_item_cart(id):
         return jsonify(cart.to_dict())
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
+
+@api.route('/cart', methods=['GET'])
+def all_cart():
+    cart = Line_Order.get_all()
+
+    if cart:
+        cart_all = [lineorder.to_dict() for lineorder in cart]
+
+        return jsonify(cart_all), 200
+
+    return jsonify({'error': "Products not found"}), 404
 
 @api.route('/account/<int:id>', methods=["PATCH"])
 @jwt_required()

@@ -7,8 +7,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			domainURL: "https://3000-coral-crane-a2it6dfq.ws-eu16.gitpod.io/",
 			currentUser: {},
 			wishlist: [1, 4, 7],
-			cart: [],
+			cartWithProducts: [],
+			cart: [
+				{
+					id: 1,
+					product_name: "Puerta",
+					vendor_name: "Isidoro Ferreira",
+					price: 12,
+					media:
+						"https://images.pexels.com/photos/1000366/pexels-photo-1000366.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+					text: " Tienes defectos si, pero son los más perfectos del mundo",
+					category: "Clothing"
+				}
+			],
 			searchProduct: [],
+			detailProductStore: [],
 			product: [
 				{
 					id: 1,
@@ -247,12 +260,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			shopCart: product_id => {
-				let myToken = localStorage.getItem("token");
-				let myUser = getStore().currentUser.id;
+				let token = localStorage.getItem("jwt-token");
+				let id = localStorage.getItem("Id");
 				console.log("Soy shoppingcard");
-				fetch(getStore().baseURL.concat("/client/", myUser, "/cart"), {
+				fetch(getStore().baseURL.concat("/client/", 1, "/cart"), {
 					method: "POST",
-					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ product_id: product_id })
 				})
 					.then(resp => {
@@ -262,6 +275,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(responseAsJson => {
 						setStore({ cart: responseAsJson });
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
+
+			getCartProducts: () => {
+				fetch(getStore().baseURL.concat("/cart"), {
+					method: "GET",
+					headers: new Headers({
+						"Content-Type": "application/json",
+						"Sec-Fetch-Mode": "no-cors"
+					})
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid products");
+						}
+						return resp.json();
+					})
+					.then(responseAsJson => {
+						setStore({ cartWithProducts: responseAsJson });
+						console.log(responseAsJson);
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},

@@ -210,3 +210,8 @@ class Line_Order(db.Model):
    def create(self):
       db.session.add(self)
       db.session.commit()
+      
+   @classmethod
+   def get_all(cls):
+      all_cart = cls.query.all()
+      return all_cart
