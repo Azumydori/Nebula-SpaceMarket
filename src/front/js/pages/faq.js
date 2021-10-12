@@ -16,41 +16,41 @@ export const Faq = () => {
 						F A Q
 					</Typography>
 				</Box>
-				<Typography>We hope we can solve all your inquiries</Typography>
+				<Typography>We are happy to help !</Typography>
 			</Grid>
 			<Grid container>
 				<Grid container item xs={12} direction="column" justifyContent="flex-end" alignItems="flex-end">
 					<img src={FaqNebula} />
 				</Grid>
 			</Grid>
-			<div className="faq-header">Crypto</div>
+			<div className="faq-header">Nebula Space Market</div>
 			<ControlledAccordions
-				Question={"What is a crypto?"}
+				Question={"What is Nebula?"}
 				Answer={
-					"A cryptocurrency is a form of digitl asset based on a network distributed accross a large number of computers. This decentralized structure allows them to exist outside the control of governments and central authorities. The word is derived from the encryption techniques which are used to secure the network."
+					"Nebula is a integrated market, powered by blockchain technology. It is decentralized because we don't a server and a database, Nebula is scattered on computers all over the world, so we don't have a single point of failure. It is more secure because anyone can audit transactions and it is kept safe by advanced cryptography."
 				}
 				PanelId={"q1"}
 			/>
 			<ControlledAccordions
-				Question={"What is blockchain?"}
+				Question={"Why is is a decentralized application?"}
 				Answer={
-					"Blockchain is a specific type of database that stores data in blocks chained together in chronological order. Different types of information can be stored on a blockchain but the most common use so far has been as a ledger for transactions. Decentralized blockchains are immutable, which means that the data entered is irreversible."
+					"By running our application on blockchain, we make tampering transactions impossible. We use this new technology to create the world's first real democratic, free and secure marketplace. We believe decentralized applications have a tremendous future and we want to be a part of this new era of the web 3.0"
 				}
 				PanelId={"q2"}
 			/>
 			<ControlledAccordions
-				Question={"How can I pay with crypto?"}
+				Question={"Why should I pay crypto?"}
 				Answer={
-					"You need a digital wallet (like Metamask or Coinomi) which allows you to store, manage, and trade cryptocurrencies. Your public keys/wallet addresses are like your email address, and private keys are similar to the password you use to login to your email. You give out your wallet address so that people can send you coins much like how you provide your email address to your contacts to send you messages."
+					"We want to give you that option because cryptocurrencies are cheaper, more secure options than fiat money. At the end of the day, central banks have total control over your money. Each time they print a note, your money is worth less. Cryptocurrencies give back the control to the citizens, making international payments easy with very little fees."
 				}
 				PanelId={"q3"}
 			/>
 
 			<div className="faq-header">Account</div>
 			<ControlledAccordions
-				Question={"How to Register?"}
+				Question={"How much feed am I paying?"}
 				Answer={
-					"Go to the landing page or click the user icon to access the register menu.  Enter the email address and password you’ll use for your account. You will receive a verification email in your inbox. "
+					"We charge 0.2% of the order in fees to maintain Nebula running. We don't make any profit from taking commissions from transactions. We believe in a market where the vendors get the most profits they can, and buyers get the fairest price by eilimiting as much middleman as possible."
 				}
 				PanelId={"q4"}
 			/>

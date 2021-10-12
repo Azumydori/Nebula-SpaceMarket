@@ -15,6 +15,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Link from "@material-ui/core/Link";
+import { ToastContainer, toast } from "react-toastify";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -136,6 +137,31 @@ const MediaCard = props => {
 		}
 	};
 
+	const notifySuccess = () => {
+		toast.success("🦄 Wow so easy!", {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined
+		});
+		return (
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
+		);
+	};
+
 	return (
 		<Link href={URL_CARD}>
 			<Card className={classes.root}>
@@ -178,7 +204,7 @@ const MediaCard = props => {
 								event.preventDefault();
 								actions.shopCart(props.id_product);
 							}}>
-							<ShoppingCartIcon />
+							<ShoppingCartIcon onClick={notifySuccess} />
 						</Button>
 					</div>
 				</CardContent>

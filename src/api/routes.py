@@ -1,8 +1,9 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
+import os
 import decimal
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, redirect
 from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token, JWTManager
 from flask_cors import CORS
 
@@ -10,11 +11,23 @@ from api.models import db, Account, Order, Wishlist, Product, Line_Order
 
 from sqlalchemy import exc
 from decimal import Decimal
-from datetime import timedelta
+from datetime import timedelta, datetime
 
+from api.utils import generate_sitemap, APIException
 from werkzeug.security import check_password_hash, generate_password_hash
+import stripe
 
-api = Blueprint('api', __name__)
+import cloudinary
+import cloudinary.uploader
+
+
+
+api = Blueprint('api', __name__, static_url_path='', static_folder='public')
+
+DOMAIN_SUCCESS = 'https://3000-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/success'
+DOMAIN_FAILED = 'https://3000-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/error'
+
+stripe.api_key = 'sk_test_51JXMcbFBOOWtTsFdzgGyOBEw5Ko5pVKfaGWwM8UECLtVeJeYV6CMP4q54DgNSyMzGsKsWLpo6wQwLht68ZiafTRx00JQhIDci6'
 
 
 @api.route('/account/<int:id>', methods={"GET"})
@@ -49,9 +62,17 @@ def create_account():
 
     try:
         new_user.create()
-        return jsonify(new_user.to_dict()), 201
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
+
+    account = Account.get_by_email(email)
+
+
+    if account :
+        token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
+        return({'token' : token}), 200
+
+    
 
 @api.route('/login', methods=["POST"])
 def login():
@@ -64,10 +85,15 @@ def login():
     account = Account.get_by_email(email)
 
     if account and check_password_hash(account._password, password) and account._is_active:
-        token = create_access_token(identity=account.id, expires_delta=timedelta(minutes=100))
-        return({'token' : token}), 200
+        token = create_access_token(identity=account.to_dict(), expires_delta=timedelta(minutes=100))
+        return({'token' : token}) , 200
+
     else:
         return({'error':'Some parameter is wrong'}), 400
+
+
+
+
 
 
 @api.route('/account/<int:id>', methods = ['PATCH'])
@@ -81,36 +107,16 @@ def update_account(id):
     return jsonify({'msg' : 'Account not foud'}), 404
 
 
-@api.route('/product', methods=['POST'])
-def add_new_product():
+@api.route('/product', methods=['GET'])
+def all_product():
+    prodc = Product.get_all()
 
-    product_name = request.json.get("product_name", None)
-    text = request.json.get("text", None)
-    price = request.json.get("price", None)
-    category = request.json.get("category", None)
+    if prodc:
+        products_all = [product.to_dict() for product in prodc]
 
+        return jsonify(products_all), 200
 
-    if isinstance(price, int):
-        price = Decimal(f'{price}')
-    
-    if isinstance(price, str):
-        price = Decimal(f'{price}')
-
-    if not (product_name and text and price and category):
-        return {"error":"Missing info"}, 400
-
-    new_product = Product(
-        product_name = product_name,
-        text = text,
-        price = price,
-        category = category,
-    )
-
-    try:
-        new_product.create()
-        return jsonify(new_product.to_dict())
-    except exc.IntegrityError: 
-        return {"error":"something went wrong"}, 409
+    return jsonify({'error': "Products not found"}), 404
 
 
 @api.route('/product/<int:id>', methods={"GET"})
@@ -122,22 +128,22 @@ def get_one_product(id):
     
     return({"error": "Product not found"}), 404
 
-@api.route('/client/<int:product_id>/favorites', methods=['POST'])
+@api.route('/favorite/<int:product_id>/', methods=['POST'])
 @jwt_required()
-def add_whish(product_id):
-    current_user = get_jwt_identity()
-    if not get_jwt_identity().get("id") == id:
+def add_whish(product_id,):
+    current_user = get_jwt_identity().get("id")
+
+    if not get_jwt_identity().get("id"):
         return {'error': 'Invalid action'}, 400
 
-    id_product = request.json.get("have_product", None)
-
     new_whish = Wishlist(
-        from_account = current_user.get("id"),
+        from_account = current_user,
         have_product =  product_id,
     )
-
+    
     try:
         new_whish.create()
+        print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new_whish.to_dict())
         return jsonify(new_whish.to_dict())
     except exc.IntegrityError: 
         return {"error":"something went wrong"}, 409
@@ -145,8 +151,8 @@ def add_whish(product_id):
 @api.route('/client/<int:id>/favorites', methods=['DELETE'])
 @jwt_required()
 def remove_wish(id):
-    user_with_wish = get_jwt_identity()
-    if not get_jwt_identity().get("id") == id:
+    user_with_wish = get_jwt_identity().get("id")
+    if not get_jwt_identity().get("id"):
         return {'error': 'Incorrect user action'}, 400
 
     current_user = Wishlist.get_by_id(id)
@@ -154,11 +160,11 @@ def remove_wish(id):
         current_user.delete()
         return jsonify(current_user.to_dict()), 200
 
-    return {'error': 'traveler not found'}, 400
+    return {'error': 'user not found'}, 400
 
-@api.route('/cart/<int:id>', methods={"GET"})
+@api.route('/client/<int:id>/cart', methods=["GET"])
 def get_cart():
-    get_cart = Line_Order.get_by_id(id)
+    get_cart = Order.get_by_id(id)
 
     if get_cart:
         return jsonify(get_cart.to_dict()), 200
@@ -166,22 +172,69 @@ def get_cart():
     return({"error": "lineOrder not found"}), 404
 
 @api.route('/client/<int:id>/cart', methods=['POST'])
+@jwt_required()
 def add_item_cart(id):
-
+    print("soy cartproduct")
+    print("soy el ID", id)
     if not get_jwt_identity().get("id") == id:
         return {'error': 'Invalid action'}, 400
 
-    id_product = request.json.get("have_product", None)
+    id_product = request.json.get("product_id", None)
+    print ("soy product ID", id_product)
 
-    new_cart = Line_Order(
-        product_id = id_product
-    )
+    order = db.session.query(Order).filter_by(account_id = id).first()
+    print(order, "Soy ORDER")
 
-    try:
-        cart.create()
-        return jsonify(cart.to_dict())
-    except exc.IntegrityError: 
-        return {"error":"something went wrong"}, 409
+    if order is None:
+        user = db.session.query(Account).filter_by(id = id).first()
+        user_dic = user.to_dict()
+        new_order = Order(
+            order_date = datetime.now(),
+            shipping_date = datetime.now(),
+            shipping_fee = 1,
+            bill_address = "Hola soy una direccion!",
+            is_paid = False,
+            account_id = id,
+            ) 
+
+        order_add = db.session.add(new_order)
+        db.session.commit()
+        print(new_order, "SOY NEW ORDER")
+        new_order_dic = new_order.to_dict()
+        print(new_order_dic, "SOY NEW ORDER DIC")
+        new_cart = Line_Order(
+            product_id = id_product,
+            quantity =1,
+            order_id = new_order_dic.id
+            )
+        print(new_cart)
+        
+        if new_cart: 
+            new_cart.create()
+            return jsonify(new_cart.to_dict()),201
+
+    #order_dic = order.to_dict()
+    #print(order_dic, "SOY ORDER DIC")
+
+    else:
+        new_cart = Line_Order(
+            product_id = id_product,
+            quantity =1,
+            order_id = order.id
+            )
+        print(new_cart)
+        
+        if new_cart: 
+            new_cart.create()
+            return jsonify(new_cart.to_dict()),201
+
+   # try:
+    #    new_cart.create()
+    #   print ("jsonify", jsonify(cart.to_dict()))
+    #  return jsonify(cart.to_dict())
+    #except exc.IntegrityError: 
+    #  return {"error":"something went wrong"}, 409
+
 
 @api.route('/cart', methods=['GET'])
 def all_cart():
@@ -214,11 +267,80 @@ def change_credentials(id):
             "last_name": request.json.get("last_name", None),
         }
         
-        
         account_updated = account.update_account_info(** {key: value for key, value in updated_info.items() if value is not None})
         return jsonify(account_updated.to_dict()), 200
 
     return {"error":"user not found"}, 400
 
 
+@api.route('/search/<int:category>', methods={"GET"})
+def get_products(category):
+    one_product = Product.get_category(id)
 
+    if one_product:
+        return jsonify(one_product.to_dict()), 200
+    
+    return({"error": "Product not found"}), 404
+
+
+@api.route('/productmedia/<int:id>', methods=['POST'])
+def update_media_post(id):
+    
+    if 'media' in request.files:
+
+        result = cloudinary.uploader.upload(request.files['media'])
+        mediaProduct = Product.get_by_id(id)
+        mediaProduct.media = result['secure_url']
+
+        db.session.add(mediaProduct)
+        db.session.commit()
+
+        return jsonify(mediaProduct.to_dict()), 200
+
+    else:
+        raise APIException('Missing profile_image on the FormData')
+
+@api.route('/newproduct/<int:id>', methods=['POST'])
+@jwt_required()
+def new_product(id):
+    account_id = 1
+    price = request.json.get('price',None)
+    text = request.json.get('text',None)
+    category = request.json.get('category',None)
+    product_name = request.json.get('product_name',None)
+    media = ""
+
+    
+    new_product = Product(
+                account_id=account_id,
+                product_name=product_name,
+                price=price,
+                text=text,
+                category=category,
+                media=media
+            )
+
+    if new_product: 
+        new_product.create()
+        return jsonify(new_product.to_dict()),201
+
+    else:
+        return {'error':'Something went wrong'},409
+
+@api.route('/payment/card', methods=['POST'])
+def payment():
+    try:
+        data = request.json
+        charge = stripe.Charge.create(
+            amount = data["amount"],
+            currency = "usd",
+            description = data["description"],
+            source = "tok_visa",
+            idempotency_key = data["id"],
+            api_key = 'sk_test_51JXMcbFBOOWtTsFdzgGyOBEw5Ko5pVKfaGWwM8UECLtVeJeYV6CMP4q54DgNSyMzGsKsWLpo6wQwLht68ZiafTRx00JQhIDci6'
+        )
+        print(charge)
+        return jsonify({"success":"payment_done!"})
+    except stripe.error.StripeError as e:
+        print(e)
+        return jsonify({"error":"card information incomplete"})

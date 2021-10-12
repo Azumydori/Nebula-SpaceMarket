@@ -69,11 +69,11 @@ const ProductTotal = () => {
 						<Paper elevation={0} className={classes.paper} variant="outlined">
 							<Box p={2}>
 								<Typography variant="h3">Total</Typography>
-								<Typography>Subtotal: €{totalCart}</Typography>
+								<Typography>Subtotal: €{store.totalPrice}</Typography>
 								<Typography>Other fees: €2.68</Typography>
 								<Divider className={classes.divider} />
 								<Typography variant="h6" className={classes.textBold}>
-									Total: €{totalCart + 2.68}
+									Total: €{store.totalPrice + 2.68}
 								</Typography>
 								<ThemeProvider theme={costumTheme}>
 									<Box p={1}>

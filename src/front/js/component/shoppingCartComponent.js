@@ -75,9 +75,16 @@ const ShoppingCartComponent = ({ name, vendorName, price, image }) => {
 	//Javascript/React for buttons
 
 	//Increase/Decrease Products
+	const { store, actions } = useContext(Context);
 	const [countProduct, setCountProduct] = useState(1);
-	const incrementProduct = () => setCountProduct(countProduct + 1);
-	const decreaseProduct = () => setCountProduct(countProduct - 1);
+	const incrementProduct = () => {
+		actions.addToTotal(price);
+		setCountProduct(countProduct + 1);
+	};
+	const decreaseProduct = () => {
+		actions.removeToTotal(price);
+		setCountProduct(countProduct - 1);
+	};
 
 	if (countProduct <= 0) {
 		decreaseProduct = () => setCounter(1);
@@ -87,7 +94,6 @@ const ShoppingCartComponent = ({ name, vendorName, price, image }) => {
 
 	//Product name storage
 	const params = useParams();
-	const { store, actions } = useContext(Context);
 	const [detailProduct, getDetailProduct] = useState("");
 	const classes = useShoppingCart();
 

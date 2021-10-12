@@ -15,6 +15,8 @@ import VendorProfile from "./pages/vendorprofile.js";
 import Checkout from "./pages/checkout.js";
 import UserProfile from "./pages/userprofile.js";
 import Faq from "./pages/faq.js";
+import Success from "./pages/success.js";
+import Error from "./pages/error.js";
 import Blockchain from "./pages/blockchain.js";
 import NftLearn from "./pages/nft-learn.js";
 import Wishlist from "./pages/wishlist.js";
@@ -23,6 +25,8 @@ import ControlPage from "./pages/controlpage";
 import ShoppingCart from "./pages/shoppingCart.js";
 import LogRegister from "./component/log&register";
 import PrivacyPolicy from "./pages/privacy-policy.js";
+import "/workspace/Nebula-SpaceMarket/src/front/styles/home.scss";
+
 //create your first component
 const Layout = () => {
 	//the basename is used when your project is published in a subdirectory and not in the root of the domain
@@ -30,7 +34,7 @@ const Layout = () => {
 	const basename = process.env.BASENAME || "";
 
 	return (
-		<div className="d-flex flex-column h-100">
+		<div className="HomeCenter">
 			<BrowserRouter basename={basename}>
 				<Navbar />
 				<Bottombar />
@@ -55,6 +59,12 @@ const Layout = () => {
 					</Route>
 					<Route exact path="/faq">
 						<Faq />
+					</Route>
+					<Route exact path="/success">
+						<Success />
+					</Route>
+					<Route exact path="/canceled">
+						<Error />
 					</Route>
 					<Route exact path="/privacy-policy">
 						<PrivacyPolicy />

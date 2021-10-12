@@ -80,7 +80,12 @@
 		"@material-ui/icons": "^4.11.2",
 		"@material-ui/lab": "^4.0.0-alpha.60",
 		"@mui/icons-material": "^5.0.1",
+		"@stripe/react-stripe-js": "^1.5.0",
+		"@stripe/stripe-js": "^1.18.0",
+		"axios": "^0.22.0",
 		"bootstrap": "^4.3.1",
+		"cloudinary": "^1.27.1",
+		"ethers": "^5.4.7",
 		"jwt-decode": "^3.1.2",
 		"prop-types": "^15.6.1",
 		"react": "^16.14.0",
@@ -88,6 +93,9 @@
 		"react-hook-form": "^7.14.0",
 		"react-polyfills": "0.0.1",
 		"react-router-dom": "^5.2.0",
-		"react-select": "^4.3.1"
+		"react-select": "^4.3.1",
+		"react-swipeable-views": "^0.14.0",
+		"react-toastify": "^8.0.3",
+		"stripe": "^8.179.0"
 	}
 }

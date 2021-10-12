@@ -55,14 +55,7 @@ const costumTheme = createTheme({
 
 const ShoppingCart = () => {
 	const { store, actions } = useContext(Context);
-	const [cartProduct, setCartProduct] = useState([]);
 
-	//Map
-
-	useEffect(() => {
-		setCartProduct(store.cart);
-	}, []);
-	console.log({ cartProduct });
 	return (
 		<Container>
 			<Grid container>
@@ -79,15 +72,15 @@ const ShoppingCart = () => {
 				<Grid container>
 					<Grid item xs={4} />
 					<Grid item xs={4}>
-						{cartProduct.length == 0
+						{store.cart.length == 0
 							? null
-							: cartProduct.map((product, index) => (
+							: store.cart.map((product, index) => (
 									<ShoppingCartComponent
 										key={index}
-										name={product.product_name}
-										vendorName={product.vendor_name}
-										price={product.price}
-										image={product.media}
+										name={product.product.product_name}
+										vendorName={product.product.vendor_name}
+										price={product.product.price}
+										image={product.product.media}
 									/>
 							  ))}
 					</Grid>
