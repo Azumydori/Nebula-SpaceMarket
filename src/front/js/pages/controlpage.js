@@ -45,6 +45,7 @@ const ControlPage = props => {
 	const params = useParams();
 	useEffect(() => {
 		actions.getProducts();
+		console.log(actions.getProduct(1));
 	}, []);
 
 	useEffect(
