@@ -119,6 +119,7 @@ const ProductDetail = () => {
 						justifyContent="center"
 						alignItems="center">
 						<ProductDescription
+							product_id={productInfo.id}
 							text={productInfo.text}
 							category={productInfo.category}
 							price={productInfo.price}

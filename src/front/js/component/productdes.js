@@ -18,6 +18,7 @@ import { Fragment } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const useProductStyle = makeStyles({
 	avatar: {
@@ -130,6 +131,11 @@ const ProductDescription = props => {
 						<Grid item={4}>
 							<Box px={1}>
 								<Button
+									onClick={event => {
+										event.preventDefault();
+										alert(props.product_id);
+										action.shopCart(props.product_id);
+									}}
 									variant="contained"
 									color="secondary"
 									size="small"
@@ -160,6 +166,7 @@ const ProductDescription = props => {
 };
 
 ProductDescription.propTypes = {
+	product_id: PropTypes.number,
 	category: PropTypes.string,
 	price: PropTypes.string,
 	text: PropTypes.string
