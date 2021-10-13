@@ -286,6 +286,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 
+			addProductToCart: product => {
+				const store = getStore();
+				store.cart.push(product);
+				setStore(store);
+				return true;
+			},
+
 			changeAccountInfo: data => {
 				const token = localStorage.getItem("jwt-token");
 				const tokenID = localStorage.getItem("Id");

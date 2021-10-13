@@ -72,19 +72,18 @@ const costumTheme = createTheme({
 	}
 });
 
-const ProductDescription = props => {
+const ProductDescription = ({ product }) => {
 	const classes = useProductStyle();
-	const { store, action } = useContext(Context);
+	const { store, actions } = useContext(Context);
 	const params = useParams();
 	const [value, setValue] = React.useState(5);
 	const [productInfo, setProductInfo] = useState("");
-
 	return (
 		<Fragment>
 			<Grid container>
 				<Grid item xs={8} container direction="row" justifyContent="flex-end" align-items="flex-end">
 					<Box p={1}>
-						<Typography>{props.category}</Typography>
+						<Typography>{product.category}</Typography>
 					</Box>
 				</Grid>
 				<Grid item xs={4} container direction="row" justifyContent="flex-end" align-items="flex-end">
@@ -95,7 +94,7 @@ const ProductDescription = props => {
 				<Grid container item xs={12} direction="row" justifyContent="flex-end" align-items="flex-end">
 					<Grid>
 						<Typography variant="h3" className={classes.textWeight}>
-							€ {props.price}
+							€ {product.price}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -109,7 +108,7 @@ const ProductDescription = props => {
 				<Grid container item xs={12} direction="row" justifyContent="flex-end" alignItems="flex-end">
 					<Box p={1} my={1}>
 						<Paper elevation={0} className={classes.paper} variant="outlined">
-							{props.text}
+							{product.text}
 						</Paper>
 					</Box>
 				</Grid>
@@ -133,8 +132,7 @@ const ProductDescription = props => {
 								<Button
 									onClick={event => {
 										event.preventDefault();
-										alert(props.product_id);
-										action.shopCart(props.product_id);
+										actions.addProductToCart(product);
 									}}
 									variant="contained"
 									color="secondary"
@@ -166,10 +164,11 @@ const ProductDescription = props => {
 };
 
 ProductDescription.propTypes = {
-	product_id: PropTypes.number,
+	/*product_id: PropTypes.number,
 	category: PropTypes.string,
 	price: PropTypes.string,
-	text: PropTypes.string
+	text: PropTypes.string*/
+	product: PropTypes.object
 };
 
 export default ProductDescription;
