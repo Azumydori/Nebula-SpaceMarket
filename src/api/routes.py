@@ -24,7 +24,8 @@ import cloudinary.uploader
 
 api = Blueprint('api', __name__, static_url_path='', static_folder='public')
 
-DOMAIN = 'https://3000-purple-meerkat-cd1lvkvr.ws-eu16.gitpod.io/checkout'
+DOMAIN_SUCCESS = 'https://3000-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/success'
+DOMAIN_FAILED = 'https://3000-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/error'
 
 stripe.api_key = 'sk_test_51JXMcbFBOOWtTsFdzgGyOBEw5Ko5pVKfaGWwM8UECLtVeJeYV6CMP4q54DgNSyMzGsKsWLpo6wQwLht68ZiafTRx00JQhIDci6'
 
