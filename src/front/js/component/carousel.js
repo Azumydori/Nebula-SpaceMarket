@@ -13,13 +13,10 @@ const ControlledCarousel = props => {
 					rewind: true,
 					perPage: 1,
 					perMove: 1,
-					gap: "1rem"
+					gap: "0.1rem"
 				}}>
 				<SplideSlide>
-					<img className="imgCarousel" src={props.img} alt="el" />
-				</SplideSlide>
-				<SplideSlide>
-					<img className="imgCarousel" src={props.img} alt="ella" />
+					<img className="imgCarousel" src={props.img} alt="el" width="500" height="600" />
 				</SplideSlide>
 			</Splide>
 		</div>

@@ -70,7 +70,7 @@ const costumTheme = createTheme({
 const ProductDetail = () => {
 	const classes = useProductStyle();
 	const [value, setValue] = React.useState(5);
-	const { store, action } = useContext(Context);
+	const { store, actions } = useContext(Context);
 	const params = useParams();
 	const [productInfo, setProductInfo] = useState("");
 	const {
@@ -81,13 +81,17 @@ const ProductDetail = () => {
 	const onSubmit = data => console.log(data);
 	console.log(errors);
 
+	useEffect(() => {
+		actions.getProduct(params.id);
+	}, []);
+
 	useEffect(
 		() => {
-			//action.getproductInfo(params.id);
-			store.productInformation = store.product[params.id];
-			setProductInfo(store.productInformation);
+			if (store.product != undefined) {
+				setProductInfo(store.product);
+			}
 		},
-		[store.productInformation]
+		[store.product]
 	);
 
 	return (
@@ -114,7 +118,11 @@ const ProductDetail = () => {
 						direction="column"
 						justifyContent="center"
 						alignItems="center">
-						<ProductDescription />
+						<ProductDescription
+							text={productInfo.text}
+							category={productInfo.category}
+							price={productInfo.price}
+						/>
 					</Grid>
 				</Grid>
 				<Grid container>

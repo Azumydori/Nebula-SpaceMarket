@@ -14,10 +14,10 @@ import { Container } from "@material-ui/core";
 import ForumIcon from "@material-ui/icons/Forum";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import { object } from "prop-types";
 import { Fragment } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router";
+import PropTypes from "prop-types";
 
 const useProductStyle = makeStyles({
 	avatar: {
@@ -71,28 +71,19 @@ const costumTheme = createTheme({
 	}
 });
 
-const ProductDescription = () => {
+const ProductDescription = props => {
 	const classes = useProductStyle();
 	const { store, action } = useContext(Context);
 	const params = useParams();
 	const [value, setValue] = React.useState(5);
 	const [productInfo, setProductInfo] = useState("");
 
-	useEffect(
-		() => {
-			//action.getproductInfo(params.id);
-			store.productInformation = store.product[params.id];
-			setProductInfo(store.productInformation);
-		},
-		[store.productInformation]
-	);
-
 	return (
 		<Fragment>
 			<Grid container>
 				<Grid item xs={8} container direction="row" justifyContent="flex-end" align-items="flex-end">
 					<Box p={1}>
-						<Typography>{productInfo.category}</Typography>
+						<Typography>{props.category}</Typography>
 					</Box>
 				</Grid>
 				<Grid item xs={4} container direction="row" justifyContent="flex-end" align-items="flex-end">
@@ -103,7 +94,7 @@ const ProductDescription = () => {
 				<Grid container item xs={12} direction="row" justifyContent="flex-end" align-items="flex-end">
 					<Grid>
 						<Typography variant="h3" className={classes.textWeight}>
-							€ {productInfo.price}
+							€ {props.price}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -117,7 +108,7 @@ const ProductDescription = () => {
 				<Grid container item xs={12} direction="row" justifyContent="flex-end" alignItems="flex-end">
 					<Box p={1} my={1}>
 						<Paper elevation={0} className={classes.paper} variant="outlined">
-							{productInfo.text}
+							{props.text}
 						</Paper>
 					</Box>
 				</Grid>
@@ -167,4 +158,11 @@ const ProductDescription = () => {
 		</Fragment>
 	);
 };
+
+ProductDescription.propTypes = {
+	category: PropTypes.string,
+	price: PropTypes.string,
+	text: PropTypes.string
+};
+
 export default ProductDescription;

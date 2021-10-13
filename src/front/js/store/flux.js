@@ -14,8 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			//https://nebula-spacemarket.herokuapp.com/
-			baseURL: "https://3001-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/api",
-			domainURL: "hhttps://3000-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/",
+			baseURL: "https://3001-tan-canid-h9oljr8a.ws-eu18.gitpod.io/api",
+			domainURL: "hhttps://3000-tan-canid-h9oljr8a.ws-eu18.gitpod.io/",
 			wishlist: [],
 			cart: [],
 			searchProduct: [],
@@ -184,7 +184,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.then(function(responseAsJson) {
 						console.log(responseAsJson);
 						productMedia(media, responseAsJson.id);
-						
+
 						//Hay que meterle tiempo para que pueda cargar la informacion, si no da fallos
 						if (media[0]) {
 							setTimeout(() => {
@@ -291,7 +291,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					})
 					.then(responseAsJson => {
-						setStore({ ...product, product: responseAsJson });
+						//setStore({ ...product, product: responseAsJson });
 						return responseAsJson;
 					})
 					.catch(error => console.error("there has been an error", error));
@@ -317,17 +317,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 			getProduct: product_id => {
-				fetch(getStore().baseURL.concat("/product", product_id), {
+				fetch(getStore().baseURL.concat("/product/", product_id), {
 					method: "GET"
 				})
 					.then(resp => {
 						if (!resp.ok) {
 							throw Error("Invalid register info");
 						}
+						return resp.json();
 					})
 					.then(responseAsJson => {
-						setStore({ ...product, product: responseAsJson });
-						return responseAsJson;
+						console.log(responseAsJson, "HOLA SOY JSON");
+						setStore({ product: responseAsJson });
+						console.log(getStore().product, "HOLA SOY JSON");
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
