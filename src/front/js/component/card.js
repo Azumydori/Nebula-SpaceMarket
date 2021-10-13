@@ -116,10 +116,22 @@ const MediaCard = props => {
 
 	const URL_CARD = "/product/" + props.id_product;
 
-	const notifySuccess = () => {
-		toast.success("🛒 product added to cart", {
+	const notifySuccess = string => {
+		toast.success(string, {
 			position: "top-right",
 			autoClose: 3000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined
+		});
+	};
+
+	const notifyWarn = () => {
+		toast.warn("💔 removed from wishlist", {
+			position: "top-right",
+			autoClose: 5000,
 			hideProgressBar: false,
 			closeOnClick: true,
 			pauseOnHover: true,
@@ -140,14 +152,20 @@ const MediaCard = props => {
 
 	useEffect(
 		() => {
-			if (store.wishlist.find(element => element === props.id_product)) {
-				setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
-			} else {
-				setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+			if (localStorage.getItem("wishlist")) {
+				let wishl = localStorage.getItem("wishlist").split(",");
+				if (wishl.length > 0) {
+					if (wishl.includes(props.id_product.toString())) {
+						setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
+					} else {
+						setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+					}
+				} else {
+					setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+				}
 			}
-			store.wishlist.find(element => {});
 		},
-		[store.whishList]
+		[localStorage.getItem("wishlist")]
 	);
 
 	const textObserver = (description, number) => {
@@ -167,9 +185,20 @@ const MediaCard = props => {
 						className={classes.genericButton}
 						onClick={event => {
 							event.preventDefault();
-							if (store.whishList.find(element => element === props.id_product)) {
-								actions.unFavorite(props.id_product);
+							if (localStorage.getItem("wishlist")) {
+								let wishl = localStorage.getItem("wishlist").split(",");
+								if (wishl.includes(props.id_product.toString())) {
+									//actions.unFavorite(props.id_product);
+
+									const found = wishl.filter(element => element != props.id_product.toString());
+									notifyWarn();
+									localStorage.setItem("wishlist", found);
+								} else {
+									actions.favorite(props.id_product);
+									notifySuccess("💛 Product added to wishlist");
+								}
 							} else {
+								notifySuccess("💛 Product added to wishlist");
 								actions.favorite(props.id_product);
 							}
 						}}>
@@ -198,7 +227,7 @@ const MediaCard = props => {
 						<Button
 							color="primary"
 							onClick={event => {
-								notifySuccess();
+								notifySuccess("🛒 product added to cart");
 								event.preventDefault();
 								//actions.shopCart(props.id_product);
 								actions.addProductToCart(product);
