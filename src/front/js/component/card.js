@@ -115,21 +115,20 @@ const MediaCard = props => {
 
 	useEffect(
 		() => {
-			if (store.wishlist.length == 0) {
-				if (store.wishlist.find(element => element === props.id_product)) {
-					setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
-				} else {
-					setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
-				}
-			} else {
-				if (store.wishlist.find(element => element === props.id_product)) {
-					setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
+			if (localStorage.getItem("wishlist")) {
+				let wishl = localStorage.getItem("wishlist").split(",");
+				if (wishl.length > 0) {
+					if (wishl.includes(props.id_product.toString())) {
+						setFavorite(<FavoriteIcon className={classes.iconBorderFavorite} />);
+					} else {
+						setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
+					}
 				} else {
 					setFavorite(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
 				}
 			}
 		},
-		[store.wishlist]
+		[localStorage.getItem("wishlist")]
 	);
 
 	const textObserver = (description, number) => {
@@ -149,8 +148,17 @@ const MediaCard = props => {
 						className={classes.genericButton}
 						onClick={event => {
 							event.preventDefault();
-							if (store.wishlist.find(element => element === props.id_product)) {
-								actions.unFavorite(props.id_product);
+							if (localStorage.getItem("wishlist")) {
+								let wishl = localStorage.getItem("wishlist").split(",");
+								if (wishl.includes(props.id_product.toString())) {
+									//actions.unFavorite(props.id_product);
+
+									const found = wishl.filter(element => element != props.id_product.toString());
+
+									localStorage.setItem("wishlist", found);
+								} else {
+									actions.favorite(props.id_product);
+								}
 							} else {
 								actions.favorite(props.id_product);
 							}
