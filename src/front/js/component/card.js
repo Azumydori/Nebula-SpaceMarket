@@ -116,6 +116,28 @@ const MediaCard = props => {
 
 	const URL_CARD = "/product/" + props.id_product;
 
+	const notifySuccess = () => {
+		toast.success("🛒 product added to cart", {
+			position: "top-right",
+			autoClose: 3000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined
+		});
+	};
+
+	const product = {
+		id: props.id_product,
+		media: props.image_card,
+		price: props.ammount,
+		product_name: props.title_card,
+		text: props.description_card,
+		vendor_name: props.vendor_name
+	};
+	console.log(product);
+
 	useEffect(
 		() => {
 			if (store.wishlist.find(element => element === props.id_product)) {
@@ -176,14 +198,27 @@ const MediaCard = props => {
 						<Button
 							color="primary"
 							onClick={event => {
+								notifySuccess();
 								event.preventDefault();
-								actions.shopCart(props.id_product);
+								//actions.shopCart(props.id_product);
+								actions.addProductToCart(product);
 							}}>
 							<ShoppingCartIcon />
 						</Button>
 					</div>
 				</CardContent>
 			</Card>
+			<ToastContainer
+				position="top-right"
+				autoClose={3000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
 		</Link>
 	);
 };

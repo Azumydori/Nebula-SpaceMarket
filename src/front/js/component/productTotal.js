@@ -13,6 +13,7 @@ import { Context } from "../store/appContext.js";
 import { useState } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const useShoppingCart = makeStyles({
 	image: {
@@ -77,13 +78,15 @@ const ProductTotal = () => {
 								</Typography>
 								<ThemeProvider theme={costumTheme}>
 									<Box p={1}>
-										<Button
-											classsName={classes.button}
-											color="secondary"
-											variant="contained"
-											type="input">
-											Buy Now
-										</Button>
+										<Link to="/checkout">
+											<Button
+												classsName={classes.button}
+												color="secondary"
+												variant="contained"
+												type="input">
+												Buy Now
+											</Button>
+										</Link>
 									</Box>
 								</ThemeProvider>
 							</Box>

@@ -14,8 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			//https://nebula-spacemarket.herokuapp.com/
-			baseURL: "https://3001-ivory-dormouse-juqal3lz.ws-eu18.gitpod.io/api",
-			domainURL: "https://3000-ivory-dormouse-juqal3lz.ws-eu18.gitpod.io/",
+			baseURL: "https://3001-ivory-dormouse-juqal3lz.ws-eu17.gitpod.io/api",
+			domainURL: "https://3000-ivory-dormouse-juqal3lz.ws-eu17.gitpod.io/",
 			wishlist: [],
 			cart: [],
 			searchProduct: [],
@@ -79,8 +79,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: "POST",
 					body: JSON.stringify(credentials),
 					headers: new Headers({
-						"Content-Type": "application/json",
-						"Sec-Fetch-Mode": "no-cors"
+						"Content-Type": "application/json"
+						//"Sec-Fetch-Mode": "no-cors"
 					})
 				})
 					.then(function(response) {
@@ -119,8 +119,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
 					headers: new Headers({
-						"Content-Type": "application/json",
-						"Sec-Fetch-Mode": "no-cors"
+						"Content-Type": "application/json"
+						//"Sec-Fetch-Mode": "no-cors"
 					}),
 					body: JSON.stringify(credentials)
 				})
@@ -331,6 +331,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				store.cart.push(product);
 				setStore(store);
+				getActions().addToTotal(product.price);
 				return true;
 			},
 

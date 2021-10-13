@@ -21,6 +21,8 @@ import { useForm, Controller } from "react-hook-form";
 
 import LogoNebula from "../../img/nebulaLogoWhite.png";
 
+import "../../styles/index.scss";
+
 const Input = withStyles({
 	root: {
 		"& label.Mui-focused": {
@@ -52,6 +54,9 @@ const Input = withStyles({
 const useStyles = makeStyles(theme => ({
 	Input: {
 		"& label.MuiInput-root": {
+			color: "white"
+		},
+		"& .MuiInputBase-input": {
 			color: "white"
 		},
 		"& .MuiFormLabel-root": {
@@ -105,6 +110,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	whiteBox: {
 		color: "white"
+	},
+	hutber: {
+		"& .MuiInputBase-input": {
+			color: "#fff"
+		}
 	}
 }));
 
@@ -135,7 +145,7 @@ const Login = () => {
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar src={LogoNebula} className={classes.avatar} />
-				<Typography component="h1" variant="h5">
+				<Typography component="h1" variant="h5" className={classes.whiteBox}>
 					Sign in
 				</Typography>
 				<form action="" method="post" className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -154,6 +164,7 @@ const Login = () => {
 										id="emailLogin"
 										name="email"
 										autoComplete="email"
+										className={classes.hutber}
 									/>
 								)}
 							/>
@@ -174,6 +185,7 @@ const Login = () => {
 										id="passwordLogin"
 										autoComplete="current-password"
 										required
+										className={classes.hutber}
 									/>
 								)}
 							/>
@@ -208,7 +220,7 @@ const Login = () => {
 
 					<Grid container justifyContent="flex-end">
 						<Grid item>
-							<Link href="controlpage" variant="body2">
+							<Link href="controlpage" variant="body2" className={classes.whiteBox}>
 								{"Don't have an account? Sign up"}
 							</Link>
 						</Grid>

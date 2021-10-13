@@ -103,6 +103,14 @@ const useStyles = makeStyles(theme => ({
 		margin: "0.5rem",
 		height: "3rem",
 		width: "3rem"
+	},
+	hutber: {
+		marginLeft: theme.spacing(1),
+		width: "100%",
+		"& .MuiInputBase-input": {
+			color: "white",
+			borderBottom: "white"
+		}
 	}
 }));
 
@@ -140,7 +148,7 @@ const Navbar = () => {
 					<Search />
 					<InputBase
 						placeholder="Search..."
-						className={classes.input}
+						className={classes.hutber}
 						onKeyPress={event => {
 							if (event.key === "Enter") {
 								window.location = store.domainURL.concat("controlpage/search/", event.target.value);

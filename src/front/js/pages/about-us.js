@@ -24,14 +24,6 @@ export const AboutUs = () => {
 						<img src="https://i.redd.it/wek7woh17zaz.jpg" className="teamimage rounded-circle" alt="..." />
 						<h2>Jorge</h2>
 					</a>
-					<a href=" https://github.com/Lucascg1997" className="queryimage col-sm-2 text-center">
-						<img
-							src="https://cdn.pixabay.com/photo/2013/07/13/10/18/ghost-156969_960_720.png"
-							className="teamimage rounded-circle"
-							alt="..."
-						/>
-						<h2>Lucas</h2>
-					</a>
 					<a href="https://github.com/Azumydori" className="queryimage col-sm-2 text-center">
 						<img
 							src="https://images.pexels.com/photos/1314550/pexels-photo-1314550.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"

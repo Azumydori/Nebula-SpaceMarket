@@ -31,7 +31,7 @@ const UploadProduct = () => {
 		setchangeIcon(<CheckIcon className="iconGiant" />);
 	}
 	function uploadSuccess() {
-		toast.success("Estamos subiendo su producto!", {
+		toast.success("Uploading your product!", {
 			position: "top-right",
 			autoClose: 2600,
 			hideProgressBar: false,

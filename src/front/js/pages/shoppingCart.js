@@ -34,6 +34,10 @@ const useShoppingCart = makeStyles({
 	},
 	textBold: {
 		fontWeight: "bold"
+	},
+	displayFlex: {
+		display: "flex",
+		flexWrap: "unwrap"
 	}
 });
 
@@ -55,6 +59,7 @@ const costumTheme = createTheme({
 
 const ShoppingCart = () => {
 	const { store, actions } = useContext(Context);
+	const classes = useShoppingCart();
 
 	return (
 		<Container>
@@ -70,17 +75,16 @@ const ShoppingCart = () => {
 					</Box>
 				</Grid>
 				<Grid container>
-					<Grid item xs={4} />
-					<Grid item xs={4}>
+					<Grid className={classes.displayFlex} item xs={7} direction="row">
 						{store.cart.length == 0
 							? null
 							: store.cart.map((product, index) => (
 									<ShoppingCartComponent
 										key={index}
-										name={product.product.product_name}
-										vendorName={product.product.vendor_name}
-										price={product.product.price}
-										image={product.product.media}
+										name={product.product_name}
+										vendorName={product.vendor_name}
+										price={product.price}
+										image={product.media}
 									/>
 							  ))}
 					</Grid>

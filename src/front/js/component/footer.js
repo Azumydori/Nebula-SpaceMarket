@@ -66,17 +66,17 @@ const useStyles = makeStyles(theme => ({
 	},
 	rectangle1: {
 		width: "100%",
-		height: "2%",
+		height: "1rem",
 		background: "#FF9100"
 	},
 	rectangle2: {
 		width: "100%",
-		height: "2%",
+		height: "1rem",
 		background: "#9D4EDD"
 	},
 	rectangle3: {
 		width: "100%",
-		height: "2%",
+		height: "1rem",
 		background: "#5A189A"
 	},
 	containerLinks: {
