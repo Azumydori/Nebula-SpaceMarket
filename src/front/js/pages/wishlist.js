@@ -31,34 +31,41 @@ const useStyles = makeStyles(theme => ({
 const Wishlist = () => {
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
-	const [wishListTab, setwislistTab] = useState(
-		<img src="https://c.tenor.com/DBqjevyA2o4AAAAd/bongo-cat-codes.gif" />
-	);
-
+	const [wishListTab, setwislistTab] = useState("");
 	useEffect(() => {
-		//actions.favorite();
-		if (store.wishlist.lenght != 0) {
-			setwislistTab(
-				store.wishlist.map((element, index) => {
-					//let object = actions.getProduct(element);
-					let object = store.product.find(object => object.id == element);
-					return (
-						<Grid item key={index} xs={6} sm={4} md={4} alignContent="center">
-							<MediaCard
-								id_product={object.id}
-								title_card={object.product_name}
-								description_card={object.text}
-								ammount={object.price}
-								vendor_name={object.vendor_name}
-								image_card={object.media}
-							/>
-						</Grid>
-					);
-				})
-			);
-		} else {
-		}
+		actions.getProducts();
 	}, []);
+
+	useEffect(
+		() => {
+			//actions.favorite();
+			if (localStorage.getItem("wishlist")) {
+				let wishl = localStorage.getItem("wishlist").split(",");
+
+				if (wishl.length > 0) {
+					setwislistTab(
+						store.allProducts.map((element, index) => {
+							if (wishl.includes(element.id.toString())) {
+								return (
+									<Grid item key={index} xs={6} sm={4} md={4} alignContent="center">
+										<MediaCard
+											id_product={element.id}
+											title_card={element.product_name}
+											description_card={element.text}
+											ammount={element.price}
+											vendor_name={element.vendor_name}
+											image_card={element.media}
+										/>
+									</Grid>
+								);
+							}
+						})
+					);
+				}
+			}
+		},
+		[store.allProducts]
+	);
 
 	return (
 		<Fragment>
@@ -72,13 +79,7 @@ const Wishlist = () => {
 					</Container>
 				</div>
 				<Container className={classes.cardGrid} maxWidth="md">
-					<Grid container spacing={4} align="center" />
-					<Grid
-						container
-						gridtemplatecolumns="repeat(12, 1fr)"
-						marginleft="10px"
-						marginright="10px"
-						align="center">
+					<Grid container gridtemplatecolumns="repeat(12, 3fr)" align="center">
 						{wishListTab}
 					</Grid>
 				</Container>
