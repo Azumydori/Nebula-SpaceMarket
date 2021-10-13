@@ -220,7 +220,7 @@ def get_products(category):
 def update_media_post(id):
     
     if 'media' in request.files:
-
+        print(id)
         result = cloudinary.uploader.upload(request.files['media'])
         mediaProduct = Product.get_by_id(id)
         mediaProduct.media = result['secure_url']
@@ -236,7 +236,7 @@ def update_media_post(id):
 @api.route('/newproduct/<int:id>', methods=['POST'])
 @jwt_required()
 def new_product(id):
-    account_id = 1
+    account_id = get_jwt_identity().get("id")
     price = request.json.get('price',None)
     text = request.json.get('text',None)
     category = request.json.get('category',None)

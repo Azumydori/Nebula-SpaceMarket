@@ -32,6 +32,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					localStorage.removeItem("Name");
 				}
 			},
+			saveSearch: element => {
+				const preview = getStore().searchProduct;
+
+				setStore({ searchProduct: [...preview, element] });
+				console.log(getStore().searchProduct);
+			},
 			getUser: (id, currentUser) => {
 				fetch(getStore().baseURL.concat("/account", id))
 					.then(function(response) {
@@ -182,13 +188,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return response.json();
 					})
 					.then(function(responseAsJson) {
-						console.log(responseAsJson);
 						productMedia(media, responseAsJson.id);
 						//Hay que meterle tiempo para que pueda cargar la informacion, si no da fallos
 						if (media[0]) {
 							setTimeout(() => {
 								redirect();
-							}, 2500);
+							}, 2600);
 						} else {
 							redirect();
 						}
@@ -201,8 +206,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 			favorite: product_id => {
 				let myToken = localStorage.getItem("jwt-token");
 				let myUser = localStorage.getItem("Id");
+				var a = [];
+				if (localStorage.getItem("wishlist")) {
+					a = [localStorage.getItem("wishlist")];
+					a.push(product_id);
+				} else {
+					a = [product_id];
+				}
 
-				if (myUser != undefined) {
+				localStorage.setItem("wishlist", a);
+
+				if (myUser == "nothing") {
 					fetch(getStore().baseURL.concat("/favorite/", product_id), {
 						method: "POST",
 						headers: {
@@ -223,8 +237,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.log("Soy tu deseo en la store", getStore().wishlist);
 						})
 						.catch(error => console.error("There as been an unknown error", error));
-				} else {
-					alert("must login");
 				}
 			},
 
@@ -311,7 +323,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(responseAsJson => {
 						setStore({ allProducts: responseAsJson });
-						console.log(responseAsJson);
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},

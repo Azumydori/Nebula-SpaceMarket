@@ -1,7 +1,6 @@
 import { alpha, AppBar, InputBase, makeStyles, Toolbar, Typography } from "@material-ui/core";
 import { Cancel, Search } from "@material-ui/icons";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -14,6 +13,9 @@ import FavoriteIcon from "@material-ui/icons/Favorite";
 import PersonIcon from "@material-ui/icons/Person";
 import ImportantDevicesIcon from "@material-ui/icons/ImportantDevices";
 import NebulaLogoNavbar from "../../img/nebulaLogoNavbar.png";
+
+import React, { useContext, useState, useEffect, Fragment } from "react";
+import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
@@ -105,6 +107,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Navbar = () => {
+	const { store, actions } = useContext(Context);
 	const [open, setOpen] = useState(false);
 	const classes = useStyles({ open });
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -116,6 +119,7 @@ const Navbar = () => {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+
 	return (
 		<AppBar position="fixed" elevation={0}>
 			<Toolbar className={classes.toolbar}>
@@ -134,7 +138,16 @@ const Navbar = () => {
 
 				<div className={classes.search}>
 					<Search />
-					<InputBase placeholder="Search..." className={classes.input} />
+					<InputBase
+						placeholder="Search..."
+						className={classes.input}
+						onKeyPress={event => {
+							if (event.key === "Enter") {
+								window.location = store.domainURL.concat("controlpage/search/", event.target.value);
+							}
+						}}
+					/>
+
 					<Cancel className={classes.cancel} onClick={() => setOpen(false)} />
 				</div>
 				<div className={classes.icons}>

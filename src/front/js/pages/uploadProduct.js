@@ -1,11 +1,16 @@
 import React, { useContext, onSubmit, handleSubmit, onChange, useState } from "react";
 import { Context } from "../store/appContext";
+import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 import { useForm } from "react-hook-form";
 import { Grid } from "@material-ui/core";
 import NebulaUpload from "../../img/nebulaUploadProduct.png";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import CheckIcon from "@material-ui/icons/Check";
 import "../../styles/uploadProduct.scss";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UploadProduct = () => {
 	const { store, actions } = useContext(Context);
@@ -17,6 +22,7 @@ const UploadProduct = () => {
 	const [validateImage, setValidateImage] = useState("file-upload noValidate");
 	const [changeIcon, setchangeIcon] = useState(<ArrowUpwardIcon className="iconGiant" />);
 	const onSubmit = data => {
+		uploadSuccess();
 		actions.upload(JSON.stringify(data), data.media);
 	};
 
@@ -24,12 +30,42 @@ const UploadProduct = () => {
 		setValidateImage("file-upload validate");
 		setchangeIcon(<CheckIcon className="iconGiant" />);
 	}
+	function uploadSuccess() {
+		toast.success("Estamos subiendo su producto!", {
+			position: "top-right",
+			autoClose: 2600,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined
+		});
+		setTimeout(function() {}, 2600);
+	}
 
 	return (
 		<div className="full-container">
+			<ToastContainer
+				position="top-right"
+				autoClose={2600}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
 			<form action="" method="post" noValidate onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
 				<div className="d-flex flex-column justify-content-center">
-					<div className="h2">Upload product</div>
+					<Container maxWidth="sm" align="center">
+						{
+							<Typography component="h1" variant="h2" gutterBottom>
+								Upload product
+							</Typography>
+						}
+					</Container>
+
 					<div className="d-flex flex-wrap justify-content-around align-items-center ">
 						<div className="upload-container maxWith">
 							<h2>Add Photo</h2>

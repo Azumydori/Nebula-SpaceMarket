@@ -84,6 +84,9 @@ const useStyles = makeStyles(theme => ({
 			borderRadius: 16,
 			border: 1
 		}
+	},
+	margin: {
+		marginTop: "2rem"
 	}
 }));
 
@@ -91,7 +94,7 @@ const Categories = () => {
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
 	return (
-		<div>
+		<div className={classes.margin}>
 			<h1 className={classes.heading}>The stuff we can help you sell</h1>
 			<div className={classes.divider}>
 				<span className={classes.dividerSpan} />
@@ -130,7 +133,7 @@ const Categories = () => {
 					</Link>
 				</Grid>
 				<Grid item xs={4} sm={4} md={2} className={classes.borderCategory}>
-					<Link to="/controlpage/NFTs" className={classes.center}>
+					<Link to="/nft" className={classes.center}>
 						<div className={classes.center}>
 							<img src={nft} className={classes.iconsCategory} />
 							<span className={classes.textCategory}>NFTs</span>
