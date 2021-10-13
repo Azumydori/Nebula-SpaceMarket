@@ -113,8 +113,8 @@ const MediaCard = props => {
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
 	const [favorite, setFavorite] = useState(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
-	actions.favorite();
-	const URL_CARD = "/product-detail/" + props.id_product;
+
+	const URL_CARD = "/product/" + props.id_product;
 
 	useEffect(
 		() => {

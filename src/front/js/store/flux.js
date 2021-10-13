@@ -327,6 +327,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
+			addProductToCart: product => {
+				const store = getStore();
+				store.cart.push(product);
+				setStore(store);
+				return true;
+			},
+
 			changeAccountInfo: data => {
 				const token = localStorage.getItem("jwt-token");
 				const tokenID = localStorage.getItem("Id");
@@ -344,7 +351,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					})
 					.then(responseAsJson => {
-						setStore({ ...product, product: responseAsJson });
+						//setStore({ ...product, product: responseAsJson });
 						return responseAsJson;
 					})
 					.catch(error => console.error("there has been an error", error));
@@ -369,18 +376,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 			getProduct: product_id => {
-				fetch(getStore().baseURL.concat("/product", product_id), {
+				fetch(getStore().baseURL.concat("/product/", product_id), {
 					method: "GET"
 				})
 					.then(resp => {
 						if (!resp.ok) {
 							throw Error("Invalid register info");
 						}
+						return resp.json();
 					})
 					.then(responseAsJson => {
-						setStore({ ...product, product: responseAsJson });
-						console.log(responseAsJson);
-						return responseAsJson;
+						setStore({ product: responseAsJson });
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},

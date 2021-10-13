@@ -23,6 +23,7 @@ import Wishlist from "./pages/wishlist.js";
 import NotFound from "./pages/notfound";
 import ControlPage from "./pages/controlpage";
 import ShoppingCart from "./pages/shoppingCart.js";
+import ProductDetail from "./pages/productdetail.js";
 import LogRegister from "./component/log&register";
 import PrivacyPolicy from "./pages/privacy-policy.js";
 import "/workspace/Nebula-SpaceMarket/src/front/styles/home.scss";
@@ -102,6 +103,10 @@ const Layout = () => {
 					<Route exact path="/cart">
 						<ShoppingCart />
 					</Route>
+					<Route exact path="/product/:id">
+						<ProductDetail />
+					</Route>
+
 					<Route>
 						<NotFound />
 					</Route>
