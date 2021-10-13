@@ -5,10 +5,10 @@ import Link from "@material-ui/core/Link";
 
 const Jumbotron = props => {
 	return (
-		<div className="jumbotron d-flex flex-column justify-content-center">
+		<div className="jumbotron d-flex flex-column justify-content-center" style={{ background: "#fafafa" }}>
 			<h2 className="display-4">{props.title}</h2>
 			<p className="lead text-left">{props.text}</p>
-			<Link className="learn-more" href="/blockchain" role="button">
+			<Link className="learn-more justify-content-center" href="/blockchain" role="button">
 				Learn more
 			</Link>
 			<img src={NebulaLanding} className="eco" />

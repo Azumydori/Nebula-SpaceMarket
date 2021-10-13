@@ -14,14 +14,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			//https://nebula-spacemarket.herokuapp.com/
-			baseURL: "https://3001-tan-canid-h9oljr8a.ws-eu18.gitpod.io/api",
-			domainURL: "hhttps://3000-tan-canid-h9oljr8a.ws-eu18.gitpod.io/",
+			baseURL: "https://3001-ivory-dormouse-juqal3lz.ws-eu17.gitpod.io/api",
+			domainURL: "https://3000-ivory-dormouse-juqal3lz.ws-eu17.gitpod.io/",
 			wishlist: [],
 			cart: [],
 			searchProduct: [],
 			allProducts: [],
 			product: [],
-			vendor: []
+			vendor: [],
+			totalPrice: 0
 		},
 
 		actions: {
@@ -78,8 +79,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					method: "POST",
 					body: JSON.stringify(credentials),
 					headers: new Headers({
-						"Content-Type": "application/json",
-						"Sec-Fetch-Mode": "no-cors"
+						"Content-Type": "application/json"
+						//"Sec-Fetch-Mode": "no-cors"
 					})
 				})
 					.then(function(response) {
@@ -118,8 +119,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				fetch(getStore().baseURL.concat("/login"), {
 					method: "POST",
 					headers: new Headers({
-						"Content-Type": "application/json",
-						"Sec-Fetch-Mode": "no-cors"
+						"Content-Type": "application/json"
+						//"Sec-Fetch-Mode": "no-cors"
 					}),
 					body: JSON.stringify(credentials)
 				})
@@ -267,29 +268,70 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			shopCart: product_id => {
-				let myToken = localStorage.getItem("token");
-				let myUser = getStore().currentUser.id;
+				let myToken = localStorage.getItem("jwt-token");
+				let myUser = localStorage.getItem("Id");
+				console.log(product_id);
+				console.log(JSON.stringify({ product_id: product_id }));
 
 				fetch(getStore().baseURL.concat("/client/", myUser, "/cart"), {
 					method: "POST",
-					headers: { "Content-Type": "application/json", Authorization: `Bearer ${myToken}` },
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${myToken}`,
+						"Sec-Fetch-Mode": "no-cors"
+					},
 					body: JSON.stringify({ product_id: product_id })
 				})
 					.then(resp => {
 						if (!resp.ok) {
 							throw Error("Invalid register info");
 						}
+						return resp.json();
 					})
 					.then(responseAsJson => {
-						setStore({ cart: responseAsJson });
+						setStore({
+							cart: [...getStore().cart, responseAsJson],
+							totalPrice: getStore().totalPrice + parseInt(responseAsJson["product"]["price"])
+						});
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
 
+			addToTotal: price => {
+				setStore({ totalPrice: getStore().totalPrice + parseInt(price) });
+			},
+			removeToTotal: price => {
+				setStore({ totalPrice: getStore().totalPrice - parseInt(price) });
+			},
+
+			getCartProducts: () => {
+				let myToken = localStorage.getItem("jwt-token");
+				let myUser = localStorage.getItem("Id");
+				fetch(getStore().baseURL.concat("/client/", myUser, "/cart"), {
+					method: "GET",
+					headers: new Headers({
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${myToken}`,
+						"Sec-Fetch-Mode": "no-cors"
+					})
+				})
+					.then(resp => {
+						if (!resp.ok) {
+							throw Error("Invalid products");
+						}
+						return resp.json();
+					})
+					.then(responseAsJson => {
+						setStore({ cartWithProducts: responseAsJson });
+						console.log(responseAsJson);
+					})
+					.catch(error => console.error("There as been an unknown error", error));
+			},
 			addProductToCart: product => {
 				const store = getStore();
 				store.cart.push(product);
 				setStore(store);
+				getActions().addToTotal(product.price);
 				return true;
 			},
 

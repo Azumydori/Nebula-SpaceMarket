@@ -22,6 +22,7 @@ import NftLearn from "./pages/nft-learn.js";
 import Wishlist from "./pages/wishlist.js";
 import NotFound from "./pages/notfound";
 import ControlPage from "./pages/controlpage";
+import ShoppingCart from "./pages/shoppingCart.js";
 import ProductDetail from "./pages/productdetail.js";
 import LogRegister from "./component/log&register";
 import PrivacyPolicy from "./pages/privacy-policy.js";
@@ -98,6 +99,9 @@ const Layout = () => {
 					</Route>
 					<Route exact path="/loggg">
 						<LogRegister />
+					</Route>
+					<Route exact path="/cart">
+						<ShoppingCart />
 					</Route>
 					<Route exact path="/product/:id">
 						<ProductDetail />

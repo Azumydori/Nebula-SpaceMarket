@@ -57,6 +57,9 @@ const Input = withStyles({
 			"&:hover:not(disabled):before": {
 				borderBottomColor: "white" //its when you hover and input is not foucused
 			}
+		},
+		whiteBox: {
+			color: "white"
 		}
 	}
 })(TextField);
@@ -94,6 +97,11 @@ const useStyles = makeStyles(theme => ({
 	},
 	allNightLong: {
 		width: "100%"
+	},
+	hutber: {
+		"& .MuiInputBase-input": {
+			color: "#fff"
+		}
 	}
 }));
 
@@ -125,7 +133,7 @@ const SignUp = () => {
 			<CssBaseline />
 			<div className={classes.paper}>
 				<Avatar src={LogoNebula} className={classes.avatar} />
-				<Typography component="h1" variant="h5">
+				<Typography component="h1" variant="h5" className={classes.whiteBox}>
 					Sign up
 				</Typography>
 				<form action="" method="post" className={classes.form} noValidate onSubmit={handleSubmit(onSubmit)}>
@@ -145,6 +153,7 @@ const SignUp = () => {
 										label="First Name"
 										autoFocus
 										required
+										className={classes.hutber}
 									/>
 								)}
 							/>
@@ -164,6 +173,7 @@ const SignUp = () => {
 										autoComplete="lname"
 										autoFocus
 										required
+										className={classes.hutber}
 									/>
 								)}
 							/>
@@ -182,6 +192,7 @@ const SignUp = () => {
 										label="Email Address"
 										name="email"
 										autoComplete="email"
+										className={classes.hutber}
 									/>
 								)}
 							/>
@@ -202,6 +213,7 @@ const SignUp = () => {
 										label="Username"
 										autoFocus
 										required
+										className={classes.hutber}
 									/>
 								)}
 							/>
@@ -221,6 +233,7 @@ const SignUp = () => {
 										id="passwordRegister"
 										autoComplete="current-password"
 										required
+										className={classes.hutber}
 									/>
 								)}
 							/>

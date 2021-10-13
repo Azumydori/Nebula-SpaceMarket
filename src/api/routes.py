@@ -11,7 +11,7 @@ from api.models import db, Account, Order, Wishlist, Product, Line_Order
 
 from sqlalchemy import exc
 from decimal import Decimal
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from api.utils import generate_sitemap, APIException
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -162,24 +162,90 @@ def remove_wish(id):
 
     return {'error': 'user not found'}, 400
 
+@api.route('/client/<int:id>/cart', methods=["GET"])
+def get_cart():
+    get_cart = Order.get_by_id(id)
+
+    if get_cart:
+        return jsonify(get_cart.to_dict()), 200
+    
+    return({"error": "lineOrder not found"}), 404
+
 @api.route('/client/<int:id>/cart', methods=['POST'])
 @jwt_required()
 def add_item_cart(id):
-
+    print("soy cartproduct")
+    print("soy el ID", id)
     if not get_jwt_identity().get("id") == id:
         return {'error': 'Invalid action'}, 400
 
-    id_product = request.json.get("have_product", None)
+    id_product = request.json.get("product_id", None)
+    print ("soy product ID", id_product)
 
-    new_cart = Line_Order(
-        product_id = id_product
-    )
+    order = db.session.query(Order).filter_by(account_id = id).first()
+    print(order, "Soy ORDER")
 
-    try:
-        cart.create()
-        return jsonify(cart.to_dict())
-    except exc.IntegrityError: 
-        return {"error":"something went wrong"}, 409
+    if order is None:
+        user = db.session.query(Account).filter_by(id = id).first()
+        user_dic = user.to_dict()
+        new_order = Order(
+            order_date = datetime.now(),
+            shipping_date = datetime.now(),
+            shipping_fee = 1,
+            bill_address = "Hola soy una direccion!",
+            is_paid = False,
+            account_id = id,
+            ) 
+
+        order_add = db.session.add(new_order)
+        db.session.commit()
+        print(new_order, "SOY NEW ORDER")
+        new_order_dic = new_order.to_dict()
+        print(new_order_dic, "SOY NEW ORDER DIC")
+        new_cart = Line_Order(
+            product_id = id_product,
+            quantity =1,
+            order_id = new_order_dic.id
+            )
+        print(new_cart)
+        
+        if new_cart: 
+            new_cart.create()
+            return jsonify(new_cart.to_dict()),201
+
+    #order_dic = order.to_dict()
+    #print(order_dic, "SOY ORDER DIC")
+
+    else:
+        new_cart = Line_Order(
+            product_id = id_product,
+            quantity =1,
+            order_id = order.id
+            )
+        print(new_cart)
+        
+        if new_cart: 
+            new_cart.create()
+            return jsonify(new_cart.to_dict()),201
+
+   # try:
+    #    new_cart.create()
+    #   print ("jsonify", jsonify(cart.to_dict()))
+    #  return jsonify(cart.to_dict())
+    #except exc.IntegrityError: 
+    #  return {"error":"something went wrong"}, 409
+
+
+@api.route('/cart', methods=['GET'])
+def all_cart():
+    cart = Line_Order.get_all()
+
+    if cart:
+        cart_all = [lineorder.to_dict() for lineorder in cart]
+
+        return jsonify(cart_all), 200
+
+    return jsonify({'error': "Products not found"}), 404
 
 @api.route('/account/<int:id>', methods=["PATCH"])
 @jwt_required()
@@ -260,6 +326,7 @@ def new_product(id):
 
     else:
         return {'error':'Something went wrong'},409
+
 @api.route('/payment/card', methods=['POST'])
 def payment():
     try:

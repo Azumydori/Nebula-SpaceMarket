@@ -18,7 +18,8 @@ import { Fragment } from "react";
 import { Context } from "../store/appContext";
 import { useParams } from "react-router";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const useProductStyle = makeStyles({
 	avatar: {
@@ -78,6 +79,31 @@ const ProductDescription = ({ product }) => {
 	const params = useParams();
 	const [value, setValue] = React.useState(5);
 	const [productInfo, setProductInfo] = useState("");
+
+	const notifySuccess = () => {
+		toast.success("🛒 product added to cart", {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined
+		});
+	};
+
+	const notifyError = () => {
+		toast.error("😔 All our lines are currently busy, sorry!", {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined
+		});
+	};
+
 	return (
 		<Fragment>
 			<Grid container>
@@ -131,8 +157,10 @@ const ProductDescription = ({ product }) => {
 							<Box px={1}>
 								<Button
 									onClick={event => {
+										console.log(product);
 										event.preventDefault();
 										actions.addProductToCart(product);
+										notifySuccess();
 									}}
 									variant="contained"
 									color="secondary"
@@ -142,11 +170,23 @@ const ProductDescription = ({ product }) => {
 									<ShoppingCartIcon />
 									Add
 								</Button>
+								<ToastContainer
+									position="top-right"
+									autoClose={5000}
+									hideProgressBar={false}
+									newestOnTop={false}
+									closeOnClick
+									rtl={false}
+									pauseOnFocusLoss
+									draggable
+									pauseOnHover
+								/>
 							</Box>
 						</Grid>
 						<Grid item={4}>
 							<Box>
 								<Button
+									onClick={notifyError}
 									className={classes.button}
 									variant="contained"
 									color="secondary"
@@ -154,6 +194,17 @@ const ProductDescription = ({ product }) => {
 									elevation={0}>
 									<ForumIcon /> Chat
 								</Button>
+								<ToastContainer
+									position="top-right"
+									autoClose={5000}
+									hideProgressBar={false}
+									newestOnTop={false}
+									closeOnClick
+									rtl={false}
+									pauseOnFocusLoss
+									draggable
+									pauseOnHover
+								/>
 							</Box>
 						</Grid>
 					</Grid>

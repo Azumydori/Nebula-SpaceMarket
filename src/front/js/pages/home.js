@@ -49,6 +49,20 @@ const Home = () => {
 					<p className="feature-text">Payments also with cryptocurrenciews.</p>
 				</div>
 			</div>
+			<div
+				style={{
+					width: "100%",
+					height: "1rem",
+					background: "#9D4EDD"
+				}}
+			/>
+			<div
+				style={{
+					width: "100%",
+					height: "1rem",
+					background: "#FF9100"
+				}}
+			/>
 
 			<div>
 				<Categories />

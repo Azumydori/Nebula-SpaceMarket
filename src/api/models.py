@@ -109,17 +109,16 @@ class Order(db.Model):
 
 
    def __repr__(self):
-      return f'Order id: {self.id}, order date: {self.order_date}, shipping date: {self.shipping_date}, shipping fee: {self.shipping_fee}, bill address: {self.bill_address}, payment status: {self.is_payed}'
+      return f'Order id: {self.id}, order date: {self.order_date}, shipping date: {self.shipping_date}, shipping fee: {self.shipping_fee}, bill address: {self.bill_address}, payment status: {self.is_paid}'
 
    def to_dict(self):
       return{
         "id": self.id,
         "order_date": self.order_date,
         "shipping_date": self.shipping_date,
-        "shipping_fee": self.shipping_fee,
+        "shipping_fee": str(self.shipping_fee),
         "bill_address": self.bill_address,
         "is_paid": self.is_paid,
-        "product_id": self.product_id,
       }
 
 
@@ -223,8 +222,14 @@ class Line_Order(db.Model):
         "product_quantity": self.quantity,
         "product_id": self.product_id,
         "order_id": self.order_id,
+        "product": Product.query.get(self.product_id).to_dict()
       }
 
    def create(self):
       db.session.add(self)
       db.session.commit()
+      
+   @classmethod
+   def get_all(cls):
+      all_cart = cls.query.all()
+      return all_cart

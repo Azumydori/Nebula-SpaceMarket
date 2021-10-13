@@ -5,6 +5,8 @@ import { Context } from "../store/appContext";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
@@ -13,6 +15,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Link from "@material-ui/core/Link";
+import { ToastContainer, toast } from "react-toastify";
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -23,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 		justifyContent: "flex-end",
 
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			maxWidth: 169.5,
 			maxHeight: 225.594
 		}
@@ -62,7 +65,7 @@ const useStyles = makeStyles(theme => ({
 			display: "flex"
 		},
 
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			maxWidth: 169.5,
 			maxHeight: 134.594
 		}
@@ -97,7 +100,7 @@ const useStyles = makeStyles(theme => ({
 		color: "textSecondary",
 		component: "p",
 		textAlign: "left",
-		[theme.breakpoints.down("md")]: {
+		[theme.breakpoints.down("sm")]: {
 			display: "none"
 		}
 	},
@@ -112,6 +115,40 @@ const MediaCard = props => {
 	const [favorite, setFavorite] = useState(<FavoriteBorderIcon className={classes.iconBorderFavorite} />);
 
 	const URL_CARD = "/product/" + props.id_product;
+
+	const notifySuccess = string => {
+		toast.success(string, {
+			position: "top-right",
+			autoClose: 3000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined
+		});
+	};
+
+	const notifyWarn = () => {
+		toast.warn("💔 removed from wishlist", {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined
+		});
+	};
+
+	const product = {
+		id: props.id_product,
+		media: props.image_card,
+		price: props.ammount,
+		product_name: props.title_card,
+		text: props.description_card,
+		vendor_name: props.vendor_name
+	};
+	console.log(product);
 
 	useEffect(
 		() => {
@@ -141,8 +178,8 @@ const MediaCard = props => {
 	};
 
 	return (
-		<Card className={classes.root}>
-			<Link href={URL_CARD} style={{ textDecoration: "none", color: "black" }}>
+		<Link href={URL_CARD}>
+			<Card className={classes.root}>
 				<CardMedia className={classes.media} image={props.image_card}>
 					<Button
 						className={classes.genericButton}
@@ -154,12 +191,14 @@ const MediaCard = props => {
 									//actions.unFavorite(props.id_product);
 
 									const found = wishl.filter(element => element != props.id_product.toString());
-
+									notifyWarn();
 									localStorage.setItem("wishlist", found);
 								} else {
 									actions.favorite(props.id_product);
+									notifySuccess("💛 Product added to wishlist");
 								}
 							} else {
+								notifySuccess("💛 Product added to wishlist");
 								actions.favorite(props.id_product);
 							}
 						}}>
@@ -188,15 +227,28 @@ const MediaCard = props => {
 						<Button
 							color="primary"
 							onClick={event => {
+								notifySuccess("🛒 product added to cart");
 								event.preventDefault();
-								actions.shopCart(props.id_product);
+								//actions.shopCart(props.id_product);
+								actions.addProductToCart(product);
 							}}>
 							<ShoppingCartIcon />
 						</Button>
 					</div>
 				</CardContent>
-			</Link>
-		</Card>
+			</Card>
+			<ToastContainer
+				position="top-right"
+				autoClose={3000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
+		</Link>
 	);
 };
 
@@ -204,7 +256,7 @@ MediaCard.propTypes = {
 	id_product: PropTypes.number,
 	title_card: PropTypes.string,
 	description_card: PropTypes.string,
-	ammount: PropTypes.string,
+	ammount: PropTypes.number,
 	vendor_name: PropTypes.string,
 	image_card: PropTypes.string
 };
