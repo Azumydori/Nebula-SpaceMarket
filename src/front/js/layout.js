@@ -22,6 +22,7 @@ import NftLearn from "./pages/nft-learn.js";
 import Wishlist from "./pages/wishlist.js";
 import NotFound from "./pages/notfound";
 import ControlPage from "./pages/controlpage";
+import ProductDetail from "./pages/productdetail.js";
 import LogRegister from "./component/log&register";
 import PrivacyPolicy from "./pages/privacy-policy.js";
 import "/workspace/Nebula-SpaceMarket/src/front/styles/home.scss";
@@ -94,6 +95,12 @@ const Layout = () => {
 					</Route>
 					<Route exact path="/vendor">
 						<VendorProfile />
+					</Route>
+					<Route exact path="/loggg">
+						<LogRegister />
+					</Route>
+					<Route exact path="/product/:id">
+						<ProductDetail />
 					</Route>
 
 					<Route>
