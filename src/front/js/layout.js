@@ -89,6 +89,9 @@ const Layout = () => {
 					<Route exact path="/controlpage/:str">
 						<ControlPage />
 					</Route>
+					<Route exact path="/controlpage/search/:str">
+						<ControlPage />
+					</Route>
 					<Route exact path="/vendor">
 						<VendorProfile />
 					</Route>

@@ -14,8 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			//https://nebula-spacemarket.herokuapp.com/
-			baseURL: "https://3001-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/api",
-			domainURL: "hhttps://3000-teal-turkey-e7hjqm5n.ws-eu18.gitpod.io/",
+			baseURL: "https://3001-violet-locust-fj73hnnc.ws-eu18.gitpod.io/api",
+			domainURL: "https://3000-violet-locust-fj73hnnc.ws-eu18.gitpod.io/",
 			wishlist: [],
 			cart: [],
 			searchProduct: [],
@@ -31,6 +31,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 					localStorage.removeItem("Id");
 					localStorage.removeItem("Name");
 				}
+			},
+			saveSearch: element => {
+				const preview = getStore().searchProduct;
+
+				setStore({ searchProduct: [...preview, element] });
+				console.log(getStore().searchProduct);
 			},
 			getUser: (id, currentUser) => {
 				fetch(getStore().baseURL.concat("/account", id))
@@ -182,14 +188,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return response.json();
 					})
 					.then(function(responseAsJson) {
-						console.log(responseAsJson);
 						productMedia(media, responseAsJson.id);
 						
 						//Hay que meterle tiempo para que pueda cargar la informacion, si no da fallos
 						if (media[0]) {
 							setTimeout(() => {
 								redirect();
-							}, 2500);
+							}, 2600);
 						} else {
 							redirect();
 						}
@@ -202,8 +207,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 			favorite: product_id => {
 				let myToken = localStorage.getItem("jwt-token");
 				let myUser = localStorage.getItem("Id");
+				var a = [];
+				if (localStorage.getItem("wishlist")) {
+					a = [localStorage.getItem("wishlist")];
+					a.push(product_id);
+				} else {
+					a = [product_id];
+				}
 
-				if (myUser != undefined) {
+				localStorage.setItem("wishlist", a);
+
+				if (myUser == "nothing") {
 					fetch(getStore().baseURL.concat("/favorite/", product_id), {
 						method: "POST",
 						headers: {
@@ -224,8 +238,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.log("Soy tu deseo en la store", getStore().wishlist);
 						})
 						.catch(error => console.error("There as been an unknown error", error));
-				} else {
-					alert("must login");
 				}
 			},
 
@@ -312,7 +324,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(responseAsJson => {
 						setStore({ allProducts: responseAsJson });
-						console.log(responseAsJson);
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
@@ -327,6 +338,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.then(responseAsJson => {
 						setStore({ ...product, product: responseAsJson });
+						console.log(responseAsJson);
 						return responseAsJson;
 					})
 					.catch(error => console.error("There as been an unknown error", error));

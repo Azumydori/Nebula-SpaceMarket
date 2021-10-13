@@ -3,8 +3,8 @@ import Categories from "../component/categories.js";
 import React, { useContext, useState, useEffect, Fragment } from "react";
 import { Context } from "../store/appContext";
 import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
@@ -37,22 +37,36 @@ const useStyles = makeStyles(theme => ({
 const ControlPage = props => {
 	const classes = useStyles();
 	const { store, actions } = useContext(Context);
-	const [productTab, setProductTab] = useState(
-		<img src="https://c.tenor.com/DBqjevyA2o4AAAAd/bongo-cat-codes.gif" />
-	);
+	const [productTab, setProductTab] = useState("");
+
 	//Recibo el parametro.
 	const params = useParams();
 	useEffect(() => {
 		actions.getProducts();
 	}, []);
 
+	const categories = [
+		"Computers",
+		"Home&Garden",
+		"Sports",
+		"Cellphones",
+		"Movies,Books&Music",
+		"Appliances",
+		"TV,Audio&Cameras",
+		"Motorbikes",
+		"Other",
+		"Clothing",
+		"Gaming"
+	];
+
 	useEffect(
 		() => {
+			console.log(params.str);
 			if (store.allProducts != 0) {
-				console.log("Soy params", params.str);
 				if (params.str == undefined) {
 					setProductTab(
 						store.allProducts.map((element, index) => {
+							element.price;
 							return (
 								<Grid item key={index} xs={6} sm={4} md={3} xl={2} aligncontent="center">
 									<MediaCard
@@ -67,11 +81,36 @@ const ControlPage = props => {
 							);
 						})
 					);
+				} else if (categories.includes(params.str)) {
+					console.log("newos", categories.includes(params.str));
+
+					setProductTab(
+						store.allProducts.map((element, index) => {
+							if (element.category.replace(/ /g, "") == params.str) {
+								console.log(element.category);
+								return (
+									<Grid item key={index} xs={6} sm={4} md={3} xl={2}>
+										<MediaCard
+											id_product={element.id}
+											title_card={element.product_name}
+											description_card={element.text}
+											ammount={element.price}
+											vendor_name={element.vendor_name}
+											image_card={element.media}
+										/>
+									</Grid>
+								);
+							}
+						})
+					);
 				} else {
 					setProductTab(
 						store.allProducts.map((element, index) => {
-							if (element.category == params.str) {
-								console.log(element);
+							if (
+								element.vendor_name.toLowerCase().includes(params.str.toLowerCase()) ||
+								element.product_name.toLowerCase().includes(params.str.toLowerCase()) ||
+								element.text.toLowerCase().includes(params.str.toLowerCase())
+							) {
 								return (
 									<Grid item key={index} xs={6} sm={4} md={3} xl={2}>
 										<MediaCard
@@ -103,12 +142,21 @@ const ControlPage = props => {
 					</Typography>
 				</div>
 			);
-		} else {
+		} else if (categories.includes(params.str)) {
 			return (
 				<div>
 					<CustomSeparator first="Nebula" second="Control Page" third={category} />
 					<Typography component="h4" variant="h4" gutterBottom className={classes.spacingControl}>
 						{category} products:
+					</Typography>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<CustomSeparator first="Nebula" second="Control Page" third={category} />
+					<Typography component="h4" variant="h4" gutterBottom className={classes.spacingControl}>
+						Result of your search : {category}
 					</Typography>
 				</div>
 			);

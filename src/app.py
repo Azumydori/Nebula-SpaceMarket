@@ -2,33 +2,40 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
+import re
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
+
+from flask_jwt_extended import JWTManager
+
 from api.utils import APIException, generate_sitemap
 from api.models import db
 from api.routes import api
 from api.admin import setup_admin
-from flask_jwt_extended import JWTManager
 #from models import Person
 
 ENV = os.getenv("FLASK_ENV")
 static_file_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../public/')
+
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
-app.config["JWT_SECRET_KEY"] = "super-secret" 
+app.config["JWT_SECRET_KEY"] = os.environ.get('JWT_SECRET_KEY')
 jwt = JWTManager(app)
 
-# database configuration
-if ENV =="development":
+# database condiguration
+if ENV == "development":
     if os.getenv("DATABASE_URL") is not None:
         app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+    else:
+        app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 else:
     uri = os.getenv("DATABASE_URL")  # or other relevant config var
     if uri.startswith("postgres://"):
         uri = uri.replace("postgres://", "postgresql://", 1)
+    # rest of connection code using the connection string `uri`
     app.config['SQLALCHEMY_DATABASE_URI'] = uri
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
