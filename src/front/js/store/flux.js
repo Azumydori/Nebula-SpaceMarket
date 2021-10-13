@@ -327,7 +327,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					})
 					.catch(error => console.error("There as been an unknown error", error));
 			},
-
 			changeAccountInfo: data => {
 				const token = localStorage.getItem("jwt-token");
 				const tokenID = localStorage.getItem("Id");
