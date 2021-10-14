@@ -2,23 +2,28 @@ import React from "react";
 import { useState } from "react";
 import { ethers } from "ethers";
 
-const startPayment = async ({ setError, setTxs, ether, addr }) => {
-	try {
-		if (!window.ethereum) throw new Error("No crypto wallet found. Please install it.");
+const startPayment = async ({ setError, setTxs }) => {
+	if (window.ethereum) {
+		let accounts = [];
+		accounts = await ethereum.request({ method: "eth_requestAccounts" });
 
-		await window.ethereum.send("eth_requestAccounts");
-		const provider = new ethers.providers.Web3Provider(window.ethereum);
-		const signer = provider.getSigner();
-		ethers.utils.getAddress(addr);
-		const tx = await signer.sendTransaction({
-			to: addr,
-			value: ethers.utils.parseEther(ether)
-		});
-		console.log({ ether, addr });
-		console.log("tx", tx);
-		setTxs([tx]);
-	} catch (err) {
-		setError(err.message);
+		ethereum
+			.request({
+				method: "eth_sendTransaction",
+				params: [
+					{
+						from: accounts[0],
+						to: "0x29D94A0E53f2dF45D50c0191bC7d597C91f02592",
+						value: "7530",
+						gasPrice: "0x09184e72a000",
+						gas: "5208"
+					}
+				]
+			})
+			.then(txHash => console.log(txHash))
+			.catch(error => console.error);
+	} else {
+		alert("No crypto wallet found. Please install it.");
 	}
 };
 
@@ -32,10 +37,10 @@ const Metamask = () => {
 		setError();
 		await startPayment({
 			setError,
-			setTxs,
-			ether: data.get("ether"),
-			addr: data.get("addr")
+			setTxs
 		});
+		console.log(txs);
+		console.log(error);
 	};
 
 	return (
