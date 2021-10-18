@@ -14,8 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			//https://nebula-spacemarket.herokuapp.com/
-			baseURL: "https://3001-ivory-dormouse-juqal3lz.ws-eu17.gitpod.io/api",
-			domainURL: "https://3000-ivory-dormouse-juqal3lz.ws-eu17.gitpod.io/",
+			baseURL: "https://3001-copper-yak-78fo7fh9.ws-eu17.gitpod.io/api",
+			domainURL: "https://3000-copper-yak-78fo7fh9.ws-eu17.gitpod.io/",
 			wishlist: [],
 			cart: [],
 			searchProduct: [],

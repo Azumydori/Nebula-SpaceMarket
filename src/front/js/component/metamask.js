@@ -1,6 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ethers } from "ethers";
+import { Context } from "../store/appContext";
 
 const startPayment = async ({ setError, setTxs }) => {
 	if (window.ethereum) {
@@ -14,13 +15,17 @@ const startPayment = async ({ setError, setTxs }) => {
 					{
 						from: accounts[0],
 						to: "0x29D94A0E53f2dF45D50c0191bC7d597C91f02592",
-						value: "7530",
+						value: "64",
 						gasPrice: "0x09184e72a000",
 						gas: "5208"
 					}
 				]
 			})
-			.then(txHash => console.log(txHash))
+			.then(txHash => {
+				if (txHash) {
+					window.location = store.domainURL.concat("/success");
+				}
+			})
 			.catch(error => console.error);
 	} else {
 		alert("No crypto wallet found. Please install it.");
@@ -30,6 +35,7 @@ const startPayment = async ({ setError, setTxs }) => {
 const Metamask = () => {
 	const [error, setError] = useState();
 	const [txs, setTxs] = useState([]);
+	const { store, actions } = useContext(Context);
 
 	const handleSubmit = async e => {
 		e.preventDefault();
@@ -39,6 +45,7 @@ const Metamask = () => {
 			setError,
 			setTxs
 		});
+		//window.location = store.domainURL.concat("/success");
 		console.log(txs);
 		console.log(error);
 	};

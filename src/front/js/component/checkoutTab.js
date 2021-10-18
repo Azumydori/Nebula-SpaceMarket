@@ -83,6 +83,10 @@ const classesInput = makeStyles({
 		":focus": {
 			color: "#303238"
 		}
+	},
+	payapal: {
+		height: "5rem",
+		width: "20rem"
 	}
 });
 
@@ -126,11 +130,15 @@ const checkoutTab = () => {
 				<TabPanel value={value} index={0} dir={theme.direction}>
 					<InputStripe />
 				</TabPanel>
-				<TabPanel value={value} index={1} dir={theme.direction}>
+				<TabPanel value={value} index={1} dir={theme.direction} justifyContent="center">
 					<Metamask />
 				</TabPanel>
 				<TabPanel value={value} index={2} dir={theme.direction}>
-					Item Three
+					<img
+						className={cClasses.payapal}
+						src="https://excellsolutions.co.za/wp-content/uploads/2017/12/PayPal-Express@2x.png"
+						alt="paypalbutton"
+					/>
 				</TabPanel>
 			</SwipeableViews>
 		</div>

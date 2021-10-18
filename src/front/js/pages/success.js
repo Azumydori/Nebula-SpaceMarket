@@ -11,7 +11,7 @@ const Success = () => {
 				You will receive an email confirmation of your order with the stimated delivery time. We hope to see you
 				again soon
 			</h3>
-			<a className="btn" href="/">
+			<a className="btn" href="/controlpage">
 				Continue shopping
 			</a>
 		</div>

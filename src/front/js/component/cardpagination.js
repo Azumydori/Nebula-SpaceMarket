@@ -27,7 +27,7 @@ const PaginationCards = props => {
 	const { store, actions } = useContext(Context);
 	const itemsPerPage = 4;
 	const [page, setPage] = useState(1);
-	const [noOfPages] = useState(Math.ceil(store.allProducts.length / itemsPerPage));
+	const [noOfPages] = useState(Math.ceil(props.params ? 1 : store.allProducts.length / itemsPerPage));
 
 	const handleChange = (event, value) => {
 		setPage(value);
@@ -50,7 +50,10 @@ const PaginationCards = props => {
 				);
 			});
 		} else {
-			return store.allProducts.slice((page - 1) * itemsPerPage, page * itemsPerPage).map(projectItem => {
+			const eludicia = store.allProducts.filter(word => word.category == props.params);
+
+			console.log(eludicia);
+			return eludicia.slice((page - 1) * itemsPerPage, page * itemsPerPage).map(projectItem => {
 				if (projectItem.category == param) {
 					return (
 						<ListItem key={projectItem.id} button onClick={() => console.log("")}>

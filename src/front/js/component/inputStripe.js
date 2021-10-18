@@ -1,5 +1,6 @@
 import React, { useContext, onSubmit, handleSubmit } from "react";
 import CheckoutTab from "../component/checkoutTab.js";
+import { Context } from "../store/appContext.js";
 import { useForm } from "react-hook-form";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements, CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
@@ -10,6 +11,7 @@ import "../../styles/checkout.scss";
 const InputStripe = () => {
 	const stripe = useStripe();
 	const elements = useElements();
+	const { store, actions } = useContext(Context);
 
 	const handleStripe = async event => {
 		event.preventDefault();
@@ -24,7 +26,7 @@ const InputStripe = () => {
 		} else {
 			console.log(paymentMethod);
 			axios({
-				url: "https://3001-kumquat-cheetah-ulkogp8r.ws-eu18.gitpod.io/api/payment/card",
+				url: "https://3001-copper-yak-78fo7fh9.ws-eu17.gitpod.io/api/payment/card",
 				method: "POST",
 				data: {
 					id: paymentMethod.id,
@@ -33,6 +35,7 @@ const InputStripe = () => {
 				}
 			});
 		}
+		window.location = store.domainURL.concat("/success");
 	};
 
 	return (

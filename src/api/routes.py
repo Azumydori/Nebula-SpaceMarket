@@ -312,6 +312,7 @@ def new_product(id):
 
     
     new_product = Product(
+         id=price,
                 account_id=account_id,
                 product_name=product_name,
                 price=price,
