@@ -8,9 +8,9 @@ const Jumbotron = props => {
 		<div className="jumbotron d-flex flex-column justify-content-center" style={{ background: "#fafafa" }}>
 			<h2 className="display-4">{props.title}</h2>
 			<p className="lead text-left">{props.text}</p>
-			<Link className="learn-more justify-content-center" href="/blockchain" role="button">
+			<button className="learn-more justify-content-center" href="/blockchain" role="button">
 				Learn more
-			</Link>
+			</button>
 			<img src={NebulaLanding} className="eco" />
 		</div>
 	);

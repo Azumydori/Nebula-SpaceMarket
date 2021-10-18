@@ -83,13 +83,12 @@ const Checkout = () => {
 					</div>
 				</div>
 
-				<div className="row payment-container">
+				<div className="row payment-container justify-content-center">
 					<div className="col-12">
 						<h2>Payment Method</h2>
 					</div>
+					<CheckoutTab />
 				</div>
-
-				<CheckoutTab />
 			</div>
 		</Elements>
 	);
